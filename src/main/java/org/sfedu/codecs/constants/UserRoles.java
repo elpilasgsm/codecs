@@ -1,7 +1,14 @@
 package org.sfedu.codecs.constants;
 
-public enum  UserRoles {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum UserRoles implements GrantedAuthority {
     ADMIN,
     USER,
-    MODERATOR
+    MODERATOR;
+
+    @Override
+    public String getAuthority() {
+        return this.name();
+    }
 }

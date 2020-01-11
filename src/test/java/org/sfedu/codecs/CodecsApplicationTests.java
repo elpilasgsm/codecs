@@ -7,6 +7,7 @@ import org.sfedu.codecs.model.db.UserEntity;
 import org.sfedu.codecs.model.es.ArticleDoc;
 import org.sfedu.codecs.repository.db.UserRepository;
 import org.sfedu.codecs.repository.es.ArticleESRepository;
+import org.sfedu.codecs.service.UserService;
 import org.sfedu.codecs.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,13 +22,17 @@ class CodecsApplicationTests {
     private UserRepository repository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     protected ArticleESRepository articleESRepository;
+
     protected static String random(int l) {
         return RandomStringUtils.randomAlphanumeric(l);
     }
 
     @Test
-    void contextLoads() throws Exception{
+    void contextLoads() throws Exception {
         String login = random(20);
         String password = random(32);
         UserEntity entity = new UserEntity();
@@ -40,7 +45,9 @@ class CodecsApplicationTests {
         Assert.isTrue(entity.getUserId() != 0, "ID is 0");
         final UserEntity fromDB = repository.findUserEntityByLogin(login);
         Assert.notNull(fromDB, "Can't find by login");
-        Assert.isTrue(PasswordUtils.getHash(password).equals(fromDB.getPassword()),"Hash is not the same");
+        Assert.isTrue(PasswordUtils.getHash(password).equals(fromDB.getPassword()), "Hash is not the same");
+
+        userService.getById(fromDB.getUserId());
 
         repository.delete(fromDB);
 
@@ -52,8 +59,6 @@ class CodecsApplicationTests {
         articleESRepository.findById(articleDoc.getId());
 
     }
-
-
 
 
 }
