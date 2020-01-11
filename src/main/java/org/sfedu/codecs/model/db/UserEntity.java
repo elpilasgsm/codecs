@@ -2,14 +2,15 @@ package org.sfedu.codecs.model.db;
 
 import org.hibernate.annotations.Type;
 import org.sfedu.codecs.constants.UserRoles;
+import org.sfedu.codecs.model.DBObject;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "users")
-public class UserEntity implements Serializable {
+@Table(name = "USERS")
+public class UserEntity implements DBObject {
 
     private static final long serialVersionUID = 3822074571641809270L;
     @Id
