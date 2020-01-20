@@ -2,14 +2,21 @@ CREATE SCHEMA IF NOT EXISTS codecs;
 
 use codecs;
 
-CREATE TABLE USERS
+CREATE TABLE RECORD
 (
-    USER_ID     int(11)     NOT NULL AUTO_INCREMENT,
-    LOGIN       varchar(32) NOT NULL,
-    PASSWORD    varchar(64) NOT NULL,
-    ACTIVE      char(1)     NOT NULL DEFAULT 'Y',
-    RESET_TOKEN varchar(64)          DEFAULT NULL,
-    USER_ROLE   varchar(32)          DEFAULT NULL,
-    PRIMARY KEY (USER_ID)
+    RECORD_ID          int(11)      NOT NULL AUTO_INCREMENT,
+    NAME               varchar(255) NOT NULL,
+    CODECS_RECORD_TYPE varchar(64)  NOT NULL,
+    CHANGES_PART       varchar(64)  NOT NULL,
+    CHANGES_TYPE       varchar(64)  NOT NULL,
+    ACTIVATE_DATE      date         NULL,
+    DIRECTION          varchar(32)  NOT NULL,
+    CHANGES_DATE       date         default null,
+    URL                varchar(255) NOT NULL,
+    MEMBER_OF int(11) default null,
+    PRIMARY KEY (RECORD_ID)
 );
 
+alter table RECORD
+    add constraint RECORD_RECORD_RECORD_ID_fk
+        foreign key (MEMBER_OF) references RECORD (RECORD_ID);

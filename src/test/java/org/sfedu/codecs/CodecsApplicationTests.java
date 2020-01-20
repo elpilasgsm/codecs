@@ -61,4 +61,18 @@ class CodecsApplicationTests {
     }
 
 
+    @Test
+    void createInitialAdminUser() throws Exception {
+        String login ="admin";
+        String password = "passwd00";
+        UserEntity entity = new UserEntity();
+        entity.setLogin(login);
+        entity.setPassword(PasswordUtils.getHash(password));
+        entity.setActive(true);
+        entity.setRole(UserRoles.ADMIN);
+        entity = repository.save(entity);
+
+
+    }
+
 }

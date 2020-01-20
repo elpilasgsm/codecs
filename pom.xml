@@ -12,10 +12,10 @@
 	<artifactId>codecs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>codecs</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Sfedu. Codecs. 2019</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>1.11</java.version>
 	</properties>
 
 	<dependencies>
@@ -46,7 +46,6 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.9</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
