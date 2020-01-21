@@ -3,6 +3,8 @@ package org.sfedu.codecs.model.db;
 import org.hibernate.annotations.Type;
 import org.sfedu.codecs.constants.UserRoles;
 import org.sfedu.codecs.model.DBObject;
+import org.sfedu.codecs.model.DTOObject;
+import org.sfedu.codecs.model.dto.User;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
@@ -10,7 +12,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "USERS")
-public class UserEntity implements DBObject {
+public class UserEntity implements DBObject<User> {
 
     private static final long serialVersionUID = 3822074571641809270L;
     @Id
@@ -81,5 +83,15 @@ public class UserEntity implements DBObject {
 
     public void setRole(UserRoles role) {
         this.role = role;
+    }
+
+    @Override
+    public User toDTO(boolean deepCopy) {
+        User user = new User();
+        user.setId(this.userId);
+        user.setLogin(this.login);
+        user.setStatus(this.active ? "ACTIVE" : "INACTIVE");
+        user.setUserRoles(this.getRole());
+        return user;
     }
 }

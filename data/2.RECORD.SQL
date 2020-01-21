@@ -1,5 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS codecs;
-
 use codecs;
 
 CREATE TABLE RECORD
@@ -7,13 +5,9 @@ CREATE TABLE RECORD
     RECORD_ID          int(11)      NOT NULL AUTO_INCREMENT,
     NAME               varchar(255) NOT NULL,
     CODECS_RECORD_TYPE varchar(64)  NOT NULL,
-    CHANGES_PART       varchar(64)  NOT NULL,
-    CHANGES_TYPE       varchar(64)  NOT NULL,
-    ACTIVATE_DATE      date         NULL,
-    DIRECTION          varchar(32)  NOT NULL,
-    CHANGES_DATE       date         default null,
+    SEVERITY_OF_CRIME  varchar(64) DEFAULT NULL,
     URL                varchar(255) NOT NULL,
-    MEMBER_OF int(11) default null,
+    MEMBER_OF          int(11)     default null,
     PRIMARY KEY (RECORD_ID)
 );
 

@@ -1,19 +1,18 @@
 package org.sfedu.codecs.model.db;
 
-import org.sfedu.codecs.constants.ChangesDirection;
-import org.sfedu.codecs.constants.ChangesPerformanceType;
-import org.sfedu.codecs.constants.CodecsChangesInPart;
 import org.sfedu.codecs.constants.CodecsRecordType;
+import org.sfedu.codecs.constants.CrimeSeverity;
 import org.sfedu.codecs.model.DBObject;
+import org.sfedu.codecs.model.dto.ArticleRecord;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
-import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "RECORD")
-public class RecordEntity implements DBObject {
+public class RecordEntity implements DBObject<ArticleRecord> {
     private static final long serialVersionUID = 1222074571641809270L;
     @Id
     @javax.persistence.Id
@@ -28,28 +27,12 @@ public class RecordEntity implements DBObject {
     @Enumerated(EnumType.STRING)
     private CodecsRecordType recordType;
 
-    @Column(name = "CHANGES_PART")
-    @Enumerated(EnumType.STRING)
-    private CodecsChangesInPart changesInPart;
-
-    @Column(name = "CHANGES_TYPE")
-    @Enumerated(EnumType.STRING)
-    private ChangesPerformanceType performanceType;
-
-    @Column(name = "ACTIVATE_DATE")
-    @Temporal(TemporalType.DATE)
-    private Calendar activationDate;
-
-    @Column(name = "DIRECTION")
-    @Enumerated(EnumType.STRING)
-    private ChangesDirection direction;
-
-    @Column(name = "CHANGES_DATE")
-    @Temporal(TemporalType.DATE)
-    private Calendar date;
-
     @Column(name = "URL")
     private String url;
+
+    @Column(name = "SEVERITY_OF_CRIME")
+    @Enumerated(EnumType.STRING)
+    private CrimeSeverity crimeSeverity;
 
     @JoinColumn(name = "MEMBER_OF")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,6 +40,9 @@ public class RecordEntity implements DBObject {
 
     @OneToMany(mappedBy = "parent")
     private List<RecordEntity> children;
+
+    @OneToMany(mappedBy = "record", cascade = {CascadeType.ALL})
+    private List<ChangesEntity> changes;
 
     public long getRecordId() {
         return recordId;
@@ -82,52 +68,20 @@ public class RecordEntity implements DBObject {
         this.recordType = recordType;
     }
 
-    public CodecsChangesInPart getChangesInPart() {
-        return changesInPart;
-    }
-
-    public void setChangesInPart(CodecsChangesInPart changesInPart) {
-        this.changesInPart = changesInPart;
-    }
-
-    public ChangesPerformanceType getPerformanceType() {
-        return performanceType;
-    }
-
-    public void setPerformanceType(ChangesPerformanceType performanceType) {
-        this.performanceType = performanceType;
-    }
-
-    public Calendar getActivationDate() {
-        return activationDate;
-    }
-
-    public void setActivationDate(Calendar activationDate) {
-        this.activationDate = activationDate;
-    }
-
-    public ChangesDirection getDirection() {
-        return direction;
-    }
-
-    public void setDirection(ChangesDirection direction) {
-        this.direction = direction;
-    }
-
-    public Calendar getDate() {
-        return date;
-    }
-
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public CrimeSeverity getCrimeSeverity() {
+        return crimeSeverity;
+    }
+
+    public void setCrimeSeverity(CrimeSeverity crimeSeverity) {
+        this.crimeSeverity = crimeSeverity;
     }
 
     public RecordEntity getParent() {
@@ -144,5 +98,37 @@ public class RecordEntity implements DBObject {
 
     public void setChildren(List<RecordEntity> children) {
         this.children = children;
+    }
+
+    public List<ChangesEntity> getChanges() {
+        return changes;
+    }
+
+    public void setChanges(List<ChangesEntity> changes) {
+        this.changes = changes;
+    }
+
+    @Override
+    public ArticleRecord toDTO(boolean deepCopy) {
+
+        ArticleRecord record = new ArticleRecord();
+        record.setUrl(this.url);
+        record.setRecordType(this.recordType);
+        record.setName(this.name);
+        record.setRecordId(this.recordId);
+        record.setCrimeSeverity(this.crimeSeverity);
+        if (deepCopy) {
+            if (this.parent != null) {
+                record.setParent(this.parent.toDTO(
+                        false));
+            }
+            if (this.children != null) {
+                record.setChildren(children.stream().map(it -> it.toDTO(false)).collect(Collectors.toList()));
+            }
+            if (this.changes != null) {
+                record.setChanges(changes.stream().map(it -> it.toDTO(false)).collect(Collectors.toList()));
+            }
+        }
+        return record;
     }
 }
