@@ -24,14 +24,14 @@ public class UserService extends AbstractCodecsService<UserEntity> {
     }
 
     public User create(User user) {
-        UserEntity entity = new UserEntity();
-        entity.setLogin(user.getLogin());
+        UserEntity entity = user.toDB();
         try {
-            entity.setPassword(PasswordUtils.getHash(user.getPassword()));
+            if (user.getId() == null) {
+                entity.setPassword(PasswordUtils.getHash(user.getPassword()));
+            }
         } catch (Exception e) {
             return null;
         }
-        entity.setRole(user.getUserRoles());
         entity.setActive(true);
         userRepository.save(entity);
         user.setId(entity.getUserId());

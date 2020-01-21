@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.sfedu.codecs.constants.*;
 import org.sfedu.codecs.model.db.RecordEntity;
 import org.sfedu.codecs.model.db.UserEntity;
-import org.sfedu.codecs.model.es.ArticleDoc;
 import org.sfedu.codecs.repository.db.RecordRepository;
 import org.sfedu.codecs.repository.db.UserRepository;
 import org.sfedu.codecs.repository.es.ArticleESRepository;
@@ -18,9 +17,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 @SpringBootTest
 @PropertySource("classpath:application.properties")
@@ -109,8 +105,6 @@ class CodecsApplicationTests {
         }
     }
 
-
-    //@Test
     void createInitialAdminUser() throws Exception {
         String login = "admin";
         String password = "passwd00";

@@ -1,12 +1,11 @@
-package org.sfedu.codecs.model.db;
+package org.sfedu.codecs.model.dto;
 
 import org.sfedu.codecs.constants.ChangesDirection;
 import org.sfedu.codecs.constants.ChangesPerformanceType;
 import org.sfedu.codecs.constants.CodecsChangesInPart;
 import org.sfedu.codecs.constants.CodecsRecordType;
-import org.sfedu.codecs.model.DBObject;
 import org.sfedu.codecs.model.DTOObject;
-import org.sfedu.codecs.model.dto.ArticleRecord;
+import org.sfedu.codecs.model.db.RecordEntity;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
@@ -14,52 +13,20 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "RECORD")
-public class RecordEntity implements DBObject<ArticleRecord> {
+public class ArticleRecord implements DTOObject<RecordEntity> {
+
     private static final long serialVersionUID = 1222074571641809270L;
-    @Id
-    @javax.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RECORD_ID")
     private long recordId;
-
-    @Column(name = "NAME")
     private String name;
-
-    @Column(name = "CODECS_RECORD_TYPE")
-    @Enumerated(EnumType.STRING)
     private CodecsRecordType recordType;
-
-    @Column(name = "CHANGES_PART")
-    @Enumerated(EnumType.STRING)
     private CodecsChangesInPart changesInPart;
-
-    @Column(name = "CHANGES_TYPE")
-    @Enumerated(EnumType.STRING)
     private ChangesPerformanceType performanceType;
-
-    @Column(name = "ACTIVATE_DATE")
-    @Temporal(TemporalType.DATE)
     private Calendar activationDate;
-
-    @Column(name = "DIRECTION")
-    @Enumerated(EnumType.STRING)
     private ChangesDirection direction;
-
-    @Column(name = "CHANGES_DATE")
-    @Temporal(TemporalType.DATE)
     private Calendar date;
-
-    @Column(name = "URL")
     private String url;
-
-    @JoinColumn(name = "MEMBER_OF")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private RecordEntity parent;
-
-    @OneToMany(mappedBy = "parent")
-    private List<RecordEntity> children;
+    private ArticleRecord parent;
+    private List<ArticleRecord> children;
 
     public long getRecordId() {
         return recordId;
@@ -133,44 +100,42 @@ public class RecordEntity implements DBObject<ArticleRecord> {
         this.url = url;
     }
 
-    public RecordEntity getParent() {
+    public ArticleRecord getParent() {
         return parent;
     }
 
-    public void setParent(RecordEntity parent) {
+    public void setParent(ArticleRecord parent) {
         this.parent = parent;
     }
 
-    public List<RecordEntity> getChildren() {
+    public List<ArticleRecord> getChildren() {
         return children;
     }
 
-    public void setChildren(List<RecordEntity> children) {
+    public void setChildren(List<ArticleRecord> children) {
         this.children = children;
     }
 
-
     @Override
-    public ArticleRecord toDTO(boolean deepCopy) {
-        ArticleRecord record = new ArticleRecord();
-        record.setUrl(this.url);
-        record.setActivationDate(this.activationDate);
-        record.setChangesInPart(this.changesInPart);
-        record.setDate(this.date);
-        record.setDirection(this.direction);
-        record.setPerformanceType(this.performanceType);
-        record.setRecordType(this.recordType);
-        record.setName(this.name);
-        record.setRecordId(this.recordId);
+    public RecordEntity toDB(boolean deepCopy) {
+        RecordEntity entity = new RecordEntity();
+        entity.setUrl(this.url);
+        entity.setRecordType(this.recordType);
+        entity.setChangesInPart(this.changesInPart);
+        entity.setPerformanceType(this.performanceType);
+        entity.setActivationDate(this.activationDate);
+        entity.setDirection(this.direction);
+        entity.setDate(this.date);
+        entity.setRecordId(this.recordId);
+        entity.setName(this.name);
         if (deepCopy) {
             if (this.parent != null) {
-                record.setParent(this.parent.toDTO(
-                        false));
+                entity.setParent(this.parent.toDB(false));
             }
             if (this.children != null) {
-                record.setChildren(children.stream().map(it -> it.toDTO(false)).collect(Collectors.toList()));
+                entity.setChildren(children.stream().map(it -> it.toDB(false)).collect(Collectors.toList()));
             }
         }
-        return record;
+        return entity;
     }
 }
