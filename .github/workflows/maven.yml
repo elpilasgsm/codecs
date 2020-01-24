@@ -1,17 +1,25 @@
 name: Java CI
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up JDK 1.11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.11
-    - name: Build with Maven
-      run: mvn clean install
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - name: Install SQLs
+        run: |
+          mysql -uroot -proot < data/1.users.SQL
+          mysql -uroot -proot < data/2.RECORD.SQL
+          mysql -uroot -proot < data/3.CHANGES.SQL
+      - name: Build with Maven
+        run: mvn clean install -Dspring.datasource.username=root -Dspring.datasource.password=root
