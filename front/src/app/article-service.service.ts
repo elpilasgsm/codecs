@@ -13,6 +13,12 @@ export class ArticleServiceService {
 
   }
 
+
+  getRoot(): Observable<Article[]> {
+    console.log("ID is " + this.getArticleURL);
+    return this.http.get<Article[]>(this.getArticleURL);
+  }
+
   getArticleById(id): Observable<Article> {
     console.log("ID is " + this.getArticleURL + id);
     return this.http.get<Article>(this.getArticleURL + id);

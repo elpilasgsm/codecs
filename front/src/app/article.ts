@@ -1,13 +1,13 @@
+import {Changes} from "./changes";
+
 export class Article {
-  private recordId: number;
-  private name: string;
-  private recordType: string;
-  private changesInPart: string;
-  private performanceType: string;
-  private activationDate: Date;
-  private direction: string;
-  private date: Date;
-  private url: string;
-  private parent: Article;
-  private children: Article[];
+  public recordId: number;
+  public name: string;
+  public recordType: string;
+  public crimeSeverity: string;
+  public date: Date;
+  public url: string;
+  public parent: Article;
+  public children: Article[];
+  public changes: Changes[];
 }

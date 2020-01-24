@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RestController
@@ -37,6 +39,12 @@ public class ArticleRestController {
     public ArticleRecord get(@PathVariable("record-id") Long id, HttpServletResponse response) throws IOException {
         RecordEntity entity = recordRepository.getOne(id);
         return entity.toDTO(true);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public List<ArticleRecord> getRootTree(HttpServletResponse response) throws IOException {
+        List<RecordEntity> entity = recordRepository.getByParentRecordId(null);
+        return entity.stream().map(it -> it.toDTO(true)).collect(Collectors.toList());
     }
 }
 

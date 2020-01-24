@@ -14,9 +14,9 @@
 	<name>codecs</name>
 	<description>Sfedu. Codecs. 2019</description>
 
-	<properties>
+<!--	<properties>
 		<java.version>1.11</java.version>
-	</properties>
+	</properties>-->
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
