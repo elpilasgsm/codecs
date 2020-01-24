@@ -1,0 +1,4 @@
+.scroll-h {
+  width: 50%;
+  overflow-x: scroll;
+}
