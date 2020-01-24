@@ -17,4 +17,4 @@ jobs:
           mysql -uroot -proot < data/2.RECORD.SQL
           mysql -uroot -proot < data/3.CHANGES.SQL
       - name: Build with Maven
-        run: mvn clean install -ea -Dspring.datasource.username=root -Dspring.datasource.password=root
+        run: mvn clean install -Dspring.datasource.username=root -Dspring.datasource.password=root
