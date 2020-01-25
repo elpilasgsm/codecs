@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,10 +42,27 @@ public class ArticleRestController {
         return entity.toDTO(true);
     }
 
+    private ArticleRecord toDTO(RecordEntity e) {
+        ArticleRecord record = e.toDTO(false);
+        if (e.getChildren() != null) {
+            record.setChildren(new ArrayList<>());
+            for (RecordEntity ch : e.getChildren()) {
+                if (ch != null) {
+                    record.getChildren().add(toDTO(ch));
+                }
+            }
+        }
+        return record;
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<ArticleRecord> getRootTree(HttpServletResponse response) throws IOException {
-        List<RecordEntity> entity = recordRepository.getByParentRecordId(null);
-        return entity.stream().map(it -> it.toDTO(true)).collect(Collectors.toList());
+        List<RecordEntity> entities = recordRepository.getByParentRecordId(null);
+        List<ArticleRecord> tree = new ArrayList<>();
+        for (RecordEntity e : entities) {
+            tree.add(toDTO(e));
+        }
+        return tree;
     }
 }
 

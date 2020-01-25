@@ -1,8 +1,8 @@
 package org.sfedu.codecs.constants;
 
 public enum CrimeSeverity {
-    THE_MOST,
-    REGULAR,
+    MINOR,
     MIDDLE,
+    REGULAR,
     EXTRA
 }

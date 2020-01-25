@@ -40,9 +40,6 @@ class CodecsApplicationTests {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    protected ArticleESRepository articleESRepository;
-
     protected static String random(int l) {
         return RandomStringUtils.randomAlphanumeric(l);
     }
@@ -68,40 +65,42 @@ class CodecsApplicationTests {
 
     @Test
     public void articteTest() {
-        RecordEntity article = new RecordEntity();
-        article.setName(random(25));
-        article.setRecordType(CodecsRecordType.ARTICLE);
-        article.setUrl(random(255));
-        article.setCrimeSeverity(CrimeSeverity.REGULAR);
-        article.setChanges(getListOfChanges(5, article));
-        article = recordRepository.save(article);
+        for (int bn = 0; bn < 12; bn++) {
+            RecordEntity article = new RecordEntity();
+            article.setName(random(25));
+            article.setRecordType(CodecsRecordType.ARTICLE);
+            article.setUrl(String.format("https://%s", random(10)));
+            article.setCrimeSeverity(CrimeSeverity.REGULAR);
+            article.setChanges(getListOfChanges(5, article));
+            article = recordRepository.save(article);
 
-        RecordEntity part1 = new RecordEntity();
-        part1.setName(random(25));
-        part1.setRecordType(CodecsRecordType.PART);
-        part1.setUrl(random(255));
-        part1.setParent(article);
-        part1.setCrimeSeverity(CrimeSeverity.EXTRA);
-        part1.setChanges(getListOfChanges(5, part1));
-        part1 = recordRepository.save(part1);
-        for (int i = 0; i < 5; i++) {
+            RecordEntity part1 = new RecordEntity();
+            part1.setName(random(25));
+            part1.setRecordType(CodecsRecordType.PART);
+            part1.setUrl(String.format("https://%s", random(10)));
+            part1.setParent(article);
+            part1.setCrimeSeverity(CrimeSeverity.EXTRA);
+            part1.setChanges(getListOfChanges(5, part1));
+            part1 = recordRepository.save(part1);
+            for (int i = 0; i < 5; i++) {
 
-            RecordEntity point = new RecordEntity();
-            point.setName(random(25));
-            point.setCrimeSeverity(CrimeSeverity.MIDDLE);
-            point.setRecordType(CodecsRecordType.POINT);
-            point.setUrl(random(255));
-            point.setParent(part1);
+                RecordEntity point = new RecordEntity();
+                point.setName(random(25));
+                point.setCrimeSeverity(CrimeSeverity.MIDDLE);
+                point.setRecordType(CodecsRecordType.POINT);
+                point.setUrl(String.format("https://%s", random(10)));
+                point.setParent(part1);
 
-            point.setChanges(getListOfChanges(5, point));
-            recordRepository.save(point);
-            //  changesRepository.save(changesEntity);
-        }
-        final RecordEntity partResponse1 = recordRepository.getOne(article.getRecordId());
-        if (!CollectionUtils.isEmpty(partResponse1.getChildren())) {
-            Assert.isTrue(partResponse1.getChildren().stream().allMatch(it -> CodecsRecordType.PART == it.getRecordType()), "not all are points");
-            for (RecordEntity parts : partResponse1.getChildren()) {
-                Assert.isTrue(parts.getChildren().stream().allMatch(it -> CodecsRecordType.POINT == it.getRecordType()), "not all are points");
+                point.setChanges(getListOfChanges(5, point));
+                recordRepository.save(point);
+                //  changesRepository.save(changesEntity);
+            }
+            final RecordEntity partResponse1 = recordRepository.getOne(article.getRecordId());
+            if (!CollectionUtils.isEmpty(partResponse1.getChildren())) {
+                Assert.isTrue(partResponse1.getChildren().stream().allMatch(it -> CodecsRecordType.PART == it.getRecordType()), "not all are points");
+                for (RecordEntity parts : partResponse1.getChildren()) {
+                    Assert.isTrue(parts.getChildren().stream().allMatch(it -> CodecsRecordType.POINT == it.getRecordType()), "not all are points");
+                }
             }
         }
     }
@@ -124,7 +123,7 @@ class CodecsApplicationTests {
         changesEntity.setChangesInPart(CodecsChangesInPart.PUNISHMENT);
         changesEntity.setName(random(23));
         changesEntity.setDirection(ChangesDirection.POSITIVE);
-        changesEntity.setUrl(random(32));
+        changesEntity.setUrl(String.format("https://%s", random(10)));
         return changesEntity;
     }
 

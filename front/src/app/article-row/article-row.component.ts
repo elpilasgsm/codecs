@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Article} from "../article";
 
+
 @Component({
   selector: 'app-article-row',
   templateUrl: './article-row.component.html',

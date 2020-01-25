@@ -9,14 +9,14 @@ import {Article} from "./article";
 })
 export class AppComponent implements OnInit {
   title = 'front';
-  data: Article[];
+
 
   constructor(private articleService: ArticleServiceService) {
 
   }
 
   ngOnInit(): void {
-    this.articleService.getRoot().subscribe(val => this.data = val);
+
   }
 
 }

@@ -6,11 +6,19 @@ import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import { ArticleRowComponent } from './article-row/article-row.component';
 import {FormsModule} from "@angular/forms";
+import { RecordTypeComponent } from './record-type/record-type.component';
+import { CodecsTreeComponent } from './codecs-tree/codecs-tree.component';
+import { CrimeSeverityViewComponent } from './crime-severity-view/crime-severity-view.component';
+import { CodecsTreeRowComponent } from './codecs-tree-row/codecs-tree-row.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ArticleRowComponent
+    ArticleRowComponent,
+    RecordTypeComponent,
+    CodecsTreeComponent,
+    CrimeSeverityViewComponent,
+    CodecsTreeRowComponent
   ],
   imports: [
     BrowserModule,
