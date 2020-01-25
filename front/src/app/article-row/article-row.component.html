@@ -1,0 +1,14 @@
+<div class="row" *ngIf="article">
+  <div class="col l3 s3 m3">
+    <p>{{article.name}}</p>
+  </div>
+  <div class="col l3 s3 m3">
+    <p>{{article.recordType}}</p>
+  </div>
+  <div class="col l3 s3 m3">
+    <p>{{article.crimeSeverity}}</p>
+  </div>
+  <div class="col l3 s3 m3">
+    <a href="{{article.url}}">Перейти</a>
+  </div>
+</div>
