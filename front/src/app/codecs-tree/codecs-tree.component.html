@@ -5,10 +5,18 @@
         УК РФ
       </div>
       <div class="text-right col l3 s5 m5">
-        <a href="#"><span class="material-icons">add_to_photos</span></a>
+        <a (click)="addNewArticle()"><span class="material-icons">add_to_photos</span></a>
       </div>
     </div>
-
+  </div>
+  <div class="col l12">
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">search</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Поиск</label>
+      </div>
+    </div>
   </div>
   <div class="col l12 ">
     <ul class="display collection collapsible scroll-v">

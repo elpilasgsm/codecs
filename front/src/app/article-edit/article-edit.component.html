@@ -1,0 +1,19 @@
+<div class="row ">
+  <form class="col l12" *ngIf="article">
+    <div class="row">
+      <div class="input-field col s12">
+        <input [disabled]="article.recordId!=null" id="recordType" type="text" class="validate"
+               [ngModel]="article.recordType | recordType" (ngModelChange)="article.recordType=$event"
+               name="recordType"
+               placeholder="Тип">
+        <label for="recordType" [ngClass]="{'active': article.recordType}">Тип</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="name" type="text" class="validate" [(ngModel)]="article.name" name="name" placeholder="Название">
+        <label for="name" [ngClass]="{'active': article.name}">Название</label>
+      </div>
+    </div>
+  </form>
+</div>
