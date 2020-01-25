@@ -5,7 +5,6 @@ export class Article {
   public name: string;
   public recordType: string;
   public crimeSeverity: string;
-  public date: Date;
   public url: string;
   public parent: Article;
   public children: Article[];

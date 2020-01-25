@@ -12,6 +12,17 @@ import {Article} from "../article";
 })
 export class ArticleEditComponent implements OnInit {
   article: Article;
+  public dateOptions: Pickadate.DateOptions = {
+    clear: 'Clear', // Clear button text
+    close: 'Ok',    // Ok button text
+    today: 'Today', // Today button text
+    closeOnClear: true,
+    closeOnSelect: false,
+    format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
+    formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 10,    // Creates a dropdown of 10 years to control year,
+  };
 
   constructor(private route: ActivatedRoute, private location: Location, private articleServiceService: ArticleServiceService) {
   }

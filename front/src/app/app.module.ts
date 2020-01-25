@@ -10,6 +10,8 @@ import {CodecsTreeRowComponent} from './codecs-tree-row/codecs-tree-row.componen
 import {ArticleEditComponent} from './article-edit/article-edit.component';
 import {RecordTypePipe} from './record-type.pipe';
 import {CrimeSeverityPipe} from './crime-severity.pipe';
+import {CrimeSereritySelectorComponent} from './crime-sererity-selector/crime-sererity-selector.component';
+import {MzDatepickerModule, MzSelectModule} from "ngx-materialize";
 
 @NgModule({
   declarations: [
@@ -18,13 +20,16 @@ import {CrimeSeverityPipe} from './crime-severity.pipe';
     CodecsTreeRowComponent,
     ArticleEditComponent,
     RecordTypePipe,
-    CrimeSeverityPipe
+    CrimeSeverityPipe,
+    CrimeSereritySelectorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MzSelectModule,
+    MzDatepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
