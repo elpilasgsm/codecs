@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Location} from '@angular/common';
 import {ArticleServiceService} from "../article-service.service";
 import {Article} from "../article";
+import {CodecsTreeComponent} from "../codecs-tree/codecs-tree.component";
 
 
 @Component({
@@ -12,26 +13,38 @@ import {Article} from "../article";
 })
 export class ArticleEditComponent implements OnInit {
   article: Article;
-  public dateOptions: Pickadate.DateOptions = {
-    clear: 'Clear', // Clear button text
-    close: 'Ok',    // Ok button text
-    today: 'Today', // Today button text
-    closeOnClear: true,
-    closeOnSelect: false,
-    format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
-    formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
-    selectMonths: true, // Creates a dropdown to control month
-    selectYears: 10,    // Creates a dropdown of 10 years to control year,
-  };
 
-  constructor(private route: ActivatedRoute, private location: Location, private articleServiceService: ArticleServiceService) {
+  constructor(private route: ActivatedRoute,
+              private location: Location,
+              private articleServiceService: ArticleServiceService
+  ) {
+
   }
 
   save(): void {
     let isNew = this.article.recordId === null;
-    console.log(this.article.recordId)
-    console.log(isNew)
-    this.articleServiceService.addArticle(this.article).subscribe(a => this.article = a);
+    if (isNew) {
+      this.articleServiceService.addArticle(this.article).subscribe(a => this.article = a);
+    } else {
+      this.articleServiceService.saveArticle(this.article, this.article.recordId).subscribe(a => {
+        this.article.url = a.url;
+        this.article.crimeSeverity = a.crimeSeverity;
+        this.article.name = a.name;
+      });
+    }
+  }
+
+  update(list: Article[], a: Article): void {
+    list.forEach((item, index) => {
+      if (item.recordId === a.recordId) {
+        item.name = a.name;
+        item.crimeSeverity = a.crimeSeverity;
+        item.url = a.url;
+        return;
+      } else if (item.children) {
+        this.update(item.children, a);
+      }
+    });
   }
 
   ngOnInit() {
@@ -49,10 +62,11 @@ export class ArticleEditComponent implements OnInit {
             url: null
           };
         } else {
-          this.articleServiceService.getArticleById(params.id).subscribe(
-            a => this.article = a);
+          this.articleServiceService.getArticleById(params.id, function (args) {
+            this.article = args.article;
+          }.bind(this));
         }
       }
-    })
+    });
   }
 }

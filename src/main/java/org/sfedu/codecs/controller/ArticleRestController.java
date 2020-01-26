@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -43,6 +44,20 @@ public class ArticleRestController {
                 entity.setParent(parent);
             }
         }
+        return recordRepository.save(entity).toDTO(false);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public ArticleRecord post(@RequestBody ArticleRecord record, @PathVariable("id") Long recordId, HttpServletResponse response) throws IOException {
+        final Optional<RecordEntity> parent = recordRepository.findById(recordId);
+        if (parent.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        final RecordEntity entity = parent.get();
+        entity.setCrimeSeverity(record.getCrimeSeverity());
+        entity.setName(record.getName());
+        entity.setUrl(record.getUrl());
         return recordRepository.save(entity).toDTO(false);
     }
 

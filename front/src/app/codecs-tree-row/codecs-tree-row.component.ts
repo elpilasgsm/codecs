@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Article} from "../article";
 import {ArticleServiceService} from "../article-service.service";
-
 @Component({
   selector: 'app-codecs-tree-row',
   templateUrl: './codecs-tree-row.component.html',

@@ -8,13 +8,19 @@ import {ArticleServiceService} from "../article-service.service";
   styleUrls: ['./codecs-tree.component.css']
 })
 export class CodecsTreeComponent implements OnInit {
-  codecsTree: Article[];
+  private codecsTree: Article[];
 
   constructor(private articleService: ArticleServiceService) {
   }
 
   ngOnInit() {
-    this.articleService.getRoot().subscribe(val => this.codecsTree = val);
+    this.articleService.getRoot(this.callback.bind(this));
+  }
+
+  private callback(tree: Article[]) {
+    this.codecsTree = tree;
   }
 
 }
+
+

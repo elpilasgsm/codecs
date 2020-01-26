@@ -3,24 +3,58 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import {Article} from "./article";
 import {catchError} from "rxjs/operators";
+import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleServiceService {
   private articleAPIURL = '/api/article/';
+  private tree: Article[];
 
   constructor(private http: HttpClient) {
 
   }
 
 
-  getRoot(): Observable<Article[]> {
-    return this.http.get<Article[]>(this.articleAPIURL).pipe(catchError(this.handleError));
+  getRoot(callback: (tree: Article[]) => void): void {
+    if (this.tree) {
+      callback(this.tree);
+    } else {
+      this.http.get<Article[]>(this.articleAPIURL).pipe(catchError(this.handleError)).subscribe(
+        a => {
+          this.tree = a;
+          if (callback) {
+            callback(this.tree)
+          }
+        });
+    }
   }
 
-  getArticleById(id): Observable<Article> {
-    return this.http.get<Article>(this.articleAPIURL + id).pipe(catchError(this.handleError));
+  get(list: Article[], a: number): Article {
+    let retVal = null;
+    for (let item of list) {
+      if (item.recordId.toString() === a.toString()) {
+        retVal = item;
+      } else if (item.children) {
+        retVal = this.get(item.children, a);
+      }
+      if (retVal != null) {
+        break;
+      }
+    }
+    return retVal;
+  }
+
+
+  getArticleById(id, callback: (args: any) => void): void {
+    if (this.tree) {
+      callback({article: this.get(this.tree, id)});
+    } else {
+      this.getRoot(function (tr: Article[]) {
+        callback({article: this.get(this.tree, id)});
+      });
+    }
   }
 
   deleteArticleById(id): Observable<any> {
@@ -30,6 +64,10 @@ export class ArticleServiceService {
 
   addArticle(dto: Article): Observable<Article> {
     return this.http.put<Article>(this.articleAPIURL, dto).pipe(catchError(this.handleError));
+  }
+
+  saveArticle(dto: Article, id: number): Observable<Article> {
+    return this.http.post<Article>(`${this.articleAPIURL}${id}`, dto).pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
