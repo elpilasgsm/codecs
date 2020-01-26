@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Article} from "../article";
 import {ArticleServiceService} from "../article-service.service";
+import {MzModalService} from "ngx-materialize";
+import {DeleteArticleModalComponent} from "../delete-article-modal/delete-article-modal.component";
+
 @Component({
   selector: 'app-codecs-tree-row',
   templateUrl: './codecs-tree-row.component.html',
@@ -10,7 +13,7 @@ export class CodecsTreeRowComponent implements OnInit {
   @Input() row: Article;
   @Input() data: Article[];
 
-  constructor(private articleServiceService: ArticleServiceService) {
+  constructor(private articleServiceService: ArticleServiceService, private modalService: MzModalService) {
   }
 
   ngOnInit() {
@@ -28,11 +31,18 @@ export class CodecsTreeRowComponent implements OnInit {
   }
 
   delete(): void {
-    this.articleServiceService.deleteArticleById(this.row.recordId).subscribe(a => {
-      if (200 === a) {
-        this.deleteFromTree(this.data, this.row);
-      }
+    this.modalService.open(DeleteArticleModalComponent, {
+      article: this.row,
+      onAgree: function () {
+        this.articleServiceService.deleteArticleById(this.row.recordId).subscribe(a => {
+          if (200 === a) {
+            this.deleteFromTree(this.data, this.row);
+          }
+        });
+      }.bind(this)
     });
+
+    /*    */
   }
 
 }
