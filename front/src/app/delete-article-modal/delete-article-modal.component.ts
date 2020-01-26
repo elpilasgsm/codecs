@@ -30,7 +30,6 @@ export class DeleteArticleModalComponent extends MzBaseModal {
   }
 
 
-
   ngOnInit() {
 
   }

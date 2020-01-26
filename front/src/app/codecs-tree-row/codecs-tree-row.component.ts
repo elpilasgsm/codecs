@@ -11,38 +11,12 @@ import {DeleteArticleModalComponent} from "../delete-article-modal/delete-articl
 })
 export class CodecsTreeRowComponent implements OnInit {
   @Input() row: Article;
-  @Input() data: Article[];
 
-  constructor(private articleServiceService: ArticleServiceService, private modalService: MzModalService) {
+
+  constructor() {
   }
 
   ngOnInit() {
-  }
-
-  deleteFromTree(list: Article[], rec: Article): void {
-    list.forEach((item, index) => {
-      if (item.recordId === rec.recordId) {
-        list.splice(index, 1);
-        return;
-      } else if (item.children) {
-        this.deleteFromTree(item.children, rec);
-      }
-    });
-  }
-
-  delete(): void {
-    this.modalService.open(DeleteArticleModalComponent, {
-      article: this.row,
-      onAgree: function () {
-        this.articleServiceService.deleteArticleById(this.row.recordId).subscribe(a => {
-          if (200 === a) {
-            this.deleteFromTree(this.data, this.row);
-          }
-        });
-      }.bind(this)
-    });
-
-    /*    */
   }
 
 }

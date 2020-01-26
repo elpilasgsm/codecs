@@ -1,4 +1,4 @@
-<mz-modal [fixedFooter]="false" [fullscreen]="false">
+<mz-modal [fixedFooter]="false" [fullscreen]="false" *ngIf="article">
   <mz-modal-header>
     <h5>Удаление '{{article.recordType | recordType}} {{article.name | uppercase}}' из кодекса?</h5>
   </mz-modal-header>

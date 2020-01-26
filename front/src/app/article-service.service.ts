@@ -62,8 +62,18 @@ export class ArticleServiceService {
   }
 
 
-  addArticle(dto: Article): Observable<Article> {
-    return this.http.put<Article>(this.articleAPIURL, dto).pipe(catchError(this.handleError));
+  addArticle(dto: Article, callback: (args: any) => void): void {
+    this.http
+      .put<Article>(this.articleAPIURL, dto)
+      .pipe(catchError(this.handleError))
+      .subscribe(art => {
+        if (!art.parent || art.parent.recordId == 0) {
+          this.tree.push(art);
+        } else {
+          this.get(this.tree, art.parent.recordId).children.push(art)
+        }
+        callback(art);
+      });
   }
 
   saveArticle(dto: Article, id: number): Observable<Article> {

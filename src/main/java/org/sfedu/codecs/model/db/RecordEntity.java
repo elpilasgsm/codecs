@@ -38,10 +38,10 @@ public class RecordEntity implements DBObject<ArticleRecord> {
     @ManyToOne(fetch = FetchType.LAZY)
     private RecordEntity parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<RecordEntity> children;
 
-    @OneToMany(mappedBy = "record", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "record", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<ChangesEntity> changes;
 
     public long getRecordId() {

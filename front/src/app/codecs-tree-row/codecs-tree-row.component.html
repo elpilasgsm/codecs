@@ -7,11 +7,10 @@
     <div class="text-right col l3 s5 m5">
       <a *ngIf="row.recordType!='POINT'" href="#"><span class="material-icons">add_to_photos</span></a>
       <a href="#"><span class="material-icons">add_comment</span></a>
-      <a class="materialize-red-text" href="#" (click)="delete()"><span class="material-icons">delete</span></a>
     </div>
   </div>
   <ul *ngIf="row.children">
-    <app-codecs-tree-row [data]="data" [row]="row" *ngFor="let row of row.children"></app-codecs-tree-row>
+    <app-codecs-tree-row [row]="row" *ngFor="let row of row.children"></app-codecs-tree-row>
   </ul>
 </li>
 
