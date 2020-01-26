@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import {ArticleEditComponent} from "./article-edit/article-edit.component";
 
 const routes: Routes = [
-  { path: 'article-edit/:id', component: ArticleEditComponent }
+  { path: 'article-edit/:id', component: ArticleEditComponent },
+  { path: 'article-new/', component: ArticleEditComponent }
 ];
 
 @NgModule({

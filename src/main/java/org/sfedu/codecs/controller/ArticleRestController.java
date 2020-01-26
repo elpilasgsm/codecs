@@ -8,6 +8,7 @@ import org.sfedu.codecs.model.dto.User;
 import org.sfedu.codecs.repository.db.RecordRepository;
 import org.sfedu.codecs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +32,24 @@ public class ArticleRestController {
 
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public ArticleRecord put(@RequestBody ArticleRecord record) {
-        return recordRepository.save(record.toDB(false)).toDTO(true);
+    public ArticleRecord put(@RequestBody ArticleRecord record, HttpServletResponse response) throws IOException {
+        RecordEntity entity = record.toDB(false);
+        if (record.getParent() != null && record.getParent().getRecordId() != 0) {
+            final RecordEntity parent = recordRepository.getOne(record.getParent().getRecordId());
+            if (parent.getRecordId() == 0) {
+                response.sendError(HttpServletResponse.SC_FOUND);
+                return null;
+            } else {
+                entity.setParent(parent);
+            }
+        }
+        return recordRepository.save(entity).toDTO(false);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Integer delete(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
+        recordRepository.deleteById(id);
+        return HttpServletResponse.SC_OK;
     }
 
 

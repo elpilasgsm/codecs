@@ -27,11 +27,31 @@ export class ArticleEditComponent implements OnInit {
   constructor(private route: ActivatedRoute, private location: Location, private articleServiceService: ArticleServiceService) {
   }
 
+  save(): void {
+    let isNew = this.article.recordId === null;
+    console.log(this.article.recordId)
+    console.log(isNew)
+    this.articleServiceService.addArticle(this.article).subscribe(a => this.article = a);
+  }
+
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
       if (params.id) {
-        this.articleServiceService.getArticleById(params.id).subscribe(
-          a => this.article = a);
+        if (params.id === 'new') {
+          this.article = {
+            recordId: null,
+            crimeSeverity: null,
+            recordType: 'ARTICLE',
+            name: null,
+            children: null,
+            changes: null,
+            parent: null,
+            url: null
+          };
+        } else {
+          this.articleServiceService.getArticleById(params.id).subscribe(
+            a => this.article = a);
+        }
       }
     })
   }

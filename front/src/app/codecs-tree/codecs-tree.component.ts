@@ -17,8 +17,4 @@ export class CodecsTreeComponent implements OnInit {
     this.articleService.getRoot().subscribe(val => this.codecsTree = val);
   }
 
-  addNewArticle() {
-
-  }
-
 }
