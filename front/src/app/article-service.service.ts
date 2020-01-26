@@ -53,7 +53,7 @@ export class ArticleServiceService {
     } else {
       this.getRoot(function (tr: Article[]) {
         callback({article: this.get(this.tree, id)});
-      });
+      }.bind(this));
     }
   }
 
