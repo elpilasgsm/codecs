@@ -21,5 +21,12 @@ jobs:
           mysql -uroot -proot < data/1.users.SQL
           mysql -uroot -proot < data/2.RECORD.SQL
           mysql -uroot -proot < data/3.CHANGES.SQL
+      - name: Install ElasticSearch
+        uses: getong/elasticsearch-action@v1
+        with:
+          elasticsearch version: '7.5.1'
+          host port: 9200
+          container port: 9200
+          discovery type: 'single-node'
       - name: Build with Maven
         run: mvn clean install -Dspring.datasource.username=root -Dspring.datasource.password=root
