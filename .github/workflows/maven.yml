@@ -30,7 +30,7 @@ jobs:
           discovery type: 'single-node'
       - name: Check docker
         run: |
-          docker ps -a
+          sleep 60
           curl -vvv -L http://127.0.0.1:9200/_cat/health?v
       - name: Build with Maven
         run: mvn clean install -Dspring.datasource.username=root -Dspring.datasource.password=root
