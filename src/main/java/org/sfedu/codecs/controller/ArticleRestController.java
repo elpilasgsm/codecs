@@ -35,16 +35,22 @@ public class ArticleRestController {
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public ArticleRecord put(@RequestBody ArticleRecord record, HttpServletResponse response) throws IOException {
         RecordEntity entity = record.toDB(false);
+        RecordEntity p = null;
         if (record.getParent() != null && record.getParent().getRecordId() != 0) {
             final RecordEntity parent = recordRepository.getOne(record.getParent().getRecordId());
             if (parent.getRecordId() == 0) {
                 response.sendError(HttpServletResponse.SC_FOUND);
                 return null;
             } else {
+                p = parent;
                 entity.setParent(parent);
             }
         }
-        return recordRepository.save(entity).toDTO(false);
+        ArticleRecord saved = recordRepository.save(entity).toDTO(false);
+        if (p != null) {
+            saved.setParent(p.toDTO(false));
+        }
+        return saved;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)

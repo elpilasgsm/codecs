@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {Location} from '@angular/common';
 import {ArticleServiceService} from "../article-service.service";
 import {Article} from "../article";
@@ -15,6 +15,7 @@ import {MzModalService} from "ngx-materialize";
 })
 export class ArticleEditComponent implements OnInit {
   article: Article;
+  parentArticle: Article;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -88,16 +89,37 @@ export class ArticleEditComponent implements OnInit {
     this.route.params.subscribe((params: any) => {
       if (params.id) {
         if (params.id === 'new') {
-          this.article = {
-            recordId: null,
-            crimeSeverity: null,
-            recordType: 'ARTICLE',
-            name: null,
-            children: null,
-            changes: null,
-            parent: null,
-            url: null
-          };
+          this.route.queryParamMap.subscribe((params: ParamMap) => {
+            if (params.get('parentId')) {
+              this.articleServiceService.getArticleById(
+                params.get('parentId'), function (any) {
+                  this.parentArticle = any.article;
+                  this.article = {
+                    recordId: null,
+                    crimeSeverity: '',
+                    recordType: this.parentArticle == null ? 'ARTICLE'
+                      : (params.get("parentType") == 'ARTICLE' ? 'PART' : 'POINT'),
+                    name: null,
+                    children: null,
+                    changes: null,
+                    parent: this.parentArticle,
+                    url: null
+                  };
+                }.bind(this)
+              );
+            } else {
+              this.article = {
+                recordId: null,
+                crimeSeverity: '',
+                recordType: 'ARTICLE',
+                name: null,
+                children: null,
+                changes: null,
+                parent: null,
+                url: null
+              };
+            }
+          });
         } else {
           this.articleServiceService.getArticleById(params.id, function (args) {
             this.article = args.article;
