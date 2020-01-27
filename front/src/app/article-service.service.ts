@@ -3,7 +3,6 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import {Article} from "./article";
 import {catchError} from "rxjs/operators";
-import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +28,12 @@ export class ArticleServiceService {
           }
         });
     }
+  }
+
+
+  refreshTree(): void {
+    this.tree = null;
+    this.getRoot(null)
   }
 
   get(list: Article[], a: number): Article {
