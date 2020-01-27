@@ -19,6 +19,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserRepository userRepository;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
@@ -29,7 +30,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests()
+        httpSecurity
+                .csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/api/**").hasAnyAuthority(UserRoles.ADMIN.getAuthority(), UserRoles.MODERATOR.getAuthority())
                 .antMatchers("/public/**").hasAnyAuthority(UserRoles.ADMIN.getAuthority(), UserRoles.USER.getAuthority(), UserRoles.MODERATOR.getAuthority())
                 .and().httpBasic();

@@ -2,3 +2,8 @@
   width: 50%;
   overflow-x: scroll;
 }
+
+.main-footer {
+  align-items: center;
+  height: 100%;
+}

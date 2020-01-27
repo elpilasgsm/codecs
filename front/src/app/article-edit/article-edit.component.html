@@ -1,0 +1,37 @@
+<div class="row ">
+  <form class="col l12" *ngIf="article">
+    <div class="row">
+      <div class="input-field col s12">
+        <input [disabled]="true" id="recordType" type="text" class="validate"
+               [ngModel]="article.recordType | recordType" (ngModelChange)="article.recordType=$event"
+               name="recordType"
+               placeholder="Тип">
+        <label for="recordType" [ngClass]="{'active': article.recordType}">Тип</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="name" type="text" class="validate" [(ngModel)]="article.name" name="name" placeholder="Название">
+        <label for="name" [ngClass]="{'active': article.name}">Название</label>
+      </div>
+    </div>
+    <div class="row">
+      <app-crime-sererity-selector [article]="article" id="severity"></app-crime-sererity-selector>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <a target="_blank" class="prefix material-icons" href="{{article.url}}"><i class="material-icons">link</i></a>
+        <input id="url" type="text" class="validate" [(ngModel)]="article.url" name="url" placeholder="Ссылка">
+        <label for="name" [ngClass]="{'active': article.url}">Ссылка</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s2">
+        <a (click)='save()' class="waves-effect waves-light btn">Сохранить</a>
+      </div>
+      <div class="input-field col s2">
+        <a (click)='delete()' class="waves-effect waves-light btn text-primary">Удалить</a>
+      </div>
+    </div>
+  </form>
+</div>

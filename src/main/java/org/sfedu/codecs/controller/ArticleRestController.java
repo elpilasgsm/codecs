@@ -8,12 +8,15 @@ import org.sfedu.codecs.model.dto.User;
 import org.sfedu.codecs.repository.db.RecordRepository;
 import org.sfedu.codecs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -30,8 +33,38 @@ public class ArticleRestController {
 
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public ArticleRecord put(@RequestBody ArticleRecord record) {
-        return recordRepository.save(record.toDB(false)).toDTO(true);
+    public ArticleRecord put(@RequestBody ArticleRecord record, HttpServletResponse response) throws IOException {
+        RecordEntity entity = record.toDB(false);
+        if (record.getParent() != null && record.getParent().getRecordId() != 0) {
+            final RecordEntity parent = recordRepository.getOne(record.getParent().getRecordId());
+            if (parent.getRecordId() == 0) {
+                response.sendError(HttpServletResponse.SC_FOUND);
+                return null;
+            } else {
+                entity.setParent(parent);
+            }
+        }
+        return recordRepository.save(entity).toDTO(false);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public ArticleRecord post(@RequestBody ArticleRecord record, @PathVariable("id") Long recordId, HttpServletResponse response) throws IOException {
+        final Optional<RecordEntity> parent = recordRepository.findById(recordId);
+        if (parent.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        final RecordEntity entity = parent.get();
+        entity.setCrimeSeverity(record.getCrimeSeverity());
+        entity.setName(record.getName());
+        entity.setUrl(record.getUrl());
+        return recordRepository.save(entity).toDTO(false);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Integer delete(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
+        recordRepository.deleteById(id);
+        return HttpServletResponse.SC_OK;
     }
 
 
@@ -41,10 +74,27 @@ public class ArticleRestController {
         return entity.toDTO(true);
     }
 
+    private ArticleRecord toDTO(RecordEntity e) {
+        ArticleRecord record = e.toDTO(false);
+        if (e.getChildren() != null) {
+            record.setChildren(new ArrayList<>());
+            for (RecordEntity ch : e.getChildren()) {
+                if (ch != null) {
+                    record.getChildren().add(toDTO(ch));
+                }
+            }
+        }
+        return record;
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<ArticleRecord> getRootTree(HttpServletResponse response) throws IOException {
-        List<RecordEntity> entity = recordRepository.getByParentRecordId(null);
-        return entity.stream().map(it -> it.toDTO(true)).collect(Collectors.toList());
+        List<RecordEntity> entities = recordRepository.getByParentRecordId(null);
+        List<ArticleRecord> tree = new ArrayList<>();
+        for (RecordEntity e : entities) {
+            tree.add(toDTO(e));
+        }
+        return tree;
     }
 }
 

@@ -1,0 +1,31 @@
+.collection-item {
+  padding: 0 0 0 15px !important;
+  border-top: #d3d3d3 solid 1px;
+}
+
+.row {
+  margin-bottom: 0 !important;
+}
+
+.text-right {
+  text-align: right;
+}
+
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+li.article {
+  background-color: #efefef;
+}
+
+li.part {
+  background-color: #e8e8e8;
+}
+
+li.point {
+  background-color: #e0e0e0;
+}

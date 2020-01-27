@@ -1,0 +1,17 @@
+<mz-modal [fixedFooter]="false" [fullscreen]="false" *ngIf="article">
+  <mz-modal-header>
+    <h5>Удаление '{{article.recordType | recordType}} {{article.name | uppercase}}' из кодекса?</h5>
+  </mz-modal-header>
+  <mz-modal-content>
+    <b>Внимание!</b> Подтверждение удаления приведет к необратимой потери данных и всех его вложений, таких как,
+    например,
+    пункты, части или внесенные изменения. Вы уверены что хотите продолжить? Введите цифры ниже для
+    подтверждения <b class="red-text">{{code}}</b>
+    <input name="interedCode" [(ngModel)]="interedCode" [class.red-text]="interedCode!=code"
+           placeholder="Код подтверждения удаления">
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button mz-button mz-modal-close [flat]="true">Нет</button>
+    <button [disabled]="interedCode!=code" mz-button mz-modal-close [flat]="true" (click)="onAgree()">Да</button>
+  </mz-modal-footer>
+</mz-modal>

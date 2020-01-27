@@ -1,29 +1,19 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
-<div class="container">
-  <div *ngIf="data" class="row">
-    <div class="col s12">
-      <table class="striped centered responsive-table">
-        <thead>
-        <tr>
-          <td>Название</td>
-          <td>Тип</td>
-          <td>Ссылка</td>
-          <td>Тяжесть преступления</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let item of data; let i = index">
-          <td>{{item.name}}</td>
-          <td>{{item.recordType}}</td>
-          <td><a target="_blank" href="{{item.url}}">Перейти</a></td>
-          <td>{{item.crimeSeverity}}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+<div class="row" id="main-box">
+  <div class="col l4 m3 s12" id="codecsTree">
+    <app-codecs-tree></app-codecs-tree>
+  </div>
+  <div class="col l8 m9 s12" id="main-body">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<div class="row">
+  <div class="col l12 m12 s12" id="main-footer"><p>Южный Федеральный Университет <span
+    class="material-icons">copyright</span> 2020г. Запорожец Д.Ю.
+    <a href="maito:duzaporozhets@sfedu.ru">duzaporozhets@sfedu.ru</a></p>
   </div>
 </div>
 
 
-<router-outlet></router-outlet>
+

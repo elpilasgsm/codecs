@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ArticleServiceService} from "./article-service.service";
-import {Article} from "./article";
 
 @Component({
   selector: 'app-root',
@@ -9,14 +8,14 @@ import {Article} from "./article";
 })
 export class AppComponent implements OnInit {
   title = 'front';
-  data: Article[];
+
 
   constructor(private articleService: ArticleServiceService) {
 
   }
 
   ngOnInit(): void {
-    this.articleService.getRoot().subscribe(val => this.data = val);
+
   }
 
 }
