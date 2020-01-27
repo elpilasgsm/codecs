@@ -31,12 +31,6 @@ export class ArticleEditComponent implements OnInit {
     if (isNew) {
       this.articleServiceService.addArticle(this.article, function (a) {
         this.article = a;
-        if (this.parentArticle != null) {
-          if (!this.parentArticle.children) {
-            this.parentArticle.children = [];
-          }
-          this.parentArticle.children.push(a);
-        }
         this.router.navigate([`/article-edit/${a.recordId}`]);
       }.bind(this));
     } else {

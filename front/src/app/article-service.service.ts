@@ -75,7 +75,13 @@ export class ArticleServiceService {
         if (!art.parent || art.parent.recordId == 0) {
           this.tree.push(art);
         } else {
-          this.get(this.tree, art.parent.recordId).children.push(art)
+          let a = this.get(this.tree, art.parent.recordId);
+          if (a) {
+            if (!a.children) {
+              a.children = [];
+            }
+            a.children.push(art)
+          }
         }
         callback(art);
       });
