@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 .display {
-  height: calc(100vh - 230px);
+  height: calc(100vh - 250px);
 }
 
 .scroll-v {
@@ -35,4 +35,13 @@
 
 a {
   color: #26a69a;
+}
+
+.main-container {
+  border-radius: 5px;
+  padding-top: 20px;
+}
+
+body {
+  font-size: 80% !important;
 }

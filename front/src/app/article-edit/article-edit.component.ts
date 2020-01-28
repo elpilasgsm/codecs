@@ -7,6 +7,7 @@ import {CodecsTreeComponent} from "../codecs-tree/codecs-tree.component";
 import {DeleteArticleModalComponent} from "../delete-article-modal/delete-article-modal.component";
 import {MzModalService, MzToastService} from "ngx-materialize";
 import {RecordTypePipe} from "../record-type.pipe";
+import {Changes} from "../changes";
 
 
 @Component({
@@ -17,6 +18,7 @@ import {RecordTypePipe} from "../record-type.pipe";
 export class ArticleEditComponent implements OnInit {
   article: Article;
   parentArticle: Article;
+  changes: Changes[];
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -117,6 +119,7 @@ export class ArticleEditComponent implements OnInit {
                     parent: this.parentArticle,
                     url: null
                   };
+                  this.changes = [];
                 }.bind(this)
               );
             } else {
@@ -130,11 +133,17 @@ export class ArticleEditComponent implements OnInit {
                 parent: null,
                 url: null
               };
+              this.changes = [];
             }
           });
         } else {
           this.articleServiceService.getArticleById(params.id, function (args) {
             this.article = args.article;
+            if (this.article) {
+              this.articleServiceService.getChangesForArticleById(params.id, function (changes: Changes[]) {
+                this.changes = changes;
+              }.bind(this));
+            }
           }.bind(this));
         }
       }
