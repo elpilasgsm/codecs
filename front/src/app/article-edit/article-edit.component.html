@@ -21,7 +21,8 @@
     <div class="row">
       <div class="input-field col s12">
         <a target="_blank" class="prefix material-icons" href="{{article.url}}"><i class="material-icons">link</i></a>
-        <input id="url" type="text" class="validate" [(ngModel)]="article.url" name="url" placeholder="Ссылка">
+        <input required minlength="4" id="url" type="text" class="validate" [(ngModel)]="article.url" name="url"
+               placeholder="Ссылка">
         <label for="name" [ngClass]="{'active': article.url}">Ссылка</label>
       </div>
     </div>

@@ -5,7 +5,8 @@ import {ArticleServiceService} from "../article-service.service";
 import {Article} from "../article";
 import {CodecsTreeComponent} from "../codecs-tree/codecs-tree.component";
 import {DeleteArticleModalComponent} from "../delete-article-modal/delete-article-modal.component";
-import {MzModalService} from "ngx-materialize";
+import {MzModalService, MzToastService} from "ngx-materialize";
+import {RecordTypePipe} from "../record-type.pipe";
 
 
 @Component({
@@ -22,6 +23,8 @@ export class ArticleEditComponent implements OnInit {
               private location: Location,
               private articleServiceService: ArticleServiceService,
               private modalService: MzModalService,
+              private toastService: MzToastService,
+              private recordTypePipe: RecordTypePipe
   ) {
 
   }
@@ -30,11 +33,17 @@ export class ArticleEditComponent implements OnInit {
     let isNew = this.article.recordId === null;
     if (isNew) {
       this.articleServiceService.addArticle(this.article, function (a) {
+        this.toastService.show(`${this.recordTypePipe.transform(a.recordType, null)} ${a.name} успешно добавлен(а)!`,
+          4000,
+          'green');
         this.article = a;
         this.router.navigate([`/article-edit/${a.recordId}`]);
       }.bind(this));
     } else {
       this.articleServiceService.saveArticle(this.article, this.article.recordId).subscribe(a => {
+        this.toastService.show(`${this.recordTypePipe.transform(a.recordType, null)} ${a.name} успешно сохранен(а)!`,
+          4000,
+          'green');
         this.article.url = a.url;
         this.article.crimeSeverity = a.crimeSeverity;
         this.article.name = a.name;
@@ -75,6 +84,9 @@ export class ArticleEditComponent implements OnInit {
         this.articleServiceService.deleteArticleById(this.article.recordId).subscribe(a => {
           if (200 === a) {
             this.articleServiceService.getRoot(function (tree: Article[]) {
+              this.toastService.show(`${this.recordTypePipe.transform(this.article.recordType, null)} ${this.article.name} успешно удален(а)!`,
+                4000,
+                'green');
               this.deleteFromTree(tree, this.article);
             }.bind(this));
           }
@@ -96,7 +108,7 @@ export class ArticleEditComponent implements OnInit {
                   this.parentArticle = any.article;
                   this.article = {
                     recordId: null,
-                    crimeSeverity: '',
+                    crimeSeverity: 'NOT_APPLIED',
                     recordType: this.parentArticle == null ? 'ARTICLE'
                       : (params.get("parentType") == 'ARTICLE' ? 'PART' : 'POINT'),
                     name: null,
@@ -110,7 +122,7 @@ export class ArticleEditComponent implements OnInit {
             } else {
               this.article = {
                 recordId: null,
-                crimeSeverity: '',
+                crimeSeverity: 'NOT_APPLIED',
                 recordType: 'ARTICLE',
                 name: null,
                 children: null,
