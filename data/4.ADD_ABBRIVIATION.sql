@@ -13,3 +13,6 @@ alter table RECORD
 
 alter table CHANGES
     modify URL varchar(255) null;
+
+alter table CHANGES
+    add METHOD VARCHAR(32) not null;

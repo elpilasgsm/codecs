@@ -1,13 +1,14 @@
 <div class="row">
   <div class="col l3 m3 s12 grey lighten-5 main-container">
-    <form class="col l12" *ngIf="article">
+    <form class="col l12" *ngIf="change">
       <div class="row">
         <div class="col s12">
           <!--          <input [disabled]="true" id="recordType" type="text" class="validate"
                            [ngModel]="article.recordType | recordType" (ngModelChange)="article.recordType=$event"
                            name="recordType"
                            placeholder="Тип">-->
-          <h5>{{article.recordType | recordType}}</h5>
+          <h5 *ngIf="change.name">Редактирование изменения {{change.name }}</h5>
+          <h5 *ngIf="!change.name">Новое изменение</h5>
         </div>
       </div>
       <div class="row">

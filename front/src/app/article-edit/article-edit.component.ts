@@ -136,11 +136,6 @@ export class ArticleEditComponent implements OnInit {
         } else {
           this.articleServiceService.getArticleById(params.id, function (args) {
             this.article = args.article;
-            if (this.article) {
-              this.articleServiceService.getChangesForArticleById(params.id, function (changes: Changes[]) {
-                this.changes = changes;
-              }.bind(this));
-            }
           }.bind(this));
         }
       }

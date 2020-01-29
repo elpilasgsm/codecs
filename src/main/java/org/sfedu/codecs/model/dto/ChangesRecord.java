@@ -1,9 +1,6 @@
 package org.sfedu.codecs.model.dto;
 
-import org.sfedu.codecs.constants.ChangesDirection;
-import org.sfedu.codecs.constants.ChangesPerformanceType;
-import org.sfedu.codecs.constants.CodecsChangesInPart;
-import org.sfedu.codecs.constants.CrimeSeverity;
+import org.sfedu.codecs.constants.*;
 import org.sfedu.codecs.model.DTOObject;
 import org.sfedu.codecs.model.db.ChangesEntity;
 
@@ -22,6 +19,7 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
     private Calendar date;
     private String url;
     private ArticleRecord record;
+    private ChangesMethod method;
 
     public CrimeSeverity getCrimeSeverity() {
         return crimeSeverity;
@@ -103,6 +101,14 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
         this.record = record;
     }
 
+    public ChangesMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(ChangesMethod method) {
+        this.method = method;
+    }
+
     @Override
     public ChangesEntity toDB(boolean deepCopy) {
         ChangesEntity entity = new ChangesEntity();
@@ -115,6 +121,7 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
         entity.setDate(this.date);
         entity.setId(this.id);
         entity.setName(this.name);
+        entity.setMethod(this.method);
         entity.setCrimeSeverity(this.crimeSeverity);
         if (deepCopy) {
             if (this.record != null) {

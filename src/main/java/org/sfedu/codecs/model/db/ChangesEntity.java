@@ -1,9 +1,6 @@
 package org.sfedu.codecs.model.db;
 
-import org.sfedu.codecs.constants.ChangesDirection;
-import org.sfedu.codecs.constants.ChangesPerformanceType;
-import org.sfedu.codecs.constants.CodecsChangesInPart;
-import org.sfedu.codecs.constants.CrimeSeverity;
+import org.sfedu.codecs.constants.*;
 import org.sfedu.codecs.model.DBObject;
 import org.sfedu.codecs.model.dto.ChangesRecord;
 import org.springframework.data.annotation.Id;
@@ -43,6 +40,10 @@ public class ChangesEntity implements DBObject<ChangesRecord> {
     @Column(name = "DIRECTION")
     @Enumerated(EnumType.STRING)
     private ChangesDirection direction;
+
+    @Column(name = "METHOD")
+    @Enumerated(EnumType.STRING)
+    private ChangesMethod method;
 
     @Column(name = "CHANGES_DATE")
     @Temporal(TemporalType.DATE)
@@ -135,6 +136,14 @@ public class ChangesEntity implements DBObject<ChangesRecord> {
         this.record = record;
     }
 
+    public ChangesMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(ChangesMethod method) {
+        this.method = method;
+    }
+
     @Override
     public ChangesRecord toDTO(boolean deepCopy) {
         ChangesRecord record = new ChangesRecord();
@@ -145,6 +154,7 @@ public class ChangesEntity implements DBObject<ChangesRecord> {
         record.setDirection(this.direction);
         record.setPerformanceType(this.performanceType);
         record.setName(this.name);
+        record.setMethod(this.method);
         record.setCrimeSeverity(this.crimeSeverity);
         record.setId(this.id);
         if (deepCopy) {

@@ -8,6 +8,7 @@ export class Changes {
   public crimeSeverity: string;
   public activationDate: Date;
   public direction: string;
+  public method: string;
   public date: Date;
   public url: string;
   public record: Article;

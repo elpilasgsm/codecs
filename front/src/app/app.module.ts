@@ -14,6 +14,9 @@ import {CrimeSereritySelectorComponent} from './crime-sererity-selector/crime-se
 import {MzButtonModule, MzDatepickerModule, MzModalModule, MzSelectModule, MzToastModule} from "ngx-materialize";
 import {DeleteArticleModalComponent} from './delete-article-modal/delete-article-modal.component';
 import {RecordTypeShortPipe} from './record-type-short.pipe';
+import { MethodPipe } from './method.pipe';
+import { ChangeEditComponent } from './change-edit/change-edit.component';
+import { ChangeEditDialogComponent } from './change-edit-dialog/change-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import {RecordTypeShortPipe} from './record-type-short.pipe';
     CrimeSeverityPipe,
     CrimeSereritySelectorComponent,
     DeleteArticleModalComponent,
-    RecordTypeShortPipe
+    RecordTypeShortPipe,
+    MethodPipe,
+    ChangeEditComponent,
+    ChangeEditDialogComponent
   ],
   imports: [
     BrowserModule,
