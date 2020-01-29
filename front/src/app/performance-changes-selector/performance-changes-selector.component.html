@@ -1,0 +1,12 @@
+<div class="input-field col s12" *ngIf="change">
+  <mz-select-container (click)="$event.stopPropagation()">
+    <select mz-select [(ngModel)]="change.performanceType"
+            id="crime-severity-{{change.id}}"
+            [label]="'Вступление закона в силу'">
+      <option *ngFor="let o of values" value="{{o}}">
+        {{o|performanceType}}
+      </option>
+    </select>
+    <label></label>
+  </mz-select-container>
+</div>

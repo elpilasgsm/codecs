@@ -1,15 +1,15 @@
 import {Article} from "./article";
 
 export class Changes {
-  public id: number;
-  public name: string;
-  public changesInPart: string;
-  public performanceType: string;
-  public crimeSeverity: string;
-  public activationDate: Date;
+  public id: number; //done
+  public name: string; //done
+  public changesInPart: string; //done
+  public performanceType: string; //done
+  public crimeSeverity: string; //done
+  public activationDate: Date; //date
   public direction: string;
   public method: string;
-  public date: Date;
-  public url: string;
+  public date: Date; //date
+  public url: string; //done
   public record: Article;
 }

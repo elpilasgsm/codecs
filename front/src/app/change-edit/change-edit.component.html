@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col s12 ">
         <a (click)="addChanges()" href="javascript:void(0);">
-         Добавить изменение
+          Добавить изменение
           в  {{article.recordType | recordType}} {{article.name}}
         </a>
       </div>
@@ -12,6 +12,8 @@
           <thead>
           <tr>
             <td>Название</td>
+            <td>Изменения в части</td>
+            <td>Тяжесть преступления</td>
             <td>Дата принятия ФЗ</td>
             <td>Направленность</td>
             <td>Ссылка</td>
@@ -20,12 +22,10 @@
           </thead>
           <tr *ngFor="let change of changes">
             <td>{{change.name}}</td>
-            <td>{{change.changesInPart}}</td>
-            <td>{{change.crimeSeverity}}</td>
-            <td>{{change.date}}</td>
-            <td>{{change.performanceType}}</td>
-            <td>{{change.activationDate}}</td>
-            <td>{{change.direction}}</td>
+            <td>{{change.changesInPart | inPart}}</td>
+            <td>{{change.crimeSeverity | crimeSeverity}}</td>
+            <td>{{change.date | date: 'dd/mm/yyyy'}}</td>
+            <td>{{change.direction | direction}}</td>
             <td><a href="{{change.url}}"><i class="material-icons">link</i></a></td>
             <td><i class="material-icons">edit</i>
               <i class="material-icons">delete</i></td>

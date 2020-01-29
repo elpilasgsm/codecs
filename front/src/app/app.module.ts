@@ -14,9 +14,16 @@ import {CrimeSereritySelectorComponent} from './crime-sererity-selector/crime-se
 import {MzButtonModule, MzDatepickerModule, MzModalModule, MzSelectModule, MzToastModule} from "ngx-materialize";
 import {DeleteArticleModalComponent} from './delete-article-modal/delete-article-modal.component';
 import {RecordTypeShortPipe} from './record-type-short.pipe';
-import { MethodPipe } from './method.pipe';
-import { ChangeEditComponent } from './change-edit/change-edit.component';
-import { ChangeEditDialogComponent } from './change-edit-dialog/change-edit-dialog.component';
+import {MethodPipe} from './method.pipe';
+import {ChangeEditComponent} from './change-edit/change-edit.component';
+import {ChangeEditDialogComponent} from './change-edit-dialog/change-edit-dialog.component';
+import { InPartChangesSelectorComponent } from './in-part-changes-selector/in-part-changes-selector.component';
+import { InPartPipe } from './in-part.pipe';
+import { PerformanceChangesSelectorComponent } from './performance-changes-selector/performance-changes-selector.component';
+import { PerformanceTypePipe } from './performance-type.pipe';
+import { DirectionPipe } from './direction.pipe';
+import { DirectionChangesSelectorComponent } from './direction-changes-selector/direction-changes-selector.component';
+import { MethodChangesSelectorComponent } from './method-changes-selector/method-changes-selector.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +38,14 @@ import { ChangeEditDialogComponent } from './change-edit-dialog/change-edit-dial
     RecordTypeShortPipe,
     MethodPipe,
     ChangeEditComponent,
-    ChangeEditDialogComponent
+    ChangeEditDialogComponent,
+    InPartChangesSelectorComponent,
+    InPartPipe,
+    PerformanceChangesSelectorComponent,
+    PerformanceTypePipe,
+    DirectionPipe,
+    DirectionChangesSelectorComponent,
+    MethodChangesSelectorComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +61,7 @@ import { ChangeEditDialogComponent } from './change-edit-dialog/change-edit-dial
   exports: [RecordTypePipe],
   providers: [RecordTypePipe],
   bootstrap: [AppComponent],
-  entryComponents: [DeleteArticleModalComponent],
+  entryComponents: [DeleteArticleModalComponent, ChangeEditDialogComponent],
 
 })
 export class AppModule {

@@ -1,52 +1,85 @@
-<div class="row">
-  <div class="col l3 m3 s12 grey lighten-5 main-container">
-    <form class="col l12" *ngIf="change">
-      <div class="row">
-        <div class="col s12">
-          <!--          <input [disabled]="true" id="recordType" type="text" class="validate"
-                           [ngModel]="article.recordType | recordType" (ngModelChange)="article.recordType=$event"
-                           name="recordType"
-                           placeholder="Тип">-->
-          <h5 *ngIf="change.name">Редактирование изменения {{change.name }}</h5>
-          <h5 *ngIf="!change.name">Новое изменение</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="abbreviation" type="text" class="materialize-textarea" [(ngModel)]="article.abbreviation"
-                 name="abbreviation">
-          <label for="abbreviation" [ngClass]="{'active': article.abbreviation}">Номер/Порядок</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <textarea id="name" type="text" class="materialize-textarea" [(ngModel)]="article.name"
+<mz-modal [fixedFooter]="false" [fullscreen]="true" *ngIf="change">
+  <mz-modal-header>
+    <h5 *ngIf="change.name">Редактирование изменения {{change.name }}</h5>
+    <h5 *ngIf="!change.name">Новое изменение</h5>
+  </mz-modal-header>
+  <mz-modal-content>
+    <div class="row">
+      <div class="col l12 m12 s12 grey lighten-5 main-container">
+        <form class="col l12" *ngIf="change">
+          <div class="row">
+            <div class="col s12">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+          <textarea id="name" type="text" class="materialize-textarea" [(ngModel)]="change.name"
                     name="name"></textarea>
-          <label for="name" [ngClass]="{'active': article.name}">Название</label>
-        </div>
+              <label for="name" [ngClass]="{'active': change.name}">Название</label>
+            </div>
+          </div>
+          <div class="row">
+            <mz-datepicker-container i18n class="col s12" (click)="$event.stopPropagation()">
+              <input mz-datepicker (click)="$event.stopPropagation()" name="datepickerChangeDate"
+                     [label]="'Дата внесения изменения'"
+                     [options]="datepickerOptions"
+                     [(ngModel)]="change.date"
+                     id="datepickerChangeDate"
+                     placeholder=""
+                     type="text">
+            </mz-datepicker-container>
+          </div>
+          <div class="row">
+            <app-crime-sererity-selector [change]="change" [article]="null" id="severity"></app-crime-sererity-selector>
+          </div>
+          <div class="row">
+            <app-in-part-changes-selector [change]="change"
+                                          id="inPartChanges"></app-in-part-changes-selector>
+          </div>
+          <div class="row">
+            <app-performance-changes-selector [change]="change"
+                                              id="performanceType"></app-performance-changes-selector>
+          </div>
+          <div class="row" *ngIf="change.performanceType==='DELAYED'">
+            <mz-datepicker-container i18n class="col s12" (click)="$event.stopPropagation()">
+              <input mz-datepicker (click)="$event.stopPropagation()"
+
+                     [label]="'Дата исполнения изменения'"
+                     [options]="datepickerOptions"
+                     [(ngModel)]="change.activationDate"
+                     name="datepickerActiveDate"
+                     id="datepickerActiveDate"
+                     placeholder=""
+                     type="text">
+            </mz-datepicker-container>
+          </div>
+          <div class="row">
+            <app-method-changes-selector [change]="change"
+                                         id="method"></app-method-changes-selector>
+
+          </div>
+          <div class="row">
+            <app-direction-changes-selector [change]="change"
+                                            id="direction"></app-direction-changes-selector>
+
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <a target="_blank" class="prefix material-icons" href="{{change.url}}"><i class="material-icons">link</i></a>
+              <input id="url" type="text" class="validate" [(ngModel)]="change.url" name="url"
+
+                     placeholder="Ссылка">
+              <label for="name" [ngClass]="{'active': change.url}">Ссылка</label>
+            </div>
+          </div>
+
+        </form>
       </div>
-      <div class="row">
-        <app-crime-sererity-selector [article]="article" id="severity"></app-crime-sererity-selector>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <a target="_blank" class="prefix material-icons" href="{{article.url}}"><i class="material-icons">link</i></a>
-          <input required minlength="4" id="url" type="text" class="validate" [(ngModel)]="article.url" name="url"
-                 placeholder="Ссылка">
-          <label for="name" [ngClass]="{'active': article.url}">Ссылка</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s6">
-          <a (click)='save()' class="waves-effect waves-light btn btn-small"><i class="material-icons">save</i></a>
-        </div>
-        <div class="input-field col s6">
-          <a (click)='delete()' class="waves-effect waves-light btn  btn-small red lighten-2"><i class="material-icons">delete</i></a>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="col s12 l9 m9">
-    <app-change-edit [article]="article"></app-change-edit>
-  </div>
-</div>
+    </div>
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button mz-button mz-modal-close [flat]="true">Отмена</button>
+    <button mz-button mz-modal-close [flat]="true" (click)="onSave()">Да</button>
+  </mz-modal-footer>
+</mz-modal>

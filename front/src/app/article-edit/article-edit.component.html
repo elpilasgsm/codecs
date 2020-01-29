@@ -25,12 +25,12 @@
         </div>
       </div>
       <div class="row">
-        <app-crime-sererity-selector [article]="article" id="severity"></app-crime-sererity-selector>
+        <app-crime-sererity-selector [change]="null" [article]="article" id="severity"></app-crime-sererity-selector>
       </div>
       <div class="row">
         <div class="input-field col s12">
           <a target="_blank" class="prefix material-icons" href="{{article.url}}"><i class="material-icons">link</i></a>
-          <input required minlength="4" id="url" type="text" class="validate" [(ngModel)]="article.url" name="url"
+          <input id="url" type="text" class="validate" [(ngModel)]="article.url" name="url"
                  placeholder="Ссылка">
           <label for="name" [ngClass]="{'active': article.url}">Ссылка</label>
         </div>
