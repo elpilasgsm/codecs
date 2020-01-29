@@ -13,6 +13,7 @@ import {CrimeSeverityPipe} from './crime-severity.pipe';
 import {CrimeSereritySelectorComponent} from './crime-sererity-selector/crime-sererity-selector.component';
 import {MzButtonModule, MzDatepickerModule, MzModalModule, MzSelectModule, MzToastModule} from "ngx-materialize";
 import {DeleteArticleModalComponent} from './delete-article-modal/delete-article-modal.component';
+import {RecordTypeShortPipe} from './record-type-short.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {DeleteArticleModalComponent} from './delete-article-modal/delete-article
     RecordTypePipe,
     CrimeSeverityPipe,
     CrimeSereritySelectorComponent,
-    DeleteArticleModalComponent
+    DeleteArticleModalComponent,
+    RecordTypeShortPipe
   ],
   imports: [
     BrowserModule,

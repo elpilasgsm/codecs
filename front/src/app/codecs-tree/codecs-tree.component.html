@@ -19,8 +19,13 @@
     </div>
   </div>
   <div class="col l12 ">
-    <ul class="display collection collapsible scroll-v">
+    <ul class="display collection collapsible scroll-v" *ngIf="codecsTree && codecsTree.length>0">
       <app-codecs-tree-row [row]="row" *ngFor="let row of codecsTree"></app-codecs-tree-row>
     </ul>
+    <div *ngIf="!codecsTree || codecsTree.length==0">
+      <ul class="display collection collapsible scroll-v">
+        <li class="collection-item">Данные отсутствуют!</li>
+      </ul>
+    </div>
   </div>
 </div>

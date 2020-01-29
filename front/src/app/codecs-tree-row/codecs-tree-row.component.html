@@ -1,8 +1,7 @@
 <li class="collection-item {{row.recordType|lowercase}}">
   <div class="row vertical-middle">
     <div class="col l9 s7 m7">
-      <p class="collection-header">{{row.recordType | recordType}}
-        - <a routerLink="/article-edit/{{row.recordId}}">{{row.name}}</a></p>
+      <p class="collection-header">{{row.recordType | recordTypeShort}} {{row.abbreviation}}. <a routerLink="/article-edit/{{row.recordId}}">{{row.name}}</a></p>
     </div>
     <div class="text-right col l3 s5 m5">
 

@@ -21,5 +21,6 @@ jobs:
           mysql -uroot -proot < data/1.users.SQL
           mysql -uroot -proot < data/2.RECORD.SQL
           mysql -uroot -proot < data/3.CHANGES.SQL
+          mysql -uroot -proot < data/4.ADD_ABBRIVIATION.sql
       - name: Build with Maven
         run: mvn clean install -Dspring.datasource.username=root -Dspring.datasource.password=root

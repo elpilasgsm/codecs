@@ -11,7 +11,7 @@ import {Changes} from "./changes";
 })
 export class ArticleServiceService {
   private articleAPIURL = '/api/article/';
-  private tree: Article[];
+  private tree: Article[] = [];
 
   constructor(private http: HttpClient, private toastService: MzToastService) {
 
@@ -19,12 +19,12 @@ export class ArticleServiceService {
 
 
   getRoot(callback: (tree: Article[]) => void): void {
-    if (this.tree) {
+    if (this.tree && this.tree.length > 0) {
       callback(this.tree);
     } else {
       this.http.get<Article[]>(this.articleAPIURL).pipe(catchError(this.handleError.bind(this))).subscribe(
         a => {
-          this.tree = a;
+          this.tree.push.apply(this.tree, a);
           if (callback) {
             callback(this.tree)
           }
@@ -75,8 +75,6 @@ export class ArticleServiceService {
   }
 
 
-
-
   deleteArticleById(id): Observable<any> {
     return this.http.delete<any>(this.articleAPIURL + id).pipe(catchError(this.handleError.bind(this)));
   }
@@ -87,24 +85,16 @@ export class ArticleServiceService {
       .put<Article>(this.articleAPIURL, dto)
       .pipe(catchError(this.handleError.bind(this)))
       .subscribe(art => {
-        if (!art.parent || art.parent.recordId == 0) {
-          this.tree.push(art);
-        } else {
-          let a = this.get(this.tree, art.parent.recordId);
-          if (a) {
-            if (!a.children) {
-              a.children = [];
-            }
-            a.children.push(art)
-          }
-        }
-        callback(art);
+        this.tree.length = 0;
+        this.getRoot(function (tree) {
+          callback(art);
+        }.bind(this));
+
       });
   }
 
   saveArticle(dto: Article, id: number): Observable<Article> {
-    return this.http.post<Article>(`${this.articleAPIURL}${id}
-`, dto).pipe(catchError(this.handleError.bind(this)));
+    return this.http.post<Article>(`${this.articleAPIURL}${id}`, dto).pipe(catchError(this.handleError.bind(this)));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -112,9 +102,7 @@ export class ArticleServiceService {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
 
-      this.toastService.show(`
-  Ошибка ${error.error.message}
-`,
+      this.toastService.show(`Ошибка ${error.error.message}`,
         4000,
         'red');
     } else {

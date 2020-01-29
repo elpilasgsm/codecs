@@ -19,6 +19,7 @@ public class ArticleRecord implements DTOObject<RecordEntity> {
     private ArticleRecord parent;
     private List<ArticleRecord> children;
     private List<ChangesRecord> changes;
+    private String abbreviation;
 
     public CrimeSeverity getCrimeSeverity() {
         return crimeSeverity;
@@ -85,6 +86,14 @@ public class ArticleRecord implements DTOObject<RecordEntity> {
         this.changes = changes;
     }
 
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
     @Override
     public RecordEntity toDB(boolean deepCopy) {
         RecordEntity entity = new RecordEntity();
@@ -93,6 +102,7 @@ public class ArticleRecord implements DTOObject<RecordEntity> {
         entity.setRecordId(this.recordId);
         entity.setName(this.name);
         entity.setCrimeSeverity(this.crimeSeverity);
+        entity.setAbbreviation(this.abbreviation);
         if (deepCopy) {
             if (this.parent != null) {
                 entity.setParent(this.parent.toDB(false));

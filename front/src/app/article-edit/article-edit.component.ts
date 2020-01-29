@@ -99,6 +99,20 @@ export class ArticleEditComponent implements OnInit {
     /*    */
   }
 
+  newArticle(): Article {
+    return {
+      recordId: null,
+      crimeSeverity: 'NOT_APPLIED',
+      recordType: 'ARTICLE',
+      name: null,
+      children: null,
+      changes: null,
+      parent: this.parentArticle,
+      url: null,
+      abbreviation: null
+    }
+  }
+
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
       if (params.id) {
@@ -108,31 +122,14 @@ export class ArticleEditComponent implements OnInit {
               this.articleServiceService.getArticleById(
                 params.get('parentId'), function (any) {
                   this.parentArticle = any.article;
-                  this.article = {
-                    recordId: null,
-                    crimeSeverity: 'NOT_APPLIED',
-                    recordType: this.parentArticle == null ? 'ARTICLE'
-                      : (params.get("parentType") == 'ARTICLE' ? 'PART' : 'POINT'),
-                    name: null,
-                    children: null,
-                    changes: null,
-                    parent: this.parentArticle,
-                    url: null
-                  };
+                  this.article = this.newArticle();
+                  this.article.recordType = this.parentArticle == null ? 'ARTICLE'
+                    : (params.get("parentType") == 'ARTICLE' ? 'PART' : 'POINT');
                   this.changes = [];
                 }.bind(this)
               );
             } else {
-              this.article = {
-                recordId: null,
-                crimeSeverity: 'NOT_APPLIED',
-                recordType: 'ARTICLE',
-                name: null,
-                children: null,
-                changes: null,
-                parent: null,
-                url: null
-              };
+              this.article = this.newArticle();
               this.changes = [];
             }
           });

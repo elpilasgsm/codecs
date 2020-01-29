@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col l2 m2 s12 grey lighten-5 main-container">
+  <div class="col l3 m3 s12 grey lighten-5 main-container">
     <form class="col l12" *ngIf="article">
       <div class="row">
         <div class="col s12">
@@ -8,6 +8,13 @@
                            name="recordType"
                            placeholder="Тип">-->
           <h5>{{article.recordType | recordType}}</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="abbreviation" type="text" class="materialize-textarea" [(ngModel)]="article.abbreviation"
+                 name="abbreviation">
+          <label for="abbreviation" [ngClass]="{'active': article.abbreviation}">Номер/Порядок</label>
         </div>
       </div>
       <div class="row">
@@ -38,16 +45,12 @@
       </div>
     </form>
   </div>
-  <div class="col s12 l10 m10">
+  <div class="col s12 l9 m9">
     <table *ngIf="changes" class="striped">
       <thead>
       <tr>
         <td>Название</td>
-        <td>В часте</td>
-        <td>Тяжесть</td>
         <td>Дата принятия ФЗ</td>
-        <td>Вступление закона в силу</td>
-        <td>Дата вступления в силу</td>
         <td>Направленность</td>
         <td>Ссылка</td>
         <td>Действия</td>
