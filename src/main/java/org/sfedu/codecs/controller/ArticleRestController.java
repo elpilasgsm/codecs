@@ -1,10 +1,13 @@
 package org.sfedu.codecs.controller;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.sfedu.codecs.model.db.ChangesEntity;
 import org.sfedu.codecs.model.db.RecordEntity;
 import org.sfedu.codecs.model.db.UserEntity;
 import org.sfedu.codecs.model.dto.ArticleRecord;
+import org.sfedu.codecs.model.dto.ChangesRecord;
 import org.sfedu.codecs.model.dto.User;
+import org.sfedu.codecs.repository.db.ChangesRepository;
 import org.sfedu.codecs.repository.db.RecordRepository;
 import org.sfedu.codecs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +28,12 @@ import java.util.stream.Collectors;
 public class ArticleRestController {
 
     private final RecordRepository recordRepository;
+    private final ChangesRepository changesRepository;
 
     @Autowired
-    ArticleRestController(RecordRepository recordRepository) {
+    ArticleRestController(RecordRepository recordRepository, ChangesRepository changesRepository) {
         this.recordRepository = recordRepository;
+        this.changesRepository = changesRepository;
     }
 
 
@@ -79,6 +84,16 @@ public class ArticleRestController {
         RecordEntity entity = recordRepository.getOne(id);
         return entity.toDTO(true);
     }
+
+    @RequestMapping(value = "/{record-id}/changes", method = RequestMethod.GET)
+    public List<ChangesRecord> getChanges(@PathVariable("record-id") Long id, HttpServletResponse response) throws IOException {
+        List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordId(id);
+
+        return changesEntities == null ? new ArrayList<ChangesRecord>() : changesEntities
+                .stream()
+                .map(it -> it.toDTO(false)).collect(Collectors.toList());
+    }
+
 
     private ArticleRecord toDTO(RecordEntity e) {
         ArticleRecord record = e.toDTO(false);

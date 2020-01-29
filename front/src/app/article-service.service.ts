@@ -3,6 +3,8 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import {Article} from "./article";
 import {catchError} from "rxjs/operators";
+import {MzToastService} from "ngx-materialize";
+import {Changes} from "./changes";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class ArticleServiceService {
   private articleAPIURL = '/api/article/';
   private tree: Article[];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private toastService: MzToastService) {
 
   }
 
@@ -20,7 +22,7 @@ export class ArticleServiceService {
     if (this.tree) {
       callback(this.tree);
     } else {
-      this.http.get<Article[]>(this.articleAPIURL).pipe(catchError(this.handleError)).subscribe(
+      this.http.get<Article[]>(this.articleAPIURL).pipe(catchError(this.handleError.bind(this))).subscribe(
         a => {
           this.tree = a;
           if (callback) {
@@ -62,15 +64,28 @@ export class ArticleServiceService {
     }
   }
 
+  getChangesForArticleById(id, callback: (args: any) => void): void {
+    this.http.get<Changes[]>(`${this.articleAPIURL}${id}/changes`).pipe(catchError(this.handleError.bind(this))).subscribe(
+      changes => {
+        if (callback) {
+          callback(changes);
+        }
+      });
+
+  }
+
+
+
+
   deleteArticleById(id): Observable<any> {
-    return this.http.delete<any>(this.articleAPIURL + id).pipe(catchError(this.handleError));
+    return this.http.delete<any>(this.articleAPIURL + id).pipe(catchError(this.handleError.bind(this)));
   }
 
 
   addArticle(dto: Article, callback: (args: any) => void): void {
     this.http
       .put<Article>(this.articleAPIURL, dto)
-      .pipe(catchError(this.handleError))
+      .pipe(catchError(this.handleError.bind(this)))
       .subscribe(art => {
         if (!art.parent || art.parent.recordId == 0) {
           this.tree.push(art);
@@ -88,19 +103,38 @@ export class ArticleServiceService {
   }
 
   saveArticle(dto: Article, id: number): Observable<Article> {
-    return this.http.post<Article>(`${this.articleAPIURL}${id}`, dto).pipe(catchError(this.handleError));
+    return this.http.post<Article>(`${this.articleAPIURL}${id}
+`, dto).pipe(catchError(this.handleError.bind(this)));
   }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
+
+      this.toastService.show(`
+  Ошибка ${error.error.message}
+`,
+        4000,
+        'red');
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
       console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+        `
+  Backend
+  returned
+  code ${error.status}
+, ` +
+        `
+  body
+  was: ${error.error}`);
+
+      this.toastService.show(`
+  Ошибка ${error.status}
+- ${error.error.message}
+`, 4000,
+        'red');
     }
     // return an observable with a user-facing error message
     return throwError(

@@ -20,6 +20,9 @@ export class CrimeSeverityPipe implements PipeTransform {
       case "EXTRA":
         label = "Особо тяжкое";
         break;
+      case "NOT_APPLIED":
+        label = "Не применим";
+        break;
       default:
         label = "Неизвестный";
         break;

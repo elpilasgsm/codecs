@@ -11,7 +11,7 @@ import {ArticleEditComponent} from './article-edit/article-edit.component';
 import {RecordTypePipe} from './record-type.pipe';
 import {CrimeSeverityPipe} from './crime-severity.pipe';
 import {CrimeSereritySelectorComponent} from './crime-sererity-selector/crime-sererity-selector.component';
-import {MzButtonModule, MzDatepickerModule, MzModalModule, MzSelectModule} from "ngx-materialize";
+import {MzButtonModule, MzDatepickerModule, MzModalModule, MzSelectModule, MzToastModule} from "ngx-materialize";
 import {DeleteArticleModalComponent} from './delete-article-modal/delete-article-modal.component';
 
 @NgModule({
@@ -33,9 +33,11 @@ import {DeleteArticleModalComponent} from './delete-article-modal/delete-article
     MzSelectModule,
     MzDatepickerModule,
     MzModalModule,
-    MzButtonModule
+    MzButtonModule,
+    MzToastModule
   ],
-  providers: [],
+  exports: [RecordTypePipe],
+  providers: [RecordTypePipe],
   bootstrap: [AppComponent],
   entryComponents: [DeleteArticleModalComponent],
 
