@@ -65,13 +65,14 @@ export class ArticleServiceService {
   }
 
   getChangesForArticleById(id, callback: (args: any) => void): void {
-    this.http.get<Changes[]>(`${this.articleAPIURL}${id}/changes`).pipe(catchError(this.handleError.bind(this))).subscribe(
-      changes => {
-        if (callback) {
-          callback(changes);
-        }
-      });
-
+    if (id) {
+      this.http.get<Changes[]>(`${this.articleAPIURL}${id}/changes`).pipe(catchError(this.handleError.bind(this))).subscribe(
+        changes => {
+          if (callback) {
+            callback(changes);
+          }
+        });
+    }
   }
 
 
@@ -108,20 +109,9 @@ export class ArticleServiceService {
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
-      console.error(
-        `
-  Backend
-  returned
-  code ${error.status}
-, ` +
-        `
-  body
-  was: ${error.error}`);
+      console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
 
-      this.toastService.show(`
-  Ошибка ${error.status}
-- ${error.error.message}
-`, 4000,
+      this.toastService.show(` Ошибка ${error.status} - ${error.error.message}`, 4000,
         'red');
     }
     // return an observable with a user-facing error message

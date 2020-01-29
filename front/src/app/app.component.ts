@@ -7,9 +7,7 @@ import {ArticleServiceService} from "./article-service.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'front';
-
-
+  title = 'УК РФ';
   constructor(private articleService: ArticleServiceService) {
 
   }

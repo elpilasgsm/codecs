@@ -3,6 +3,7 @@ import {Article} from "../article";
 import {ArticleServiceService} from "../article-service.service";
 import {MzModalService} from "ngx-materialize";
 import {DeleteArticleModalComponent} from "../delete-article-modal/delete-article-modal.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-codecs-tree-row',
@@ -13,10 +14,15 @@ export class CodecsTreeRowComponent implements OnInit {
   @Input() row: Article;
 
 
-  constructor() {
+  constructor(private router: Router) {
+  }
+
+  onClick() {
+    this.router.navigate([`/article-edit/${this.row.recordId}`], {});
   }
 
   ngOnInit() {
+
   }
 
 }
