@@ -9,7 +9,8 @@ import {Changes} from "../changes";
 })
 export class ChangeEditDialogComponent extends MzBaseModal {
   @Input() change: Changes;
-  @Input() onSave;
+  @Input() private onSave;
+  editableChange: Changes;
   public datepickerOptions: Pickadate.DateOptions = {
     clear: 'Очистить', // Clear button text
     close: 'Ok',    // Ok button text
@@ -27,6 +28,19 @@ export class ChangeEditDialogComponent extends MzBaseModal {
   }
 
   ngOnInit() {
+    this.editableChange =
+      Object.assign({}, this.change);
+  }
+
+  save() {
+    this.change =
+      Object.assign({}, this.editableChange);
+    this.onSave();
+  }
+
+  cancel() {
+    this.editableChange =
+      Object.assign({}, this.change);
   }
 
 }

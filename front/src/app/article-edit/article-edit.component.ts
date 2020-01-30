@@ -39,7 +39,7 @@ export class ArticleEditComponent implements OnInit {
         this.toastService.show(`${this.recordTypePipe.transform(a.recordType, null)} ${a.name} успешно добавлен(а)!`,
           4000,
           'green');
-        this.article = a;
+        this.article = Object.assign({},a);
         this.router.navigate([`/article-edit/${a.recordId}`]);
       }.bind(this));
     } else {

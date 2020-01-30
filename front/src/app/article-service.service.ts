@@ -11,6 +11,7 @@ import {Changes} from "./changes";
 })
 export class ArticleServiceService {
   private articleAPIURL = '/api/article/';
+  private changeAPIURL = '/api/change/';
   private tree: Article[] = [];
 
   constructor(private http: HttpClient, private toastService: MzToastService) {
@@ -55,7 +56,7 @@ export class ArticleServiceService {
 
 
   getArticleById(id, callback: (args: any) => void): void {
-    if (this.tree) {
+    if (this.tree && this.tree.length > 0) {
       callback({article: this.get(this.tree, id)});
     } else {
       this.getRoot(function (tr: Article[]) {
@@ -82,6 +83,18 @@ export class ArticleServiceService {
 
 
   addArticle(dto: Article, callback: (args: any) => void): void {
+    this.http
+      .put<Article>(this.articleAPIURL, dto)
+      .pipe(catchError(this.handleError.bind(this)))
+      .subscribe(art => {
+        this.tree.length = 0;
+        this.getRoot(function (tree) {
+          callback(art);
+        }.bind(this));
+      });
+  }
+
+  addChange(dto: Changes, callback: (args: any) => void): void {
     this.http
       .put<Article>(this.articleAPIURL, dto)
       .pipe(catchError(this.handleError.bind(this)))

@@ -3,7 +3,7 @@ import {Article} from "../article";
 import {Changes} from "../changes";
 import {ArticleServiceService} from "../article-service.service";
 import {CRIME_SEVERITY} from "../crime-severity";
-import {MzModalService} from "ngx-materialize";
+import {MzModalService, MzToastService} from "ngx-materialize";
 import {DeleteArticleModalComponent} from "../delete-article-modal/delete-article-modal.component";
 import {ChangeEditDialogComponent} from "../change-edit-dialog/change-edit-dialog.component";
 
@@ -18,7 +18,8 @@ export class ChangeEditComponent implements OnInit {
   private currentChange: Changes;
 
   constructor(private articleServiceService: ArticleServiceService,
-              private modalService: MzModalService) {
+              private modalService: MzModalService,
+              private toastService: MzToastService) {
   }
 
   addChanges() {
@@ -26,21 +27,11 @@ export class ChangeEditComponent implements OnInit {
     this.modalService.open(ChangeEditDialogComponent, {
       change: this.currentChange,
       onSave: function () {
-        this.changes.push(this.currentChange);
+        this.articleServiceService.addChange(this.change, function () {
+
+          this.changes.push(this.currentChange);
+        }.bind(this));
       }.bind(this)
-      /*      onAgree: function () {
-              this.router.navigate([`/`]);
-              this.articleServiceService.deleteArticleById(this.article.recordId).subscribe(a => {
-                if (200 === a) {
-                  this.articleServiceService.getRoot(function (tree: Article[]) {
-                    this.toastService.show(`${this.recordTypePipe.transform(this.article.recordType, null)} ${this.article.name} успешно удален(а)!`,
-                      4000,
-                      'green');
-                    this.deleteFromTree(tree, this.article);
-                  }.bind(this));
-                }
-              });
-            }.bind(this)*/
     });
   }
 

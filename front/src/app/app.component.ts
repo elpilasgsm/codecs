@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ArticleServiceService} from "./article-service.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -8,12 +9,13 @@ import {ArticleServiceService} from "./article-service.service";
 })
 export class AppComponent implements OnInit {
   title = 'УК РФ';
-  constructor(private articleService: ArticleServiceService) {
+
+  constructor(private router: Router) {
 
   }
 
   ngOnInit(): void {
-
+    this.router.navigate([''])
   }
 
 }
