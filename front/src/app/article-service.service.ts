@@ -96,10 +96,9 @@ export class ArticleServiceService {
 
   addChange(dto: Changes, callback: (args: any) => void): void {
     this.http
-      .put<Article>(this.articleAPIURL, dto)
+      .put<Article>(this.changeAPIURL, dto)
       .pipe(catchError(this.handleError.bind(this)))
       .subscribe(art => {
-        this.tree.length = 0;
         this.getRoot(function (tree) {
           callback(art);
         }.bind(this));

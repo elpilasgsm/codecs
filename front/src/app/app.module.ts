@@ -24,6 +24,7 @@ import { PerformanceTypePipe } from './performance-type.pipe';
 import { DirectionPipe } from './direction.pipe';
 import { DirectionChangesSelectorComponent } from './direction-changes-selector/direction-changes-selector.component';
 import { MethodChangesSelectorComponent } from './method-changes-selector/method-changes-selector.component';
+import { DefaultViewComponent } from './default-view/default-view.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { MethodChangesSelectorComponent } from './method-changes-selector/method
     PerformanceTypePipe,
     DirectionPipe,
     DirectionChangesSelectorComponent,
-    MethodChangesSelectorComponent
+    MethodChangesSelectorComponent,
+    DefaultViewComponent
   ],
   imports: [
     BrowserModule,

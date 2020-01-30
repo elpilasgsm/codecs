@@ -6,6 +6,7 @@ import {CRIME_SEVERITY} from "../crime-severity";
 import {MzModalService, MzToastService} from "ngx-materialize";
 import {DeleteArticleModalComponent} from "../delete-article-modal/delete-article-modal.component";
 import {ChangeEditDialogComponent} from "../change-edit-dialog/change-edit-dialog.component";
+import {RecordTypePipe} from "../record-type.pipe";
 
 @Component({
   selector: 'app-change-edit',
@@ -19,16 +20,20 @@ export class ChangeEditComponent implements OnInit {
 
   constructor(private articleServiceService: ArticleServiceService,
               private modalService: MzModalService,
-              private toastService: MzToastService) {
+              private toastService: MzToastService,
+              private recordTypePipe: RecordTypePipe) {
   }
 
   addChanges() {
     this.currentChange = this.newChanges();
     this.modalService.open(ChangeEditDialogComponent, {
       change: this.currentChange,
-      onSave: function () {
-        this.articleServiceService.addChange(this.change, function () {
-
+      onSave: function (toSave: Changes) {
+        this.articleServiceService.addChange(toSave, function (saved) {
+          this.toastService.show(`Новое изменение ${toSave.name} в ${this.recordTypePipe.transform(this.article.recordType, null)} ${this.article.name} успешно добавлено!`,
+            4000,
+            'green');
+          this.currentChange = Object.assign({}, saved)
           this.changes.push(this.currentChange);
         }.bind(this));
       }.bind(this)

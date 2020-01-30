@@ -35,7 +35,7 @@ export class ChangeEditDialogComponent extends MzBaseModal {
   save() {
     this.change =
       Object.assign({}, this.editableChange);
-    this.onSave();
+    this.onSave(this.change);
   }
 
   cancel() {
