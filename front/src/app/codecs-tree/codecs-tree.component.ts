@@ -8,7 +8,7 @@ import {ArticleServiceService} from "../article-service.service";
   styleUrls: ['./codecs-tree.component.css']
 })
 export class CodecsTreeComponent implements OnInit {
-  private codecsTree: Article[];
+  codecsTree: Article[];
 
   constructor(private articleService: ArticleServiceService) {
   }

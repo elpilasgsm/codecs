@@ -8,8 +8,8 @@ import {Changes} from "../changes";
   styleUrls: ['./change-edit-dialog.component.css']
 })
 export class ChangeEditDialogComponent extends MzBaseModal {
-  @Input() private change: Changes;
-  @Input() private onSave;
+  @Input() change: Changes;
+  @Input() onSave;
   public datepickerOptions: Pickadate.DateOptions = {
     clear: 'Очистить', // Clear button text
     close: 'Ok',    // Ok button text

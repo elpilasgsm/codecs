@@ -8,8 +8,8 @@ import {MzBaseModal, MzModalComponent} from 'ngx-materialize';
 })
 export class DeleteArticleModalComponent extends MzBaseModal {
 
-  @Input() private onAgree;
-  @Input() private article;
+  @Input() onAgree;
+  @Input() article;
   private code = Math.floor(Math.random() * 89999) + 10000;
   private interedCode: number;
   public modalOptions: Materialize.ModalOptions = {
