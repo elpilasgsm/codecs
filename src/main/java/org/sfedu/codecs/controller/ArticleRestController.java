@@ -64,6 +64,7 @@ public class ArticleRestController {
         entity.setCrimeSeverity(record.getCrimeSeverity());
         entity.setName(record.getName());
         entity.setUrl(record.getUrl());
+        entity.setAbbreviation(record.getAbbreviation());
         return recordRepository.save(entity).toDTO(false);
     }
 

@@ -17,6 +17,7 @@ import {Changes} from "../changes";
 })
 export class ArticleEditComponent implements OnInit {
   article: Article;
+  originArticle: Article;
   parentArticle: Article;
   changes: Changes[];
 
@@ -49,23 +50,10 @@ export class ArticleEditComponent implements OnInit {
         this.article.url = a.url;
         this.article.crimeSeverity = a.crimeSeverity;
         this.article.name = a.name;
+        Object.assign(this.originArticle, a);
       });
     }
   }
-
-  update(list: Article[], a: Article): void {
-    list.forEach((item, index) => {
-      if (item.recordId === a.recordId) {
-        item.name = a.name;
-        item.crimeSeverity = a.crimeSeverity;
-        item.url = a.url;
-        return;
-      } else if (item.children) {
-        this.update(item.children, a);
-      }
-    });
-  }
-
 
   deleteFromTree(list: Article[], rec: Article): void {
     list.forEach((item, index) => {
@@ -113,6 +101,11 @@ export class ArticleEditComponent implements OnInit {
     }
   }
 
+  cancel() {
+    this.article = Object.assign({}, this.originArticle);
+    this.router.navigate([`/`]);
+  }
+
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
       if (params.id) {
@@ -135,7 +128,8 @@ export class ArticleEditComponent implements OnInit {
           });
         } else {
           this.articleServiceService.getArticleById(params.id, function (args) {
-            this.article = args.article;
+            this.originArticle = args.article;
+            this.article = Object.assign({}, this.originArticle);
           }.bind(this));
         }
       }
