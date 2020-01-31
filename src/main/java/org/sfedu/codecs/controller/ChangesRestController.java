@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.event.ChangeEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,18 +46,16 @@ public class ChangesRestController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public ArticleRecord post(@RequestBody ArticleRecord record, @PathVariable("id") Long recordId, HttpServletResponse response) throws IOException {
-        final Optional<RecordEntity> parent = recordRepository.findById(recordId);
+    public ChangesRecord post(@RequestBody ChangesRecord record, @PathVariable("id") Long recordId, HttpServletResponse response) throws IOException {
+        final Optional<ChangesEntity> parent = changesRepository.findById(recordId);
         if (!parent.isPresent()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        final RecordEntity entity = parent.get();
-        entity.setCrimeSeverity(record.getCrimeSeverity());
-        entity.setName(record.getName());
-        entity.setUrl(record.getUrl());
-        entity.setAbbreviation(record.getAbbreviation());
-        return recordRepository.save(entity).toDTO(false);
+        final ChangesEntity entity = parent.get();
+        final ChangesEntity toSave = record.toDB(false);
+        toSave.setRecord(entity.getRecord());
+        return changesRepository.save(toSave).toDTO(false);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -74,7 +73,7 @@ public class ChangesRestController {
 
     @RequestMapping(value = "/{record-id}/changes", method = RequestMethod.GET)
     public List<ChangesRecord> getChanges(@PathVariable("record-id") Long id, HttpServletResponse response) throws IOException {
-        List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordId(id);
+        List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordIdOrderByDate(id);
 
         return changesEntities == null ? new ArrayList<ChangesRecord>() : changesEntities
                 .stream()

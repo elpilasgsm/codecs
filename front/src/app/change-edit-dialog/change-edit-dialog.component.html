@@ -31,14 +31,14 @@
             </mz-datepicker-container>
           </div>
           <div class="row">
-            <app-crime-sererity-selector [change]="change" [article]="null" id="severity"></app-crime-sererity-selector>
+            <app-crime-sererity-selector [change]="editableChange" [article]="null" id="severity"></app-crime-sererity-selector>
           </div>
           <div class="row">
-            <app-in-part-changes-selector [change]="change"
+            <app-in-part-changes-selector [change]="editableChange"
                                           id="inPartChanges"></app-in-part-changes-selector>
           </div>
           <div class="row">
-            <app-performance-changes-selector [change]="change"
+            <app-performance-changes-selector [change]="editableChange"
                                               id="performanceType"></app-performance-changes-selector>
           </div>
           <div class="row" *ngIf="editableChange.performanceType==='DELAYED'">
@@ -55,12 +55,12 @@
             </mz-datepicker-container>
           </div>
           <div class="row">
-            <app-method-changes-selector [change]="change"
+            <app-method-changes-selector [change]="editableChange"
                                          id="method"></app-method-changes-selector>
 
           </div>
           <div class="row">
-            <app-direction-changes-selector [change]="change"
+            <app-direction-changes-selector [change]="editableChange"
                                             id="direction"></app-direction-changes-selector>
 
           </div>

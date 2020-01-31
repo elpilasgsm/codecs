@@ -83,7 +83,7 @@ public class ArticleRestController {
 
     @RequestMapping(value = "/{record-id}/changes", method = RequestMethod.GET)
     public List<ChangesRecord> getChanges(@PathVariable("record-id") Long id, HttpServletResponse response) throws IOException {
-        List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordId(id);
+        List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordIdOrderByDate(id);
 
         return changesEntities == null ? new ArrayList<ChangesRecord>() : changesEntities
                 .stream()

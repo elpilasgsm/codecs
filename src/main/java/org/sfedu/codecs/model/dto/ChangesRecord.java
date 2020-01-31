@@ -1,8 +1,12 @@
 package org.sfedu.codecs.model.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.sfedu.codecs.constants.*;
 import org.sfedu.codecs.model.DTOObject;
 import org.sfedu.codecs.model.db.ChangesEntity;
+import org.sfedu.codecs.utils.CodecsDateDeSerializer;
+import org.sfedu.codecs.utils.CodecsDateSerializer;
 
 import java.util.Calendar;
 
@@ -14,8 +18,12 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
     private CodecsChangesInPart changesInPart;
     private ChangesPerformanceType performanceType;
     private CrimeSeverity crimeSeverity;
+    @JsonDeserialize(using = CodecsDateDeSerializer.class)
+    @JsonSerialize(using = CodecsDateSerializer.class)
     private Calendar activationDate;
     private ChangesDirection direction;
+    @JsonDeserialize(using = CodecsDateDeSerializer.class)
+    @JsonSerialize(using = CodecsDateSerializer.class)
     private Calendar date;
     private String url;
     private ArticleRecord record;

@@ -24,10 +24,10 @@
             <td>{{change.name}}</td>
             <td>{{change.changesInPart | inPart}}</td>
             <td>{{change.crimeSeverity | crimeSeverity}}</td>
-            <td>{{change.date | date: 'dd/mm/yyyy'}}</td>
+            <td>{{change.date}}</td>
             <td>{{change.direction | direction}}</td>
             <td><a target="_blank" href="{{change.url}}"><i class="material-icons">link</i></a></td>
-            <td><i class="material-icons">edit</i>
+            <td><a (click)="editChange(change)" href="javascript:void(0);"><i class="material-icons">edit</i></a>
               <i class="material-icons">delete</i></td>
           </tr>
         </table>

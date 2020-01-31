@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ChangesRepository extends JpaRepository<ChangesEntity, Long> {
-    public List<ChangesEntity> getByRecordRecordId(Long parentId);
+    public List<ChangesEntity> getByRecordRecordIdOrderByDate(Long parentId);
 }

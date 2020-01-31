@@ -15,7 +15,7 @@ import {RecordTypePipe} from "../record-type.pipe";
 })
 export class ChangeEditComponent implements OnInit {
   @Input() article: Article;
-  private changes: Changes[] = [];
+  changes: Changes[] = [];
   private currentChange: Changes;
 
   constructor(private articleServiceService: ArticleServiceService,
@@ -33,9 +33,23 @@ export class ChangeEditComponent implements OnInit {
           this.toastService.show(`Новое изменение ${toSave.name} в ${this.recordTypePipe.transform(this.article.recordType, null)} ${this.article.name} успешно добавлено!`,
             4000,
             'green');
-          this.currentChange = Object.assign({}, saved)
-          this.changes.push(this.currentChange);
+          this.ngOnChanges();
         }.bind(this));
+      }.bind(this)
+    });
+  }
+
+  editChange(change: Changes) {
+    this.currentChange = Object.assign({}, change);
+    this.modalService.open(ChangeEditDialogComponent, {
+      change: this.currentChange,
+      onSave: function (toSave: Changes) {
+        this.articleServiceService.editChange(toSave, toSave.id).subscribe(ch => {
+          this.toastService.show(`Изменение ${toSave.name} в ${this.recordTypePipe.transform(this.article.recordType, null)} ${this.article.name} успешно сохранено!`,
+            4000,
+            'green');
+          this.ngOnChanges();
+        });
       }.bind(this)
     });
   }
@@ -48,7 +62,7 @@ export class ChangeEditComponent implements OnInit {
       changesInPart: 'OFFENSE',
       performanceType: 'NOW',
       crimeSeverity: 'NOT_APPLIED',
-      activationDate: new Date(),
+      activationDate: null,
       direction: 'POSITIVE',
       method: 'APPEND',
       date: new Date(),
@@ -61,9 +75,12 @@ export class ChangeEditComponent implements OnInit {
   ngOnInit() {
     if (this.article) {
       this.articleServiceService.getChangesForArticleById(this.article.recordId, function (changes: Changes[]) {
-        this.changes.push.apply(changes, this.changes);
+        this.changes = changes;
       }.bind(this));
     }
   }
 
+  ngOnChanges() {
+    this.ngOnInit()
+  }
 }

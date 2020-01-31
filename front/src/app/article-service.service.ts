@@ -110,6 +110,10 @@ export class ArticleServiceService {
     return this.http.post<Article>(`${this.articleAPIURL}${id}`, dto).pipe(catchError(this.handleError.bind(this)));
   }
 
+  editChange(dto: Changes, id: number): Observable<Changes> {
+    return this.http.post<Changes>(`${this.changeAPIURL}${id}`, dto).pipe(catchError(this.handleError.bind(this)));
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
