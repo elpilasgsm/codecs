@@ -51,7 +51,8 @@ jobs:
           cd front/
           npm ci
           npm run build:ci
-          /bin/tar -cz -f dist.tgz /home/runner/work/front/dist
+          /bin/tar -cz -f dist.tgz ./dist
+          cp ./dist.tgz /tmp/
       - name: copy front to DEV
         uses: appleboy/scp-action@master
         with:
@@ -59,5 +60,5 @@ jobs:
           username: ${{ secrets.devUser }}
           password: ${{ secrets.devPassword }}
           port: 22
-          source: "/home/runner/work/front/dist.tgz"
+          source: "/tmp/dist.tgz"
           target: "/home/codecs/"
