@@ -68,6 +68,7 @@ class CodecsApplicationTests {
         for (int bn = 0; bn < 12; bn++) {
             RecordEntity article = new RecordEntity();
             article.setName(random(25));
+            article.setAbbreviation(random(3));
             article.setRecordType(CodecsRecordType.ARTICLE);
             article.setUrl(String.format("https://%s", random(10)));
             article.setCrimeSeverity(CrimeSeverity.REGULAR);
@@ -76,6 +77,7 @@ class CodecsApplicationTests {
 
             RecordEntity part1 = new RecordEntity();
             part1.setName(random(25));
+            part1.setAbbreviation(random(3));
             part1.setRecordType(CodecsRecordType.PART);
             part1.setUrl(String.format("https://%s", random(10)));
             part1.setParent(article);
@@ -90,7 +92,7 @@ class CodecsApplicationTests {
                 point.setRecordType(CodecsRecordType.POINT);
                 point.setUrl(String.format("https://%s", random(10)));
                 point.setParent(part1);
-
+                point.setAbbreviation(random(3));
                 point.setChanges(getListOfChanges(5, point));
                 recordRepository.save(point);
                 //  changesRepository.save(changesEntity);
@@ -118,6 +120,8 @@ class CodecsApplicationTests {
         changesEntity.setCrimeSeverity(CrimeSeverity.MIDDLE);
         changesEntity.setActivationDate(Calendar.getInstance());
         changesEntity.setRecord(parent);
+        changesEntity.setMethod(ChangesMethod.APPEND);
+        //changesEntity.setPerformanceType(ChangesPerformanceType.DELAYED);
         changesEntity.setDate(Calendar.getInstance());
         changesEntity.setPerformanceType(ChangesPerformanceType.DELAYED);
         changesEntity.setChangesInPart(CodecsChangesInPart.PUNISHMENT);
@@ -127,7 +131,7 @@ class CodecsApplicationTests {
         return changesEntity;
     }
 
-    @Test
+    //@Test
     void createInitialAdminUser() throws Exception {
         String login = "admin";
         String password = "passwd00";

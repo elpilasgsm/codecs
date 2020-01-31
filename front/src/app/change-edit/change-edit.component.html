@@ -4,7 +4,7 @@
       <div class="col s12 ">
         <a (click)="addChanges()" href="javascript:void(0);">
           Добавить изменение
-          в  {{article.recordType | recordType}} {{article.name}}
+          в  {{article.recordType | recordType}} {{article.abbreviation}}. {{article.name}}
         </a>
       </div>
       <div *ngIf="changes">

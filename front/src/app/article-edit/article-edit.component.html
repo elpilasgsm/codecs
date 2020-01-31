@@ -17,7 +17,7 @@
           <label for="abbreviation" [ngClass]="{'active': article.abbreviation}">Номер/Порядок</label>
         </div>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="article.recordType=='ARTICLE'">
         <div class="input-field col s12">
           <textarea id="name" type="text" class="materialize-textarea" [(ngModel)]="article.name"
                     name="name"></textarea>
