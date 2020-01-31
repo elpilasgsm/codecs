@@ -80,7 +80,6 @@ class CodecsApplicationTests {
             article = recordRepository.save(article);
 
             RecordEntity part1 = new RecordEntity();
-            part1.setName(random(25));
             part1.setAbbreviation(random(3));
             part1.setRecordType(CodecsRecordType.PART);
             part1.setUrl(String.format("https://%s", random(10)));
@@ -91,7 +90,6 @@ class CodecsApplicationTests {
             int iter2 = rnd.nextInt(5) + 2;
             for (int i = 0; i < iter2; i++) {
                 RecordEntity point = new RecordEntity();
-                point.setName(random(25));
                 point.setCrimeSeverity(random(CrimeSeverity.class));
                 point.setRecordType(CodecsRecordType.POINT);
                 point.setUrl(String.format("https://%s", random(10)));
