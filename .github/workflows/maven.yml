@@ -18,9 +18,6 @@ jobs:
           java-version: 1.11
       - name: Install SQLs
         run: |
-          mysql -uroot -proot < data/1.users.SQL
-          mysql -uroot -proot < data/2.RECORD.SQL
-          mysql -uroot -proot < data/3.CHANGES.SQL
-          mysql -uroot -proot < data/4.ADD_ABBRIVIATION.sql
+          data/execute.sh root
       - name: Build with Maven
         run: mvn clean install -Dspring.datasource.username=root -Dspring.datasource.password=root
