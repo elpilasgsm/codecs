@@ -22,5 +22,16 @@ jobs:
           cd data/
           ./execute.sh root
           cd ..
-      - name: Build with Maven
+      - name: Build And Test with Maven
         run: mvn clean install -Dspring.datasource.username=root -Dspring.datasource.password=root
+      - name: Repackage Jar
+        run: mvn package spring-boot:repackage -DskipTests=true
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.devURL }}
+          username: ${{ secrets.devUser }}
+          password: ${{ secrets.devPassword }}
+          port: 22
+          source: "target/codecs-0.0.1-SNAPSHOT.jar"
+          target: "/home/codecs/"
