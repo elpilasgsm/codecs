@@ -1,0 +1,12 @@
+<mz-modal [fixedFooter]="false" [fullscreen]="false" *ngIf="change">
+  <mz-modal-header>
+    <h5>Удаление '{{change.name}}?</h5>
+  </mz-modal-header>
+  <mz-modal-content>
+    <b>Внимание!</b> Вы уверены что хотите удалить изменение {{change.name | uppercase}}?
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button mz-button mz-modal-close [flat]="true">Нет</button>
+    <button mz-button mz-modal-close [flat]="true" (click)="onAgree()">Да</button>
+  </mz-modal-footer>
+</mz-modal>

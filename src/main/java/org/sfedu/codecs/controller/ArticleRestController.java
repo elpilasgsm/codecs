@@ -1,17 +1,12 @@
 package org.sfedu.codecs.controller;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.sfedu.codecs.model.db.ChangesEntity;
 import org.sfedu.codecs.model.db.RecordEntity;
-import org.sfedu.codecs.model.db.UserEntity;
 import org.sfedu.codecs.model.dto.ArticleRecord;
 import org.sfedu.codecs.model.dto.ChangesRecord;
-import org.sfedu.codecs.model.dto.User;
 import org.sfedu.codecs.repository.db.ChangesRepository;
 import org.sfedu.codecs.repository.db.RecordRepository;
-import org.sfedu.codecs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,7 +56,7 @@ public class ArticleRestController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ArticleRecord post(@RequestBody ArticleRecord record, @PathVariable("id") Long recordId, HttpServletResponse response) throws IOException {
         final Optional<RecordEntity> parent = recordRepository.findById(recordId);
-        if (parent.isEmpty()) {
+        if (!parent.isPresent()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
@@ -69,6 +64,7 @@ public class ArticleRestController {
         entity.setCrimeSeverity(record.getCrimeSeverity());
         entity.setName(record.getName());
         entity.setUrl(record.getUrl());
+        entity.setAbbreviation(record.getAbbreviation());
         return recordRepository.save(entity).toDTO(false);
     }
 
@@ -87,7 +83,7 @@ public class ArticleRestController {
 
     @RequestMapping(value = "/{record-id}/changes", method = RequestMethod.GET)
     public List<ChangesRecord> getChanges(@PathVariable("record-id") Long id, HttpServletResponse response) throws IOException {
-        List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordId(id);
+        List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordIdOrderByDate(id);
 
         return changesEntities == null ? new ArrayList<ChangesRecord>() : changesEntities
                 .stream()
@@ -110,7 +106,7 @@ public class ArticleRestController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<ArticleRecord> getRootTree(HttpServletResponse response) throws IOException {
-        List<RecordEntity> entities = recordRepository.getByParentRecordId(null);
+        List<RecordEntity> entities = recordRepository.getByParentRecordIdOrderByAbbreviation(null);
         List<ArticleRecord> tree = new ArrayList<>();
         for (RecordEntity e : entities) {
             tree.add(toDTO(e));

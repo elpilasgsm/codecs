@@ -1,19 +1,24 @@
-<li class="collection-item {{row.recordType|lowercase}}">
+<li
+  class="collection-item {{row.recordType|lowercase}}">
   <div class="row vertical-middle">
     <div class="col l9 s7 m7">
-      <p class="collection-header">{{row.recordType | recordType}}
-        - <a routerLink="/article-edit/{{row.recordId}}">{{row.name}}</a></p>
+      <p
+        class="collection-header"><a href="javascript:void(0)"
+                                     (click)="onClick()">{{row.recordType | recordTypeShort}} {{row.abbreviation}} {{row.name}}</a>
+      </p>
     </div>
     <div class="text-right col l3 s5 m5">
 
       <a routerLink="/article-edit/new" [queryParams]="{parentId: row.recordId, parentType:row.recordType}"
+         [skipLocationChange]="true"
          *ngIf="row.recordType!='POINT'">
         <span class="material-icons">add_to_photos</span>
       </a>
     </div>
   </div>
   <ul *ngIf="row.children">
-    <app-codecs-tree-row [row]="row" *ngFor="let row of row.children"></app-codecs-tree-row>
+    <app-codecs-tree-row [row]="row"
+                         *ngFor="let row of row.children"></app-codecs-tree-row>
   </ul>
 </li>
 

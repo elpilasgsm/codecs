@@ -11,7 +11,8 @@ import {Changes} from "./changes";
 })
 export class ArticleServiceService {
   private articleAPIURL = '/api/article/';
-  private tree: Article[];
+  private changeAPIURL = '/api/change/';
+  private tree: Article[] = [];
 
   constructor(private http: HttpClient, private toastService: MzToastService) {
 
@@ -19,12 +20,12 @@ export class ArticleServiceService {
 
 
   getRoot(callback: (tree: Article[]) => void): void {
-    if (this.tree) {
+    if (this.tree && this.tree.length > 0) {
       callback(this.tree);
     } else {
       this.http.get<Article[]>(this.articleAPIURL).pipe(catchError(this.handleError.bind(this))).subscribe(
         a => {
-          this.tree = a;
+          this.tree.push.apply(this.tree, a);
           if (callback) {
             callback(this.tree)
           }
@@ -55,7 +56,7 @@ export class ArticleServiceService {
 
 
   getArticleById(id, callback: (args: any) => void): void {
-    if (this.tree) {
+    if (this.tree && this.tree.length > 0) {
       callback({article: this.get(this.tree, id)});
     } else {
       this.getRoot(function (tr: Article[]) {
@@ -65,46 +66,55 @@ export class ArticleServiceService {
   }
 
   getChangesForArticleById(id, callback: (args: any) => void): void {
-    this.http.get<Changes[]>(`${this.articleAPIURL}${id}/changes`).pipe(catchError(this.handleError.bind(this))).subscribe(
-      changes => {
-        if (callback) {
-          callback(changes);
-        }
-      });
-
+    if (id) {
+      this.http.get<Changes[]>(`${this.articleAPIURL}${id}/changes`).pipe(catchError(this.handleError.bind(this))).subscribe(
+        changes => {
+          if (callback) {
+            callback(changes);
+          }
+        });
+    }
   }
-
-
 
 
   deleteArticleById(id): Observable<any> {
     return this.http.delete<any>(this.articleAPIURL + id).pipe(catchError(this.handleError.bind(this)));
   }
 
+  deleteChangeById(id): Observable<any> {
+    return this.http.delete<any>(this.changeAPIURL + id).pipe(catchError(this.handleError.bind(this)));
+  }
 
   addArticle(dto: Article, callback: (args: any) => void): void {
     this.http
       .put<Article>(this.articleAPIURL, dto)
       .pipe(catchError(this.handleError.bind(this)))
       .subscribe(art => {
-        if (!art.parent || art.parent.recordId == 0) {
-          this.tree.push(art);
-        } else {
-          let a = this.get(this.tree, art.parent.recordId);
-          if (a) {
-            if (!a.children) {
-              a.children = [];
-            }
-            a.children.push(art)
-          }
-        }
-        callback(art);
+        this.tree.length = 0;
+        this.getRoot(function (tree) {
+          callback(art);
+        }.bind(this));
+      });
+  }
+
+  addChange(dto: Changes, callback: (args: any) => void): void {
+    this.http
+      .put<Article>(this.changeAPIURL, dto)
+      .pipe(catchError(this.handleError.bind(this)))
+      .subscribe(art => {
+        this.getRoot(function (tree) {
+          callback(art);
+        }.bind(this));
+
       });
   }
 
   saveArticle(dto: Article, id: number): Observable<Article> {
-    return this.http.post<Article>(`${this.articleAPIURL}${id}
-`, dto).pipe(catchError(this.handleError.bind(this)));
+    return this.http.post<Article>(`${this.articleAPIURL}${id}`, dto).pipe(catchError(this.handleError.bind(this)));
+  }
+
+  editChange(dto: Changes, id: number): Observable<Changes> {
+    return this.http.post<Changes>(`${this.changeAPIURL}${id}`, dto).pipe(catchError(this.handleError.bind(this)));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -112,28 +122,15 @@ export class ArticleServiceService {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
 
-      this.toastService.show(`
-  Ошибка ${error.error.message}
-`,
+      this.toastService.show(`Ошибка ${error.error.message}`,
         4000,
         'red');
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
-      console.error(
-        `
-  Backend
-  returned
-  code ${error.status}
-, ` +
-        `
-  body
-  was: ${error.error}`);
+      console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
 
-      this.toastService.show(`
-  Ошибка ${error.status}
-- ${error.error.message}
-`, 4000,
+      this.toastService.show(` Ошибка ${error.status} - ${error.error.message}`, 4000,
         'red');
     }
     // return an observable with a user-facing error message

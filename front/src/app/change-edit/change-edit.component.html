@@ -1,0 +1,40 @@
+<div class="row grey lighten-5  main-container" *ngIf="article && article.recordId">
+  <div class="col s12">
+    <div class="row">
+      <div class="col s12 ">
+        <a (click)="addChanges()" href="javascript:void(0);">
+          Добавить изменение
+          в  {{article.recordType | recordType}} {{article.abbreviation}}. {{article.name}}
+        </a>
+      </div>
+      <div *ngIf="changes" class="display-changes scroll-v col s12 ">
+        <table class="striped">
+          <thead>
+          <tr>
+            <td>Название</td>
+            <td>Изменения в части</td>
+            <td>Тяжесть преступления</td>
+            <td>Дата принятия ФЗ</td>
+            <td>Направленность</td>
+            <td>Ссылка</td>
+            <td>Действия</td>
+          </tr>
+          </thead>
+          <tr *ngFor="let change of changes">
+            <td>{{change.name}}</td>
+            <td>{{change.changesInPart | inPart}}</td>
+            <td>{{change.crimeSeverity | crimeSeverity}}</td>
+            <td>{{change.date}}</td>
+            <td>{{change.direction | direction}}</td>
+            <td><a target="_blank" href="{{change.url}}"><i class="material-icons">link</i></a></td>
+            <td><a (click)="editChange(change)" href="javascript:void(0);"><i class="material-icons">edit</i></a>
+              <a (click)="delete(change)" href="javascript:void(0);"><i class="material-icons">delete</i></a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row grey lighten-5  main-container" *ngIf="!article || !article.recordId">
+  <p>Для внесения изменений сначала сохраните новую запись в кодекс</p>
+</div>

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ArticleServiceService} from "./article-service.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -7,15 +8,14 @@ import {ArticleServiceService} from "./article-service.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'front';
+  title = 'УК РФ';
 
-
-  constructor(private articleService: ArticleServiceService) {
+  constructor(private router: Router) {
 
   }
 
   ngOnInit(): void {
-
+    this.router.navigate([''])
   }
 
 }

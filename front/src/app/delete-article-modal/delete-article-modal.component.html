@@ -1,6 +1,7 @@
 <mz-modal [fixedFooter]="false" [fullscreen]="false" *ngIf="article">
   <mz-modal-header>
-    <h5>Удаление '{{article.recordType | recordType}} {{article.name | uppercase}}' из кодекса?</h5>
+    <h5>Удаление '{{article.recordType | recordType}} {{article.abbreviation}} {{article.name | uppercase}}' из
+      кодекса?</h5>
   </mz-modal-header>
   <mz-modal-content>
     <b>Внимание!</b> Подтверждение удаления приведет к необратимой потери данных и всех его вложений, таких как,

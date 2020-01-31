@@ -6,6 +6,7 @@ export class Article {
   public recordType: string;
   public crimeSeverity: string;
   public url: string;
+  public abbreviation: string;
   public parent: Article;
   public children: Article[];
   public changes: Changes[];

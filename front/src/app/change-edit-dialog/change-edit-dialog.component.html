@@ -1,0 +1,85 @@
+<mz-modal [fixedFooter]="false" [fullscreen]="true" *ngIf="change">
+  <mz-modal-header>
+    <h5 *ngIf="editableChange.name">Редактирование изменения {{editableChange.name }}</h5>
+    <h5 *ngIf="!editableChange.name">Новое изменение</h5>
+  </mz-modal-header>
+  <mz-modal-content>
+    <div class="row display-popup scroll-v">
+      <div class="col l12 m12 s12 grey lighten-5 main-container">
+        <form class="col l12" *ngIf="change">
+          <div class="row">
+            <div class="col s12">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+          <textarea id="name" type="text" class="materialize-textarea" [(ngModel)]="editableChange.name"
+                    name="name"></textarea>
+              <label for="name" [ngClass]="{'active': editableChange.name}">Название</label>
+            </div>
+          </div>
+          <div class="row">
+            <mz-datepicker-container i18n class="col s12" (click)="$event.stopPropagation()">
+              <input mz-datepicker (click)="$event.stopPropagation()" name="datepickerChangeDate"
+                     [label]="'Дата внесения изменения'"
+                     [options]="datepickerOptions"
+                     [(ngModel)]="editableChange.date"
+                     id="datepickerChangeDate"
+                     placeholder=""
+                     type="text">
+            </mz-datepicker-container>
+          </div>
+          <div class="row">
+            <app-crime-sererity-selector [change]="editableChange" [article]="null" id="severity"></app-crime-sererity-selector>
+          </div>
+          <div class="row">
+            <app-in-part-changes-selector [change]="editableChange"
+                                          id="inPartChanges"></app-in-part-changes-selector>
+          </div>
+          <div class="row">
+            <app-performance-changes-selector [change]="editableChange"
+                                              id="performanceType"></app-performance-changes-selector>
+          </div>
+          <div class="row" *ngIf="editableChange.performanceType==='DELAYED'">
+            <mz-datepicker-container i18n class="col s12" (click)="$event.stopPropagation()">
+              <input mz-datepicker (click)="$event.stopPropagation()"
+
+                     [label]="'Дата исполнения изменения'"
+                     [options]="datepickerOptions"
+                     [(ngModel)]="editableChange.activationDate"
+                     name="datepickerActiveDate"
+                     id="datepickerActiveDate"
+                     placeholder=""
+                     type="text">
+            </mz-datepicker-container>
+          </div>
+          <div class="row">
+            <app-method-changes-selector [change]="editableChange"
+                                         id="method"></app-method-changes-selector>
+
+          </div>
+          <div class="row">
+            <app-direction-changes-selector [change]="editableChange"
+                                            id="direction"></app-direction-changes-selector>
+
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <a target="_blank" class="prefix material-icons" href="{{editableChange.url}}"><i class="material-icons">link</i></a>
+              <input id="url" type="text" class="validate" [(ngModel)]="editableChange.url" name="url"
+
+                     placeholder="Ссылка">
+              <label for="name" [ngClass]="{'active': editableChange.url}">Ссылка</label>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button mz-button mz-modal-close [flat]="true">Отмена</button>
+    <button mz-button mz-modal-close [flat]="true" (click)="save()">Да</button>
+  </mz-modal-footer>
+</mz-modal>

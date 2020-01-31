@@ -23,6 +23,10 @@ public class RecordEntity implements DBObject<ArticleRecord> {
     @Column(name = "NAME")
     private String name;
 
+
+    @Column(name = "ABBREVIATION")
+    private String abbreviation;
+
     @Column(name = "CODECS_RECORD_TYPE")
     @Enumerated(EnumType.STRING)
     private CodecsRecordType recordType;
@@ -38,6 +42,7 @@ public class RecordEntity implements DBObject<ArticleRecord> {
     @ManyToOne(fetch = FetchType.LAZY)
     private RecordEntity parent;
 
+    @OrderBy("abbreviation asc")
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<RecordEntity> children;
 
@@ -108,6 +113,14 @@ public class RecordEntity implements DBObject<ArticleRecord> {
         this.changes = changes;
     }
 
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
     @Override
     public ArticleRecord toDTO(boolean deepCopy) {
 
@@ -117,6 +130,7 @@ public class RecordEntity implements DBObject<ArticleRecord> {
         record.setName(this.name);
         record.setRecordId(this.recordId);
         record.setCrimeSeverity(this.crimeSeverity);
+        record.setAbbreviation(this.abbreviation);
         if (deepCopy) {
             if (this.parent != null) {
                 record.setParent(this.parent.toDTO(

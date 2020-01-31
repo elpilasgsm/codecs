@@ -1,11 +1,12 @@
 package org.sfedu.codecs.model.dto;
 
-import org.sfedu.codecs.constants.ChangesDirection;
-import org.sfedu.codecs.constants.ChangesPerformanceType;
-import org.sfedu.codecs.constants.CodecsChangesInPart;
-import org.sfedu.codecs.constants.CrimeSeverity;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.sfedu.codecs.constants.*;
 import org.sfedu.codecs.model.DTOObject;
 import org.sfedu.codecs.model.db.ChangesEntity;
+import org.sfedu.codecs.utils.CodecsDateDeSerializer;
+import org.sfedu.codecs.utils.CodecsDateSerializer;
 
 import java.util.Calendar;
 
@@ -17,11 +18,16 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
     private CodecsChangesInPart changesInPart;
     private ChangesPerformanceType performanceType;
     private CrimeSeverity crimeSeverity;
+    @JsonDeserialize(using = CodecsDateDeSerializer.class)
+    @JsonSerialize(using = CodecsDateSerializer.class)
     private Calendar activationDate;
     private ChangesDirection direction;
+    @JsonDeserialize(using = CodecsDateDeSerializer.class)
+    @JsonSerialize(using = CodecsDateSerializer.class)
     private Calendar date;
     private String url;
     private ArticleRecord record;
+    private ChangesMethod method;
 
     public CrimeSeverity getCrimeSeverity() {
         return crimeSeverity;
@@ -103,6 +109,14 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
         this.record = record;
     }
 
+    public ChangesMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(ChangesMethod method) {
+        this.method = method;
+    }
+
     @Override
     public ChangesEntity toDB(boolean deepCopy) {
         ChangesEntity entity = new ChangesEntity();
@@ -115,6 +129,7 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
         entity.setDate(this.date);
         entity.setId(this.id);
         entity.setName(this.name);
+        entity.setMethod(this.method);
         entity.setCrimeSeverity(this.crimeSeverity);
         if (deepCopy) {
             if (this.record != null) {

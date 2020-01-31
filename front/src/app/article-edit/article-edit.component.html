@@ -1,6 +1,15 @@
 <div class="row">
-  <div class="col l2 m2 s12 grey lighten-5 main-container">
-    <form class="col l12" *ngIf="article">
+  <div class="col s12 l9 m9" *ngIf="article.recordId">
+    <app-change-edit [article]="article"></app-change-edit>
+  </div>
+  <div class="col grey lighten-5 main-container" [ngClass]="{
+  's12':article.recordId,
+  'l3':article.recordId,
+  'm3':article.recordId,
+  'm12':!article.recordId,
+  'l12':!article.recordId
+  }">
+    <form class="col l12" *ngIf="article ">
       <div class="row">
         <div class="col s12">
           <!--          <input [disabled]="true" id="recordType" type="text" class="validate"
@@ -12,59 +21,42 @@
       </div>
       <div class="row">
         <div class="input-field col s12">
+          <input id="abbreviation" type="text" class="materialize-textarea" [(ngModel)]="article.abbreviation"
+                 name="abbreviation">
+          <label for="abbreviation" [ngClass]="{'active': article.abbreviation}">Номер/Порядок</label>
+        </div>
+      </div>
+      <div class="row" *ngIf="article.recordType=='ARTICLE'">
+        <div class="input-field col s12">
           <textarea id="name" type="text" class="materialize-textarea" [(ngModel)]="article.name"
                     name="name"></textarea>
           <label for="name" [ngClass]="{'active': article.name}">Название</label>
         </div>
       </div>
       <div class="row">
-        <app-crime-sererity-selector [article]="article" id="severity"></app-crime-sererity-selector>
+        <app-crime-sererity-selector [change]="null" [article]="article" id="severity"></app-crime-sererity-selector>
       </div>
       <div class="row">
         <div class="input-field col s12">
           <a target="_blank" class="prefix material-icons" href="{{article.url}}"><i class="material-icons">link</i></a>
-          <input required minlength="4" id="url" type="text" class="validate" [(ngModel)]="article.url" name="url"
+          <input id="url" type="text" class="validate" [(ngModel)]="article.url" name="url"
                  placeholder="Ссылка">
           <label for="name" [ngClass]="{'active': article.url}">Ссылка</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s6">
-          <a (click)='save()' class="waves-effect waves-light btn btn-small"><i class="material-icons">save</i></a>
+        <div class="input-field col s12">
+          <a (click)='save()' class="waves-effect waves-light btn btn-small"><i
+            class="material-icons">save</i>Сохранить</a>
         </div>
-        <div class="input-field col s6">
-          <a (click)='delete()' class="waves-effect waves-light btn  btn-small red lighten-2"><i class="material-icons">delete</i></a>
+        <div class="input-field col s12">
+          <a (click)='cancel()' class="waves-effect waves-light btn  btn-small grey"><i
+            class="material-icons">cancel</i>Отменить</a>
+        </div>
+        <div class="input-field col s12">
+          <a (click)='delete()' class="waves-effect waves-light btn  btn-small red lighten-2"><i class="material-icons">delete</i>Удалить</a>
         </div>
       </div>
     </form>
-  </div>
-  <div class="col s12 l10 m10">
-    <table *ngIf="changes" class="striped">
-      <thead>
-      <tr>
-        <td>Название</td>
-        <td>В часте</td>
-        <td>Тяжесть</td>
-        <td>Дата принятия ФЗ</td>
-        <td>Вступление закона в силу</td>
-        <td>Дата вступления в силу</td>
-        <td>Направленность</td>
-        <td>Ссылка</td>
-        <td>Действия</td>
-      </tr>
-      </thead>
-      <tr *ngFor="let change of changes">
-        <td>{{change.name}}</td>
-        <td>{{change.changesInPart}}</td>
-        <td>{{change.crimeSeverity}}</td>
-        <td>{{change.date}}</td>
-        <td>{{change.performanceType}}</td>
-        <td>{{change.activationDate}}</td>
-        <td>{{change.direction}}</td>
-        <td><a href="{{change.url}}"><i class="material-icons">link</i></a></td>
-        <td><i class="material-icons">edit</i>
-          <i class="material-icons">delete</i></td>
-      </tr>
-    </table>
   </div>
 </div>

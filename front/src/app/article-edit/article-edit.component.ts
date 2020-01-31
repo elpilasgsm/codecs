@@ -17,6 +17,7 @@ import {Changes} from "../changes";
 })
 export class ArticleEditComponent implements OnInit {
   article: Article;
+  originArticle: Article;
   parentArticle: Article;
   changes: Changes[];
 
@@ -38,7 +39,7 @@ export class ArticleEditComponent implements OnInit {
         this.toastService.show(`${this.recordTypePipe.transform(a.recordType, null)} ${a.name} успешно добавлен(а)!`,
           4000,
           'green');
-        this.article = a;
+        this.article = Object.assign({}, a);
         this.router.navigate([`/article-edit/${a.recordId}`]);
       }.bind(this));
     } else {
@@ -49,23 +50,10 @@ export class ArticleEditComponent implements OnInit {
         this.article.url = a.url;
         this.article.crimeSeverity = a.crimeSeverity;
         this.article.name = a.name;
+        Object.assign(this.originArticle, this.article);
       });
     }
   }
-
-  update(list: Article[], a: Article): void {
-    list.forEach((item, index) => {
-      if (item.recordId === a.recordId) {
-        item.name = a.name;
-        item.crimeSeverity = a.crimeSeverity;
-        item.url = a.url;
-        return;
-      } else if (item.children) {
-        this.update(item.children, a);
-      }
-    });
-  }
-
 
   deleteFromTree(list: Article[], rec: Article): void {
     list.forEach((item, index) => {
@@ -99,6 +87,25 @@ export class ArticleEditComponent implements OnInit {
     /*    */
   }
 
+  newArticle(): Article {
+    return {
+      recordId: null,
+      crimeSeverity: 'NOT_APPLIED',
+      recordType: 'ARTICLE',
+      name: null,
+      children: null,
+      changes: null,
+      parent: this.parentArticle,
+      url: null,
+      abbreviation: null
+    }
+  }
+
+  cancel() {
+    this.article = Object.assign({}, this.originArticle);
+    this.router.navigate([`/`]);
+  }
+
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
       if (params.id) {
@@ -108,42 +115,21 @@ export class ArticleEditComponent implements OnInit {
               this.articleServiceService.getArticleById(
                 params.get('parentId'), function (any) {
                   this.parentArticle = any.article;
-                  this.article = {
-                    recordId: null,
-                    crimeSeverity: 'NOT_APPLIED',
-                    recordType: this.parentArticle == null ? 'ARTICLE'
-                      : (params.get("parentType") == 'ARTICLE' ? 'PART' : 'POINT'),
-                    name: null,
-                    children: null,
-                    changes: null,
-                    parent: this.parentArticle,
-                    url: null
-                  };
+                  this.article = this.newArticle();
+                  this.article.recordType = this.parentArticle == null ? 'ARTICLE'
+                    : (params.get("parentType") == 'ARTICLE' ? 'PART' : 'POINT');
                   this.changes = [];
                 }.bind(this)
               );
             } else {
-              this.article = {
-                recordId: null,
-                crimeSeverity: 'NOT_APPLIED',
-                recordType: 'ARTICLE',
-                name: null,
-                children: null,
-                changes: null,
-                parent: null,
-                url: null
-              };
+              this.article = this.newArticle();
               this.changes = [];
             }
           });
         } else {
           this.articleServiceService.getArticleById(params.id, function (args) {
-            this.article = args.article;
-            if (this.article) {
-              this.articleServiceService.getChangesForArticleById(params.id, function (changes: Changes[]) {
-                this.changes = changes;
-              }.bind(this));
-            }
+            this.originArticle = args.article;
+            this.article = Object.assign({}, this.originArticle);
           }.bind(this));
         }
       }
