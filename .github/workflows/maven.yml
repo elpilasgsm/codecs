@@ -35,3 +35,12 @@ jobs:
           port: 22
           source: "target/codecs-0.0.1-SNAPSHOT.jar"
           target: "/home/codecs/"
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm ci and npm run build
+        run: |
+          cd front/
+          npm ci
+          npm run build:ci
