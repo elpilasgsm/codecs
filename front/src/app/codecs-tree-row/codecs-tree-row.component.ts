@@ -18,7 +18,7 @@ export class CodecsTreeRowComponent implements OnInit {
   }
 
   onClick() {
-    this.router.navigate([`/article-edit/${this.row.recordId}`], {});
+    this.router.navigate([`/article-edit/${this.row.recordId}`], {skipLocationChange:true});
   }
 
   ngOnInit() {

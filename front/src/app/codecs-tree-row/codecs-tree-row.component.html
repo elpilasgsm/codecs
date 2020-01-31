@@ -10,6 +10,7 @@
     <div class="text-right col l3 s5 m5">
 
       <a routerLink="/article-edit/new" [queryParams]="{parentId: row.recordId, parentType:row.recordType}"
+         [skipLocationChange]="true"
          *ngIf="row.recordType!='POINT'">
         <span class="material-icons">add_to_photos</span>
       </a>
