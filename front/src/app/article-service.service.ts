@@ -81,6 +81,9 @@ export class ArticleServiceService {
     return this.http.delete<any>(this.articleAPIURL + id).pipe(catchError(this.handleError.bind(this)));
   }
 
+  deleteChangeById(id): Observable<any> {
+    return this.http.delete<any>(this.changeAPIURL + id).pipe(catchError(this.handleError.bind(this)));
+  }
 
   addArticle(dto: Article, callback: (args: any) => void): void {
     this.http

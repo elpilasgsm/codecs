@@ -17,14 +17,15 @@ import {RecordTypeShortPipe} from './record-type-short.pipe';
 import {MethodPipe} from './method.pipe';
 import {ChangeEditComponent} from './change-edit/change-edit.component';
 import {ChangeEditDialogComponent} from './change-edit-dialog/change-edit-dialog.component';
-import { InPartChangesSelectorComponent } from './in-part-changes-selector/in-part-changes-selector.component';
-import { InPartPipe } from './in-part.pipe';
-import { PerformanceChangesSelectorComponent } from './performance-changes-selector/performance-changes-selector.component';
-import { PerformanceTypePipe } from './performance-type.pipe';
-import { DirectionPipe } from './direction.pipe';
-import { DirectionChangesSelectorComponent } from './direction-changes-selector/direction-changes-selector.component';
-import { MethodChangesSelectorComponent } from './method-changes-selector/method-changes-selector.component';
-import { DefaultViewComponent } from './default-view/default-view.component';
+import {InPartChangesSelectorComponent} from './in-part-changes-selector/in-part-changes-selector.component';
+import {InPartPipe} from './in-part.pipe';
+import {PerformanceChangesSelectorComponent} from './performance-changes-selector/performance-changes-selector.component';
+import {PerformanceTypePipe} from './performance-type.pipe';
+import {DirectionPipe} from './direction.pipe';
+import {DirectionChangesSelectorComponent} from './direction-changes-selector/direction-changes-selector.component';
+import {MethodChangesSelectorComponent} from './method-changes-selector/method-changes-selector.component';
+import {DefaultViewComponent} from './default-view/default-view.component';
+import {ChangeDeleteDialogComponent} from './change-delete-dialog/change-delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { DefaultViewComponent } from './default-view/default-view.component';
     DirectionPipe,
     DirectionChangesSelectorComponent,
     MethodChangesSelectorComponent,
-    DefaultViewComponent
+    DefaultViewComponent,
+    ChangeDeleteDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +65,7 @@ import { DefaultViewComponent } from './default-view/default-view.component';
   exports: [RecordTypePipe],
   providers: [RecordTypePipe],
   bootstrap: [AppComponent],
-  entryComponents: [DeleteArticleModalComponent, ChangeEditDialogComponent],
+  entryComponents: [DeleteArticleModalComponent, ChangeEditDialogComponent, ChangeDeleteDialogComponent],
 
 })
 export class AppModule {

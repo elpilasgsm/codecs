@@ -7,6 +7,7 @@ import {MzModalService, MzToastService} from "ngx-materialize";
 import {DeleteArticleModalComponent} from "../delete-article-modal/delete-article-modal.component";
 import {ChangeEditDialogComponent} from "../change-edit-dialog/change-edit-dialog.component";
 import {RecordTypePipe} from "../record-type.pipe";
+import {ChangeDeleteDialogComponent} from "../change-delete-dialog/change-delete-dialog.component";
 
 @Component({
   selector: 'app-change-edit',
@@ -71,6 +72,25 @@ export class ChangeEditComponent implements OnInit {
     };
   }
 
+  delete(ch: Changes): void {
+    this.modalService.open(ChangeDeleteDialogComponent, {
+      change: ch,
+      onAgree: function () {
+        this.articleServiceService.deleteChangeById(ch.id).subscribe(a => {
+          if (200 === a) {
+            this.articleServiceService.getRoot(function (tree: Article[]) {
+              this.toastService.show(`Изменение ${ch.name} успешно удалено!`,
+                4000,
+                'green');
+              this.ngOnChanges();
+            }.bind(this));
+          }
+        });
+      }.bind(this)
+    });
+
+    /*    */
+  }
 
   ngOnInit() {
     if (this.article) {

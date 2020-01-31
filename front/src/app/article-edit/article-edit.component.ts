@@ -39,7 +39,7 @@ export class ArticleEditComponent implements OnInit {
         this.toastService.show(`${this.recordTypePipe.transform(a.recordType, null)} ${a.name} успешно добавлен(а)!`,
           4000,
           'green');
-        this.article = Object.assign({},a);
+        this.article = Object.assign({}, a);
         this.router.navigate([`/article-edit/${a.recordId}`]);
       }.bind(this));
     } else {
@@ -50,7 +50,7 @@ export class ArticleEditComponent implements OnInit {
         this.article.url = a.url;
         this.article.crimeSeverity = a.crimeSeverity;
         this.article.name = a.name;
-        Object.assign(this.originArticle, a);
+        Object.assign(this.originArticle, this.article);
       });
     }
   }

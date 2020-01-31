@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 .display {
   height: calc(100vh - 250px);
+  box-shadow: none !important;
 }
+
 .display-popup {
   height: calc(100vh - 200px);
 }
@@ -41,8 +43,8 @@ a {
 }
 
 .main-container {
-  border-radius: 5px;
   padding-top: 20px;
+  border-right: 1px solid #aeaeae !important;
 }
 
 body {

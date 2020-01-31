@@ -60,7 +60,7 @@ public class ChangesRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Integer delete(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
-        recordRepository.deleteById(id);
+        changesRepository.deleteById(id);
         return HttpServletResponse.SC_OK;
     }
 
@@ -69,15 +69,6 @@ public class ChangesRestController {
     public ArticleRecord get(@PathVariable("record-id") Long id, HttpServletResponse response) throws IOException {
         RecordEntity entity = recordRepository.getOne(id);
         return entity.toDTO(true);
-    }
-
-    @RequestMapping(value = "/{record-id}/changes", method = RequestMethod.GET)
-    public List<ChangesRecord> getChanges(@PathVariable("record-id") Long id, HttpServletResponse response) throws IOException {
-        List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordIdOrderByDate(id);
-
-        return changesEntities == null ? new ArrayList<ChangesRecord>() : changesEntities
-                .stream()
-                .map(it -> it.toDTO(false)).collect(Collectors.toList());
     }
 
 

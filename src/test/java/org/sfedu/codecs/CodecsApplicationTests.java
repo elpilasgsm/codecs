@@ -9,7 +9,6 @@ import org.sfedu.codecs.model.db.UserEntity;
 import org.sfedu.codecs.repository.db.ChangesRepository;
 import org.sfedu.codecs.repository.db.RecordRepository;
 import org.sfedu.codecs.repository.db.UserRepository;
-import org.sfedu.codecs.repository.es.ArticleESRepository;
 import org.sfedu.codecs.service.UserService;
 import org.sfedu.codecs.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest
 @PropertySource("classpath:application.properties")
@@ -44,6 +41,8 @@ class CodecsApplicationTests {
         return RandomStringUtils.randomAlphanumeric(l);
     }
 
+    private final static Random rnd = new Random(123L);
+
     @Test
     void contextLoads() throws Exception {
         String login = random(20);
@@ -52,9 +51,8 @@ class CodecsApplicationTests {
         entity.setLogin(login);
         entity.setPassword(PasswordUtils.getHash(password));
         entity.setActive(true);
-        entity.setRole(UserRoles.MODERATOR);
+        entity.setRole(random(UserRoles.class));
         entity = repository.save(entity);
-
         Assert.isTrue(entity.getUserId() != 0, "ID is 0");
         final UserEntity fromDB = repository.findUserEntityByLogin(login);
         Assert.notNull(fromDB, "Can't find by login");
@@ -63,16 +61,22 @@ class CodecsApplicationTests {
         userService.getById(fromDB.getUserId());
     }
 
+    private static <E extends Enum> E random(Class<E> eClass) {
+        Enum[] enums = eClass.getEnumConstants();
+        return (E) enums[rnd.nextInt(enums.length)];
+    }
+
     @Test
     public void articteTest() {
-        for (int bn = 0; bn < 12; bn++) {
+        int inter = rnd.nextInt(5) + 2;
+        for (int bn = 0; bn < inter; bn++) {
             RecordEntity article = new RecordEntity();
             article.setName(random(25));
             article.setAbbreviation(random(3));
             article.setRecordType(CodecsRecordType.ARTICLE);
             article.setUrl(String.format("https://%s", random(10)));
-            article.setCrimeSeverity(CrimeSeverity.REGULAR);
-            article.setChanges(getListOfChanges(5, article));
+            article.setCrimeSeverity(random(CrimeSeverity.class));
+            article.setChanges(getListOfChanges(rnd.nextInt(5) + 2, article));
             article = recordRepository.save(article);
 
             RecordEntity part1 = new RecordEntity();
@@ -81,21 +85,20 @@ class CodecsApplicationTests {
             part1.setRecordType(CodecsRecordType.PART);
             part1.setUrl(String.format("https://%s", random(10)));
             part1.setParent(article);
-            part1.setCrimeSeverity(CrimeSeverity.EXTRA);
-            part1.setChanges(getListOfChanges(5, part1));
+            part1.setCrimeSeverity(random(CrimeSeverity.class));
+            part1.setChanges(getListOfChanges(rnd.nextInt(5) + 2, part1));
             part1 = recordRepository.save(part1);
-            for (int i = 0; i < 5; i++) {
-
+            int iter2 = rnd.nextInt(5) + 2;
+            for (int i = 0; i < iter2; i++) {
                 RecordEntity point = new RecordEntity();
                 point.setName(random(25));
-                point.setCrimeSeverity(CrimeSeverity.MIDDLE);
+                point.setCrimeSeverity(random(CrimeSeverity.class));
                 point.setRecordType(CodecsRecordType.POINT);
                 point.setUrl(String.format("https://%s", random(10)));
                 point.setParent(part1);
                 point.setAbbreviation(random(3));
-                point.setChanges(getListOfChanges(5, point));
+                point.setChanges(getListOfChanges(rnd.nextInt(70) + 30, point));
                 recordRepository.save(point);
-                //  changesRepository.save(changesEntity);
             }
             final RecordEntity partResponse1 = recordRepository.getOne(article.getRecordId());
             if (!CollectionUtils.isEmpty(partResponse1.getChildren())) {
@@ -117,17 +120,22 @@ class CodecsApplicationTests {
 
     private ChangesEntity getRandomChanges(RecordEntity parent) {
         ChangesEntity changesEntity = new ChangesEntity();
-        changesEntity.setCrimeSeverity(CrimeSeverity.MIDDLE);
-        changesEntity.setActivationDate(Calendar.getInstance());
+        changesEntity.setCrimeSeverity(random(CrimeSeverity.class));
         changesEntity.setRecord(parent);
-        changesEntity.setMethod(ChangesMethod.APPEND);
+        changesEntity.setMethod(random(ChangesMethod.class));
         //changesEntity.setPerformanceType(ChangesPerformanceType.DELAYED);
         changesEntity.setDate(Calendar.getInstance());
-        changesEntity.setPerformanceType(ChangesPerformanceType.DELAYED);
-        changesEntity.setChangesInPart(CodecsChangesInPart.PUNISHMENT);
+        changesEntity.getDate().add(Calendar.YEAR, -rnd.nextInt(30) + 1);
+        changesEntity.setPerformanceType(random(ChangesPerformanceType.class));
+        changesEntity.setChangesInPart(random(CodecsChangesInPart.class));
         changesEntity.setName(random(23));
-        changesEntity.setDirection(ChangesDirection.POSITIVE);
+        changesEntity.setDirection(random(ChangesDirection.class));
         changesEntity.setUrl(String.format("https://%s", random(10)));
+        if (ChangesPerformanceType.DELAYED == changesEntity.getPerformanceType()) {
+            changesEntity.setActivationDate(changesEntity.getDate());
+            changesEntity.getActivationDate().add(Calendar.MONTH, rnd.nextInt(4) + 1);
+        }
+
         return changesEntity;
     }
 

@@ -1,5 +1,14 @@
 <div class="row">
-  <div class="col l3 m3 s12 grey lighten-5 main-container">
+  <div class="col s12 l9 m9" *ngIf="article.recordId">
+    <app-change-edit [article]="article"></app-change-edit>
+  </div>
+  <div class="col grey lighten-5 main-container" [ngClass]="{
+  's12':article.recordId,
+  'l3':article.recordId,
+  'm3':article.recordId,
+  'm12':!article.recordId,
+  'l12':!article.recordId
+  }">
     <form class="col l12" *ngIf="article ">
       <div class="row">
         <div class="col s12">
@@ -37,7 +46,8 @@
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <a (click)='save()' class="waves-effect waves-light btn btn-small"><i class="material-icons">save</i>Сохранить</a>
+          <a (click)='save()' class="waves-effect waves-light btn btn-small"><i
+            class="material-icons">save</i>Сохранить</a>
         </div>
         <div class="input-field col s12">
           <a (click)='cancel()' class="waves-effect waves-light btn  btn-small grey"><i
@@ -48,8 +58,5 @@
         </div>
       </div>
     </form>
-  </div>
-  <div class="col s12 l9 m9">
-    <app-change-edit [article]="article"></app-change-edit>
   </div>
 </div>

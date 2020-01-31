@@ -7,7 +7,7 @@
           в  {{article.recordType | recordType}} {{article.abbreviation}}. {{article.name}}
         </a>
       </div>
-      <div *ngIf="changes">
+      <div *ngIf="changes" class="display-changes scroll-v col s12 ">
         <table class="striped">
           <thead>
           <tr>
@@ -28,7 +28,7 @@
             <td>{{change.direction | direction}}</td>
             <td><a target="_blank" href="{{change.url}}"><i class="material-icons">link</i></a></td>
             <td><a (click)="editChange(change)" href="javascript:void(0);"><i class="material-icons">edit</i></a>
-              <i class="material-icons">delete</i></td>
+              <a (click)="delete(change)" href="javascript:void(0);"><i class="material-icons">delete</i></a></td>
           </tr>
         </table>
       </div>
