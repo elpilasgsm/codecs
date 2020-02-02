@@ -49,6 +49,7 @@ jobs:
       - name: npm ci and npm run build
         run: |
           cd front/
+          echo $(pwd)
           npm ci
           npm run build:ci
           /bin/tar -cz -f dist.tgz ./dist
