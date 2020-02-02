@@ -54,6 +54,8 @@ jobs:
           npm run build:ci
           /bin/tar -cz -f dist.tgz ./dist
           cp ./dist.tgz /tmp/
+      - name: Debug current folder
+        run: echo $(pwd)
       - name: copy front to DEV
         uses: appleboy/scp-action@master
         with:
