@@ -34,10 +34,6 @@ public class RecordEntity implements DBObject<ArticleRecord> {
     @Column(name = "URL")
     private String url;
 
-    @Column(name = "SEVERITY_OF_CRIME")
-    @Enumerated(EnumType.STRING)
-    private CrimeSeverity crimeSeverity;
-
     @JoinColumn(name = "MEMBER_OF")
     @ManyToOne(fetch = FetchType.LAZY)
     private RecordEntity parent;
@@ -81,14 +77,6 @@ public class RecordEntity implements DBObject<ArticleRecord> {
         this.url = url;
     }
 
-    public CrimeSeverity getCrimeSeverity() {
-        return crimeSeverity;
-    }
-
-    public void setCrimeSeverity(CrimeSeverity crimeSeverity) {
-        this.crimeSeverity = crimeSeverity;
-    }
-
     public RecordEntity getParent() {
         return parent;
     }
@@ -129,7 +117,6 @@ public class RecordEntity implements DBObject<ArticleRecord> {
         record.setRecordType(this.recordType);
         record.setName(this.name);
         record.setRecordId(this.recordId);
-        record.setCrimeSeverity(this.crimeSeverity);
         record.setAbbreviation(this.abbreviation);
         if (deepCopy) {
             if (this.parent != null) {

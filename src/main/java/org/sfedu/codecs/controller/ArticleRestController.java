@@ -61,7 +61,6 @@ public class ArticleRestController {
             return null;
         }
         final RecordEntity entity = parent.get();
-        entity.setCrimeSeverity(record.getCrimeSeverity());
         entity.setName(record.getName());
         entity.setUrl(record.getUrl());
         entity.setAbbreviation(record.getAbbreviation());
