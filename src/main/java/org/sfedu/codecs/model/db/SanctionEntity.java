@@ -1,20 +1,14 @@
 package org.sfedu.codecs.model.db;
 
-import org.sfedu.codecs.constants.CodecsRecordType;
-import org.sfedu.codecs.constants.CrimeSeverity;
-import org.sfedu.codecs.constants.SanctionsMetric;
-import org.sfedu.codecs.model.DBObject;
-import org.sfedu.codecs.model.dto.ArticleRecord;
+import org.sfedu.codecs.model.IDBObject;
 import org.sfedu.codecs.model.dto.SanctionRecord;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "SANCTIONS")
-public class SanctionEntity implements DBObject<SanctionRecord> {
+public class SanctionEntity implements IDBObject<SanctionRecord> {
     private static final long serialVersionUID = 1222074571641809270L;
     @Id
     @javax.persistence.Id
@@ -26,8 +20,7 @@ public class SanctionEntity implements DBObject<SanctionRecord> {
     private String name;
 
     @Column(name = "METRIC")
-    @Enumerated(EnumType.STRING)
-    private SanctionsMetric metric;
+    private String metric;
 
     public long getId() {
         return id;
@@ -45,11 +38,11 @@ public class SanctionEntity implements DBObject<SanctionRecord> {
         this.name = name;
     }
 
-    public SanctionsMetric getMetric() {
+    public String getMetric() {
         return metric;
     }
 
-    public void setMetric(SanctionsMetric metric) {
+    public void setMetric(String metric) {
         this.metric = metric;
     }
 

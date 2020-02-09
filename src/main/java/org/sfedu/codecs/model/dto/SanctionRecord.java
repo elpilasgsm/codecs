@@ -1,17 +1,7 @@
 package org.sfedu.codecs.model.dto;
 
-import org.sfedu.codecs.constants.CodecsRecordType;
-import org.sfedu.codecs.constants.CrimeSeverity;
-import org.sfedu.codecs.constants.SanctionsMetric;
 import org.sfedu.codecs.model.DTOObject;
-import org.sfedu.codecs.model.db.RecordEntity;
 import org.sfedu.codecs.model.db.SanctionEntity;
-
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class SanctionRecord implements DTOObject<SanctionEntity> {
 
@@ -21,7 +11,7 @@ public class SanctionRecord implements DTOObject<SanctionEntity> {
 
     private String name;
 
-    private SanctionsMetric metric;
+    private String metric;
 
     public long getId() {
         return id;
@@ -39,11 +29,11 @@ public class SanctionRecord implements DTOObject<SanctionEntity> {
         this.name = name;
     }
 
-    public SanctionsMetric getMetric() {
+    public String getMetric() {
         return metric;
     }
 
-    public void setMetric(SanctionsMetric metric) {
+    public void setMetric(String metric) {
         this.metric = metric;
     }
 

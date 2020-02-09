@@ -48,7 +48,6 @@ export class ArticleEditComponent implements OnInit {
           4000,
           'green');
         this.article.url = a.url;
-        this.article.crimeSeverity = a.crimeSeverity;
         this.article.name = a.name;
         Object.assign(this.originArticle, this.article);
       });
@@ -90,7 +89,6 @@ export class ArticleEditComponent implements OnInit {
   newArticle(): Article {
     return {
       recordId: null,
-      crimeSeverity: 'NOT_APPLIED',
       recordType: 'ARTICLE',
       name: null,
       children: null,
