@@ -1,0 +1,29 @@
+<div class="row grey lighten-5  main-container">
+  <div class="col s12">
+    <div class="row">
+      <div class="col s12 ">
+        <a href="#"><span class="material-icons">add</span>Добавить Санкцию</a>
+      </div>
+      <div class="display-changes scroll-v col s12 ">
+
+        <table class="striped">
+          <thead>
+          <tr>
+            <th>Название</th>
+            <th>Мера исчисления</th>
+            <th>Действие</th>
+          </tr>
+          </thead>
+          <tbody *ngIf="sanctions">
+          <tr *ngFor="let sanc of sanctions">
+            <td>{{sanc.name}}</td>
+            <td>{{sanc.metric}}</td>
+            <td><a href="#"><span class="material-icons">edit</span></a>
+              <a href="#"><span class="material-icons">delete</span></a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

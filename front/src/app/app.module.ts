@@ -34,6 +34,7 @@ import {MethodChangesSelectorComponent} from './method-changes-selector/method-c
 import {DefaultViewComponent} from './default-view/default-view.component';
 import {ChangeDeleteDialogComponent} from './change-delete-dialog/change-delete-dialog.component';
 import { HeaderComponent } from './header/header.component';
+import { SanctionsConfigComponent } from './sanctions-config/sanctions-config.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { HeaderComponent } from './header/header.component';
     MethodChangesSelectorComponent,
     DefaultViewComponent,
     ChangeDeleteDialogComponent,
-    HeaderComponent
+    HeaderComponent,
+    SanctionsConfigComponent
   ],
   imports: [
     BrowserModule,

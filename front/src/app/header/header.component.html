@@ -1,6 +1,5 @@
-<mz-navbar>
+<mz-navbar navbarClass="blue">
   <mz-navbar-item-container [align]="'right'">
-    <mz-navbar-item><a href="#">Изменения в кодексе</a></mz-navbar-item>
-    <mz-navbar-item><a href="#">Настройка санкций</a></mz-navbar-item>
+    <mz-navbar-item><a routerLink="sanctions-conf" [skipLocationChange]="true">Настройка санкций</a></mz-navbar-item>
   </mz-navbar-item-container>
 </mz-navbar>

@@ -40,7 +40,7 @@ export class ArticleEditComponent implements OnInit {
           4000,
           'green');
         this.article = Object.assign({}, a);
-        this.router.navigate([`/article-edit/${a.recordId}`]);
+        this.router.navigate([`/article-edit/${a.recordId}`], {skipLocationChange: true});
       }.bind(this));
     } else {
       this.articleServiceService.saveArticle(this.article, this.article.recordId).subscribe(a => {
@@ -69,7 +69,7 @@ export class ArticleEditComponent implements OnInit {
     this.modalService.open(DeleteArticleModalComponent, {
       article: this.article,
       onAgree: function () {
-        this.router.navigate([`/`]);
+        this.router.navigate([`/`], {skipLocationChange: true});
         this.articleServiceService.deleteArticleById(this.article.recordId).subscribe(a => {
           if (200 === a) {
             this.articleServiceService.getRoot(function (tree: Article[]) {
@@ -101,7 +101,7 @@ export class ArticleEditComponent implements OnInit {
 
   cancel() {
     this.article = Object.assign({}, this.originArticle);
-    this.router.navigate([`/`]);
+    this.router.navigate([`/`], {skipLocationChange: true});
   }
 
   ngOnInit() {
