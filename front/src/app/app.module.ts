@@ -33,8 +33,9 @@ import {DirectionChangesSelectorComponent} from './direction-changes-selector/di
 import {MethodChangesSelectorComponent} from './method-changes-selector/method-changes-selector.component';
 import {DefaultViewComponent} from './default-view/default-view.component';
 import {ChangeDeleteDialogComponent} from './change-delete-dialog/change-delete-dialog.component';
-import { HeaderComponent } from './header/header.component';
-import { SanctionsConfigComponent } from './sanctions-config/sanctions-config.component';
+import {HeaderComponent} from './header/header.component';
+import {SanctionsConfigComponent} from './sanctions-config/sanctions-config.component';
+import {SanctionChangesSelectorComponent} from './sanction-changes-selector/sanction-changes-selector.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { SanctionsConfigComponent } from './sanctions-config/sanctions-config.co
     DefaultViewComponent,
     ChangeDeleteDialogComponent,
     HeaderComponent,
-    SanctionsConfigComponent
+    SanctionsConfigComponent,
+    SanctionChangesSelectorComponent
   ],
   imports: [
     BrowserModule,

@@ -13,10 +13,17 @@ export class SanctionsConfigComponent implements OnInit {
   constructor(private sanctionsService: SanctionsService) {
   }
 
-  ngOnInit() {
-    this.sanctionsService.getAll().subscribe(list => {
-      this.sanctions = list;
-    });
+  getSanctions(): Sanction[] {
+    return this.sanctions;
   }
 
+  ngOnInit() {
+    this.sanctionsService.getAll(function (sanc) {
+      if (!this.sanctions) {
+        this.sanctions = [];
+      }
+      this.sanctions.length = 0;
+      this.sanctions.push.apply(this.sanctions, sanc);
+    }.bind(this));
+  }
 }

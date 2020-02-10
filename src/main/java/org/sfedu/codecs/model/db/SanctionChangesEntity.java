@@ -1,7 +1,6 @@
 package org.sfedu.codecs.model.db;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
 import org.sfedu.codecs.model.IDBObject;
 import org.sfedu.codecs.model.dto.SanctionChangesRecord;
 import org.springframework.data.annotation.Id;
@@ -106,6 +105,8 @@ public class SanctionChangesEntity implements IDBObject<SanctionChangesRecord> {
         record.setFrom(this.from);
         record.setTo(this.to);
         record.setOptional(this.optional);
+        if (this.sanctionEntity != null)
+            record.setSanction(this.sanctionEntity.toDTO(false));
         return record;
     }
 }

@@ -84,9 +84,13 @@ public class ArticleRestController {
     public List<ChangesRecord> getChanges(@PathVariable("record-id") Long id, HttpServletResponse response) throws IOException {
         List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordIdOrderByDate(id);
 
-        return changesEntities == null ? new ArrayList<ChangesRecord>() : changesEntities
+        return changesEntities == null ? new ArrayList<>() : changesEntities
                 .stream()
-                .map(it -> it.toDTO(false)).collect(Collectors.toList());
+                .map(it -> {
+                    ChangesRecord record = it.toDTO(true);
+                    record.setRecord(null);
+                    return record;
+                }).collect(Collectors.toList());
     }
 
 

@@ -15,7 +15,7 @@
           </tr>
           </thead>
           <tbody *ngIf="sanctions">
-          <tr *ngFor="let sanc of sanctions">
+          <tr *ngFor="let sanc of getSanctions()">
             <td>{{sanc.name}}</td>
             <td>{{sanc.metric}}</td>
             <td><a href="#"><span class="material-icons">edit</span></a>

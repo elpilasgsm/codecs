@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MzToastService} from "ngx-materialize";
 import {Sanction} from "./sanction";
-import {Observable, throwError} from "rxjs";
-import {Changes} from "./changes";
+import {throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 @Injectable({
@@ -11,13 +10,24 @@ import {catchError} from "rxjs/operators";
 })
 export class SanctionsService {
   private sanctionsAPIURL = '/api/sanctions/';
+  private sanctions: Sanction[];
 
   constructor(private http: HttpClient, private toastService: MzToastService) {
 
   }
 
-  getAll(): Observable<Sanction[]> {
-    return this.http.get<Sanction[]>(this.sanctionsAPIURL).pipe(catchError(this.handleError.bind(this)));
+  getAll(callback: (sanctions: Sanction[]) => void): void {
+    if (this.sanctions) {
+      callback(this.sanctions);
+    }
+    this.http.get<Sanction[]>(this.sanctionsAPIURL)
+      .pipe(catchError(this.handleError.bind(this)))
+      .subscribe(resp => {
+        this.sanctions = resp;
+        if (callback) {
+          callback(this.sanctions);
+        }
+      });
   }
 
 

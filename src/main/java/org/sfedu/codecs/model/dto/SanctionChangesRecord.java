@@ -13,8 +13,6 @@ public class SanctionChangesRecord implements DTOObject<SanctionChangesEntity> {
 
     private Integer to;
 
-    private boolean primary;
-
     private boolean optional;
 
     private ChangesRecord change;
@@ -43,14 +41,6 @@ public class SanctionChangesRecord implements DTOObject<SanctionChangesEntity> {
 
     public void setTo(Integer to) {
         this.to = to;
-    }
-
-    public boolean isPrimary() {
-        return primary;
-    }
-
-    public void setPrimary(boolean primary) {
-        this.primary = primary;
     }
 
     public boolean isOptional() {
