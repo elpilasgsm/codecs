@@ -3,6 +3,8 @@ import {Changes} from "../changes";
 import {SanctionsService} from "../sanctions.service";
 import {Sanction} from "../sanction";
 import {SanctionChange} from "../sanction-change";
+import {MzModalService, MzToastService} from "ngx-materialize";
+import {SanctionChangesEditDialogComponent} from "../sanction-changes-edit-dialog/sanction-changes-edit-dialog.component";
 
 @Component({
   selector: 'app-sanction-changes-selector',
@@ -13,13 +15,10 @@ export class SanctionChangesSelectorComponent implements OnInit {
   @Input() change: Changes;
   @Input() primary: boolean;
   private sanctionsList: Sanction[];
-  private title: string;
 
-  constructor(private sanctionService: SanctionsService) {
-  }
-
-  getAllSanctions(): Sanction[] {
-    return this.sanctionsList;
+  constructor(private sanctionService: SanctionsService,
+              private modalService: MzModalService,
+              private toastService: MzToastService) {
   }
 
   getTitle() {
@@ -38,7 +37,60 @@ export class SanctionChangesSelectorComponent implements OnInit {
     this.sanctionService.getAll(function (s) {
       this.sanctionsList = s;
     }.bind(this));
-
   }
 
+  newInstance(): SanctionChange {
+    return {
+      id: null
+      , from: null, to: null, sanction: {id: null, name: null, metric: null},
+      change: this.change,
+      optional: false,
+      alternate: !this.primary
+    };
+  }
+
+  edit(ch: SanctionChange) {
+    ch.change = this.change;
+    this.modalService.open(SanctionChangesEditDialogComponent, {
+      sanctionChangeInput: ch,
+      sanctionsList: this.sanctionsList,
+      primary: this.primary
+      /*      onAgree: function () {
+              this.articleServiceService.deleteChangeById(ch.id).subscribe(a => {
+                if (200 === a) {
+                  this.articleServiceService.getRoot(function (tree: Article[]) {
+                    this.toastService.show(`Изменение ${ch.name} успешно удалено!`,
+                      4000,
+                      'green');
+                    this.ngOnChanges();
+                  }.bind(this));
+                }
+              });
+            }.bind(this)*/
+    });
+  }
+
+  add() {
+    const dialogRef = this.modalService.open(SanctionChangesEditDialogComponent, {
+      sanctionChangeInput: this.newInstance(),
+      sanctionsList: this.sanctionsList,
+      primary: this.primary
+      /*      onAgree: function () {
+              this.articleServiceService.deleteChangeById(ch.id).subscribe(a => {
+                if (200 === a) {
+                  this.articleServiceService.getRoot(function (tree: Article[]) {
+                    this.toastService.show(`Изменение ${ch.name} успешно удалено!`,
+                      4000,
+                      'green');
+                    this.ngOnChanges();
+                  }.bind(this));
+                }
+              });
+            }.bind(this)*/
+    });
+
+    dialogRef.onDestroy(function () {
+      console.log("Dialog is closed.")
+    });
+  }
 }

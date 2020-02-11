@@ -4,6 +4,7 @@ import {MzToastService} from "ngx-materialize";
 import {Sanction} from "./sanction";
 import {throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
+import {SanctionChange} from "./sanction-change";
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,17 @@ export class SanctionsService {
         this.sanctions = resp;
         if (callback) {
           callback(this.sanctions);
+        }
+      });
+  }
+
+  put(sanction: SanctionChange, callback: (sanctions: SanctionChange) => void): void {
+    this.http
+      .put<SanctionChange>(this.sanctionsAPIURL + sanction.change.id, sanction)
+      .pipe(catchError(this.handleError.bind(this)))
+      .subscribe(resp => {
+        if (callback) {
+          callback(resp);
         }
       });
   }

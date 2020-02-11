@@ -13,6 +13,7 @@ import {CrimeSeverityPipe} from './crime-severity.pipe';
 import {CrimeSereritySelectorComponent} from './crime-sererity-selector/crime-sererity-selector.component';
 import {
   MzButtonModule,
+  MzCheckboxModule,
   MzDatepickerModule,
   MzModalModule,
   MzNavbarModule,
@@ -36,6 +37,7 @@ import {ChangeDeleteDialogComponent} from './change-delete-dialog/change-delete-
 import {HeaderComponent} from './header/header.component';
 import {SanctionsConfigComponent} from './sanctions-config/sanctions-config.component';
 import {SanctionChangesSelectorComponent} from './sanction-changes-selector/sanction-changes-selector.component';
+import {SanctionChangesEditDialogComponent} from './sanction-changes-edit-dialog/sanction-changes-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,8 @@ import {SanctionChangesSelectorComponent} from './sanction-changes-selector/sanc
     ChangeDeleteDialogComponent,
     HeaderComponent,
     SanctionsConfigComponent,
-    SanctionChangesSelectorComponent
+    SanctionChangesSelectorComponent,
+    SanctionChangesEditDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -74,12 +77,16 @@ import {SanctionChangesSelectorComponent} from './sanction-changes-selector/sanc
     MzModalModule,
     MzButtonModule,
     MzToastModule,
-    MzNavbarModule
+    MzNavbarModule,
+    MzCheckboxModule
   ],
   exports: [RecordTypePipe],
   providers: [RecordTypePipe],
   bootstrap: [AppComponent],
-  entryComponents: [DeleteArticleModalComponent, ChangeEditDialogComponent, ChangeDeleteDialogComponent],
+  entryComponents: [DeleteArticleModalComponent,
+    ChangeEditDialogComponent,
+    ChangeDeleteDialogComponent,
+    SanctionChangesEditDialogComponent],
 
 })
 export class AppModule {

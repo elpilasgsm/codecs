@@ -1,7 +1,6 @@
 <div class="row">
   <div class="col s12"><p>{{getTitle()}}</p>
-    <a href="javascript:void(0);">Добавить {{this.primary ? "Основное" : "Дополнительное"}} измененние
-    </a>
+    <a href="javascript:void(0);" (click)="add()">Добавить</a>
   </div>
   <div class="col s12">
     <table class="striped">
@@ -10,7 +9,7 @@
         <th>Вид</th>
         <th>Минимум</th>
         <th>Максимум</th>
-        <th *ngIf="!this.primary">Или без него?</th>
+        <th *ngIf="!primary">Или без него?</th>
         <th>Действия</th>
       </tr>
       </thead>
@@ -19,8 +18,8 @@
         <td>{{s.sanction.name}}, {{s.sanction.metric}}</td>
         <td>{{s.from}}</td>
         <td>{{s.to}}</td>
-        <td *ngIf="!this.primary">{{s.optional ? "Да" : "Нет"}}</td>
-        <td>add</td>
+        <td *ngIf="!primary">{{s.optional ? "Да" : "Нет"}}</td>
+        <td><a href="javascript:void(0);" (click)="edit(s)"><span class="material-icons">edit</span></a></td>
       </tr>
       </tbody>
     </table>

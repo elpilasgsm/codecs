@@ -11,12 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.event.ChangeEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RestController
@@ -55,6 +53,8 @@ public class ChangesRestController {
         final ChangesEntity entity = parent.get();
         final ChangesEntity toSave = record.toDB(false);
         toSave.setRecord(entity.getRecord());
+        toSave.setAlternateSanctions(parent.get().getAlternateSanctions());
+        toSave.setPrimarySanctions(parent.get().getPrimarySanctions());
         return changesRepository.save(toSave).toDTO(false);
     }
 

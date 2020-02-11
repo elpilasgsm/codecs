@@ -1,0 +1,54 @@
+<mz-modal [fixedFooter]="false" *ngIf="sanctionChange">
+  <mz-modal-header>
+    <h5 *ngIf="sanctionChange.id">Редактирование cанкции для {{sanctionChange.change.name }}</h5>
+    <h5 *ngIf="!sanctionChange.id">Новая санкция для {{sanctionChange.change.name }}</h5>
+  </mz-modal-header>
+  <mz-modal-content>
+    <div class="row">
+      <div class="col l12 m12 s12 grey lighten-5 main-container">
+        <form class="col l12" *ngIf="sanctionChange">
+          <div class="row">
+            <div class="input-field col s12">
+              <mz-select-container (click)="$event.stopPropagation()">
+                <select mz-select [(ngModel)]="sanctionChange.sanction.id"
+                        id="sanctionSelector"
+                        name="sanctionSelector"
+                        [label]="'Cанкция'">
+                  <option *ngFor="let o of getSanctions()" value="{{o.id}}">
+                    {{o.name}}, {{o.metric}}
+                  </option>
+                </select>
+                <label></label>
+              </mz-select-container>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="from" type="number" [(ngModel)]="sanctionChange.from"
+                     name="from"/>
+              <label for="from" [ngClass]="{'active': sanctionChange.from}">Минимум</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="to" type="number" [(ngModel)]="sanctionChange.to"
+                     name="to"/>
+              <label for="to" [ngClass]="{'active': sanctionChange.to}">Максимум</label>
+            </div>
+          </div>
+          <mz-checkbox-container *ngIf="!primary">
+            <input [(ngModel)]="sanctionChange.optional"
+                   [label]="'Или без него?'"
+                   [checked]="sanctionChange.optional==true"
+                   id="optional"
+                   name="optional"
+                   mz-checkbox
+                   type="checkbox">
+          </mz-checkbox-container>
+        </form>
+      </div>
+    </div>
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button mz-button mz-modal-close [flat]="true">Отмена</button>
+    <button mz-button mz-modal-close [flat]="true" (click)="save()">Да</button>
+  </mz-modal-footer>
+</mz-modal>

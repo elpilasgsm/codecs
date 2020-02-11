@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,10 +62,10 @@ public class ChangesEntity implements IDBObject<ChangesRecord> {
 
 
     @OneToMany(mappedBy = "changesEntity", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<SanctionChangesEntity> primarySanctions;
+    private List<SanctionChangesEntity> primarySanctions = new ArrayList<>();
 
     @OneToMany(mappedBy = "alternateChanges", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<SanctionChangesEntity> alternateSanctions;
+    private List<SanctionChangesEntity> alternateSanctions = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -188,16 +189,16 @@ public class ChangesEntity implements IDBObject<ChangesRecord> {
                 record.setRecord(this.record.toDTO(
                         false));
             }
-            if (!CollectionUtils.isEmpty(this.primarySanctions)){
+            if (!CollectionUtils.isEmpty(this.primarySanctions)) {
                 record.setPrimarySanctions(this.primarySanctions
                         .stream()
-                        .map(it->it.toDTO(false))
+                        .map(it -> it.toDTO(false))
                         .collect(Collectors.toList()));
             }
-            if (!CollectionUtils.isEmpty(this.alternateSanctions)){
+            if (!CollectionUtils.isEmpty(this.alternateSanctions)) {
                 record.setAlternateSanctions(this.alternateSanctions
                         .stream()
-                        .map(it->it.toDTO(false))
+                        .map(it -> it.toDTO(false))
                         .collect(Collectors.toList()));
             }
         }

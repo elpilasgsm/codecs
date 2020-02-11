@@ -2,9 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Article} from "../article";
 import {Changes} from "../changes";
 import {ArticleServiceService} from "../article-service.service";
-import {CRIME_SEVERITY} from "../crime-severity";
 import {MzModalService, MzToastService} from "ngx-materialize";
-import {DeleteArticleModalComponent} from "../delete-article-modal/delete-article-modal.component";
 import {ChangeEditDialogComponent} from "../change-edit-dialog/change-edit-dialog.component";
 import {RecordTypePipe} from "../record-type.pipe";
 import {ChangeDeleteDialogComponent} from "../change-delete-dialog/change-delete-dialog.component";
@@ -67,6 +65,8 @@ export class ChangeEditComponent implements OnInit {
       direction: 'POSITIVE',
       method: 'APPEND',
       date: new Date(),
+      primarySanctions: [],
+      alternateSanctions: [],
       url: null,
       record: this.article
     };

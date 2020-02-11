@@ -13,7 +13,9 @@ public class SanctionChangesRecord implements DTOObject<SanctionChangesEntity> {
 
     private Integer to;
 
+
     private boolean optional;
+    private boolean alternate;
 
     private ChangesRecord change;
 
@@ -65,6 +67,14 @@ public class SanctionChangesRecord implements DTOObject<SanctionChangesEntity> {
 
     public void setSanction(SanctionRecord sanction) {
         this.sanction = sanction;
+    }
+
+    public boolean isAlternate() {
+        return alternate;
+    }
+
+    public void setAlternate(boolean alternate) {
+        this.alternate = alternate;
     }
 
     @Override
