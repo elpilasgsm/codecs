@@ -43,50 +43,27 @@ export class SanctionChangesSelectorComponent implements OnInit {
     return {
       id: null
       , from: null, to: null, sanction: {id: null, name: null, metric: null},
-      change: this.change,
+      change: null,
       optional: false,
       alternate: !this.primary
     };
   }
 
   edit(ch: SanctionChange) {
-    ch.change = this.change;
     this.modalService.open(SanctionChangesEditDialogComponent, {
-      sanctionChangeInput: ch,
+      change: this.change,
       sanctionsList: this.sanctionsList,
+      sanctionChange: ch,
       primary: this.primary
-      /*      onAgree: function () {
-              this.articleServiceService.deleteChangeById(ch.id).subscribe(a => {
-                if (200 === a) {
-                  this.articleServiceService.getRoot(function (tree: Article[]) {
-                    this.toastService.show(`Изменение ${ch.name} успешно удалено!`,
-                      4000,
-                      'green');
-                    this.ngOnChanges();
-                  }.bind(this));
-                }
-              });
-            }.bind(this)*/
     });
   }
 
   add() {
     const dialogRef = this.modalService.open(SanctionChangesEditDialogComponent, {
-      sanctionChangeInput: this.newInstance(),
+      change: this.change,
       sanctionsList: this.sanctionsList,
+      sanctionChange: this.newInstance(),
       primary: this.primary
-      /*      onAgree: function () {
-              this.articleServiceService.deleteChangeById(ch.id).subscribe(a => {
-                if (200 === a) {
-                  this.articleServiceService.getRoot(function (tree: Article[]) {
-                    this.toastService.show(`Изменение ${ch.name} успешно удалено!`,
-                      4000,
-                      'green');
-                    this.ngOnChanges();
-                  }.bind(this));
-                }
-              });
-            }.bind(this)*/
     });
 
     dialogRef.onDestroy(function () {

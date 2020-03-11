@@ -84,6 +84,7 @@ public class SanctionChangesRecord implements DTOObject<SanctionChangesEntity> {
         record.setFrom(this.from);
         record.setTo(this.to);
         record.setOptional(this.optional);
+        record.setSanctionEntity(this.getSanction().toDB());
         return record;
     }
 }

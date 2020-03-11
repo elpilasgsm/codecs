@@ -3,6 +3,7 @@ import {MzBaseModal} from "ngx-materialize";
 import {SanctionChange} from "../sanction-change";
 import {Sanction} from "../sanction";
 import {SanctionsService} from "../sanctions.service";
+import {Changes} from "../changes";
 
 @Component({
   selector: 'app-sanction-changes-edit-dialog',
@@ -10,8 +11,10 @@ import {SanctionsService} from "../sanctions.service";
   styleUrls: ['./sanction-changes-edit-dialog.component.css']
 })
 export class SanctionChangesEditDialogComponent extends MzBaseModal {
-  @Input() sanctionChangeInput: SanctionChange;
-  private sanctionChange: SanctionChange;
+  @Input() change: Changes;
+
+  @Input() public sanctionChange: SanctionChange;
+  public editableChange: SanctionChange;
   @Input() public sanctionsList: Sanction[];
   @Input() public primary: boolean;
 
@@ -24,18 +27,25 @@ export class SanctionChangesEditDialogComponent extends MzBaseModal {
   }
 
   ngOnInit() {
-    this.sanctionChange = Object.assign({}, this.sanctionChangeInput);
-    this.sanctionChange.sanction = Object.assign({}, this.sanctionChangeInput.sanction);
-    this.sanctionChange.change = Object.assign({}, this.sanctionChangeInput.change);
+    this.editableChange = Object.assign({}, this.sanctionChange);
   }
 
   save() {
-    if (!this.sanctionChange.id) {
-      this.sanctionChange.alternate = !this.primary;
-      this.sanctionsService.put(this.sanctionChange, function (s) {
-        this.sanctionChange = Object.assign({}, s);
-        this.sanctionChange.change = this.sanctionChangeInput.change;
-      }.bind(this));
+    this.sanctionChange.sanction = this.editableChange.sanction;
+    this.sanctionChange.from = this.editableChange.from;
+    this.sanctionChange.to = this.editableChange.to;
+    if (!this.sanctionChange.change) {
+      if (this.primary) {
+        if (!this.change.primarySanctions) {
+          this.change.primarySanctions = [];
+        }
+        this.change.primarySanctions.push(this.sanctionChange);
+      } else {
+        if (!this.change.alternateSanctions) {
+          this.change.alternateSanctions = [];
+        }
+        this.change.alternateSanctions.push(this.sanctionChange);
+      }
     }
   }
 
