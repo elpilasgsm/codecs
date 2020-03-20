@@ -21,7 +21,6 @@ export class ChangeDeleteDialogComponent extends MzBaseModal {
     this.changeEditDialog.closeModal();
   }
 
-
   ngOnInit() {
   }
 
