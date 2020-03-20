@@ -1,7 +1,7 @@
 package org.sfedu.codecs;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.BeforeAll;
+import org.assertj.core.util.Files;
 import org.junit.jupiter.api.Test;
 import org.sfedu.codecs.constants.*;
 import org.sfedu.codecs.model.db.*;
@@ -11,14 +11,17 @@ import org.sfedu.codecs.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SpringBootTest
 @PropertySource("classpath:application.properties")
@@ -51,6 +54,40 @@ class CodecsApplicationTests {
 
     public void init() {
         sanctionEntity = sanctionsRepository.getOne(1L);
+    }
+
+    @Test
+    void load() {
+        final List<String> list = Files.linesOf(new File("data/articles.csv"), StandardCharsets.UTF_8);
+        final String name = "Статья ([\\d.]*)\\.\\s(.*)";
+        final String line = "\"(.*)\",\"(.*)\"";
+
+        final Pattern linePattern = Pattern.compile(line, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        final Pattern namePattern = Pattern.compile(name, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        List<RecordEntity> articles = new ArrayList<>();
+        for (String l : list) {
+            final Matcher matcher = linePattern.matcher(l);
+            if (matcher.matches()) {
+                final RecordEntity entity = new RecordEntity();
+                String url = matcher.group(1);
+                entity.setUrl(url);
+                entity.setRecordType(CodecsRecordType.ARTICLE);
+                String nameStr = matcher.group(2);
+                final Matcher matchName = namePattern.matcher(nameStr);
+                if (matchName.matches()) {
+                    String abbr = matchName.group(1);
+                    String n = matchName.group(2);
+                    entity.setAbbreviation(abbr);
+                    entity.setName(n);
+                    articles.add(entity);
+                }
+
+
+            }
+        }
+
+        System.out.println(articles.size());
+        recordRepository.saveAll(articles);
     }
 
     @Test
