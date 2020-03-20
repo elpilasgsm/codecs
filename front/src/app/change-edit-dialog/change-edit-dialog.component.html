@@ -1,4 +1,4 @@
-<mz-modal [fixedFooter]="false" [fullscreen]="true" *ngIf="change">
+<mz-modal #changeEditDialog *ngIf="change" [fixedFooter]="false" [fullscreen]="true">
   <mz-modal-header>
     <h5 *ngIf="editableChange.name">Редактирование изменения {{editableChange.name }}</h5>
     <h5 *ngIf="!editableChange.name">Новое изменение</h5>

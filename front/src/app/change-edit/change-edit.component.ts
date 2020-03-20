@@ -20,7 +20,9 @@ export class ChangeEditComponent implements OnInit {
   constructor(private articleServiceService: ArticleServiceService,
               private modalService: MzModalService,
               private toastService: MzToastService,
-              private recordTypePipe: RecordTypePipe) {
+              private recordTypePipe: RecordTypePipe
+  ) {
+
   }
 
   addChanges() {

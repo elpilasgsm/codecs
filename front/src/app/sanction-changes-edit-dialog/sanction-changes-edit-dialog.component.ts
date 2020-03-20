@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {MzBaseModal} from "ngx-materialize";
+import {Component, Input, ViewChild} from '@angular/core';
+import {MzBaseModal, MzModalComponent, MzToastService} from "ngx-materialize";
 import {SanctionChange} from "../sanction-change";
 import {Sanction} from "../sanction";
 import {SanctionsService} from "../sanctions.service";
@@ -12,13 +12,13 @@ import {Changes} from "../changes";
 })
 export class SanctionChangesEditDialogComponent extends MzBaseModal {
   @Input() change: Changes;
-
+  @ViewChild('saveDialog') modal: MzModalComponent;
   @Input() public sanctionChange: SanctionChange;
   public editableChange: SanctionChange;
   @Input() public sanctionsList: Sanction[];
   @Input() public primary: boolean;
 
-  constructor(private  sanctionsService: SanctionsService) {
+  constructor(private  sanctionsService: SanctionsService, private toastService: MzToastService) {
     super();
   }
 
@@ -26,11 +26,19 @@ export class SanctionChangesEditDialogComponent extends MzBaseModal {
     return this.sanctionsList;
   }
 
+  compareById(idFist: Sanction, idSecond: Sanction) {
+    return idFist && idSecond && idFist.id == idSecond.id;
+  }
+
   ngOnInit() {
     this.editableChange = Object.assign({}, this.sanctionChange);
   }
 
   save() {
+    if (!this.editableChange.sanction || !this.editableChange.sanction.id) {
+      this.toastService.show("Выберите санкцию", 2000, 'red');
+      return;
+    }
     this.sanctionChange.sanction = this.editableChange.sanction;
     this.sanctionChange.from = this.editableChange.from;
     this.sanctionChange.to = this.editableChange.to;
@@ -48,6 +56,7 @@ export class SanctionChangesEditDialogComponent extends MzBaseModal {
         this.change.alternateSanctions.push(this.sanctionChange);
       }
     }
+    this.modal.closeModal();
   }
 
 }
