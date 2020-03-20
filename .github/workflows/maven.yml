@@ -17,7 +17,7 @@ jobs:
         with:
           java-version: 1.11
       - name: Shutdown Ubuntu MySQL (SUDO)
-          run: sudo service mysql stop
+        run: sudo service mysql stop
       - uses: mirromutth/mysql-action@v1.1
         with:
           character set server: 'utf8'
