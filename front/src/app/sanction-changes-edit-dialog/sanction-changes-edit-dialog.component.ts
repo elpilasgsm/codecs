@@ -34,7 +34,8 @@ export class SanctionChangesEditDialogComponent extends MzBaseModal {
     this.sanctionChange.sanction = this.editableChange.sanction;
     this.sanctionChange.from = this.editableChange.from;
     this.sanctionChange.to = this.editableChange.to;
-    if (!this.sanctionChange.change) {
+    this.sanctionChange.optional = this.editableChange.optional;
+    if (!this.sanctionChange.id) {
       if (this.primary) {
         if (!this.change.primarySanctions) {
           this.change.primarySanctions = [];

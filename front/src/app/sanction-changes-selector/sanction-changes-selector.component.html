@@ -6,7 +6,7 @@
     <table class="striped">
       <thead>
       <tr>
-        <th>Вид</th>
+        <th class="view">Вид</th>
         <th>Минимум</th>
         <th>Максимум</th>
         <th *ngIf="!primary">Или без него?</th>
@@ -19,7 +19,8 @@
         <td>{{s.from}}</td>
         <td>{{s.to}}</td>
         <td *ngIf="!primary">{{s.optional ? "Да" : "Нет"}}</td>
-        <td><a href="javascript:void(0);" (click)="edit(s)"><span class="material-icons">edit</span></a></td>
+        <td><a *ngIf="s.id" href="javascript:void(0);" (click)="edit(s)"><span class="material-icons">edit</span></a>
+          <a href="javascript:void(0);" (click)="delete(s)"><span class="material-icons">delete</span></a></td>
       </tr>
       </tbody>
     </table>

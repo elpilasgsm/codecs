@@ -78,8 +78,8 @@ public class ChangesRestController {
         final ChangesEntity entity = parent.get();
         final ChangesEntity toSave = record.toDB(false);
         toSave.setRecord(entity.getRecord());
-        toSave.setAlternateSanctions(parent.get().getAlternateSanctions());
-        toSave.setPrimarySanctions(parent.get().getPrimarySanctions());
+        toSave.setPrimarySanctions(toDB(record.getPrimarySanctions(), entity, true));
+        toSave.setAlternateSanctions(toDB(record.getAlternateSanctions(), entity, false));
         return changesRepository.save(toSave).toDTO(false);
     }
 

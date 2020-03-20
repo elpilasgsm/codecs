@@ -11,14 +11,11 @@
             <div class="input-field col s12">
               <mz-select-container (click)="$event.stopPropagation()">
                 <select [(ngModel)]="editableChange.sanction" mz-select
-                        id="sanctionSelector"
-                        name="sanctionSelector"
-                        [label]="'Cанкция'">
-                  <option *ngFor="let o of getSanctions()" [ngValue]="o">
-                    {{o.name}}, {{o.metric}}
-                  </option>
-                </select>
-                <label></label>
+                                              id="sanctionSelector"
+                                              name="sanctionSelector"
+                                              [label]="'Cанкция'">
+              <option *ngFor="let o of getSanctions()" [ngValue]="o">{{o.name}}, {{o.metric}}</option>
+            </select>
               </mz-select-container>
             </div>
           </div>
@@ -34,15 +31,20 @@
               <label [ngClass]="{'active': editableChange.to}" for="to">Максимум</label>
             </div>
           </div>
-          <mz-checkbox-container *ngIf="!primary">
-            <input [(ngModel)]="editableChange.optional"
-                   [label]="'Или без него?'"
-                   [checked]="editableChange.optional==true"
-                   id="optional"
-                   name="optional"
-                   mz-checkbox
-                   type="checkbox">
-          </mz-checkbox-container>
+          <div class="row" *ngIf="!primary">
+            <div class="input-field col s12">
+              <mz-select-container (click)="$event.stopPropagation()">
+                <select [(ngModel)]="editableChange.optional" mz-select
+                        id="optional"
+                        name="optional"
+                        [label]="'Необязательно?'">
+                  <option [ngValue]="true">Да</option>
+                  <option [ngValue]="false">Нет</option>
+                </select>
+              </mz-select-container>
+            </div>
+          </div>
+
         </form>
       </div>
     </div>

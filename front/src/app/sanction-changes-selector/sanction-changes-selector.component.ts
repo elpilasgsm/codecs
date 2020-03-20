@@ -49,6 +49,12 @@ export class SanctionChangesSelectorComponent implements OnInit {
     };
   }
 
+  delete(ch: SanctionChange) {
+    this.change.alternateSanctions= this.change.alternateSanctions.filter(item => item !== ch);
+    this.change.primarySanctions= this.change.primarySanctions.filter(item => item !== ch);
+
+  }
+
   edit(ch: SanctionChange) {
     this.modalService.open(SanctionChangesEditDialogComponent, {
       change: this.change,

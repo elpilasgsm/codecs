@@ -130,7 +130,7 @@ export class ArticleServiceService {
       // The response body may contain clues as to what went wrong,
       console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
 
-      this.toastService.show(` Ошибка ${error.status} - ${error.error.message}`, 4000,
+      this.toastService.show(` Ошибка ${error.status} - ${error.error}`, 4000,
         'red');
     }
     // return an observable with a user-facing error message
