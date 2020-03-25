@@ -2,7 +2,7 @@ use codecs;
 create table SANCTIONS
 (
     ID     int auto_increment,
-    NAME   VARCHAR(255) not null,
+    NAME   VARCHAR(1024) not null,
     METRIC VARCHAR(32)  not null,
     constraint SANCTIONS_pk
         primary key (ID)
