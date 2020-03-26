@@ -2,16 +2,18 @@ package org.sfedu.codecs.controller;
 
 import org.sfedu.codecs.model.db.ChangesEntity;
 import org.sfedu.codecs.model.db.RecordEntity;
+import org.sfedu.codecs.model.db.SanctionChangesEntity;
 import org.sfedu.codecs.model.dto.ArticleRecord;
 import org.sfedu.codecs.model.dto.ChangesRecord;
+import org.sfedu.codecs.model.dto.SanctionChangesRecord;
 import org.sfedu.codecs.repository.db.ChangesRepository;
 import org.sfedu.codecs.repository.db.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.event.ChangeEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,28 @@ public class ChangesRestController {
         }
         RecordEntity p = recordRepository.getOne(record.getRecord().getRecordId());
         entity.setRecord(p);
+        entity.setPrimarySanctions(toDB(record.getPrimarySanctions(), entity, true));
+        entity.setAlternateSanctions(toDB(record.getAlternateSanctions(), entity, false));
         return changesRepository.save(entity).toDTO(false);
+    }
+
+    private List<SanctionChangesEntity> toDB(List<SanctionChangesRecord> records, ChangesEntity changesEntity, boolean primary) {
+        List<SanctionChangesEntity> toDB = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(records)) {
+            toDB.addAll(records
+                    .stream()
+                    .map(it -> {
+                        SanctionChangesEntity entity = it.toDB();
+                        if (primary) {
+                            entity.setChangesEntity(changesEntity);
+                        } else {
+                            entity.setAlternateChanges(changesEntity);
+                        }
+                        return entity;
+                    })
+                    .collect(Collectors.toList()));
+        }
+        return toDB;
     }
 
 
@@ -55,6 +78,8 @@ public class ChangesRestController {
         final ChangesEntity entity = parent.get();
         final ChangesEntity toSave = record.toDB(false);
         toSave.setRecord(entity.getRecord());
+        toSave.setPrimarySanctions(toDB(record.getPrimarySanctions(), entity, true));
+        toSave.setAlternateSanctions(toDB(record.getAlternateSanctions(), entity, false));
         return changesRepository.save(toSave).toDTO(false);
     }
 

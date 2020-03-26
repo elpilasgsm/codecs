@@ -1,5 +1,6 @@
 package org.sfedu.codecs.controller;
 
+import org.sfedu.codecs.constants.ArticleComparator;
 import org.sfedu.codecs.model.db.ChangesEntity;
 import org.sfedu.codecs.model.db.RecordEntity;
 import org.sfedu.codecs.model.dto.ArticleRecord;
@@ -61,7 +62,6 @@ public class ArticleRestController {
             return null;
         }
         final RecordEntity entity = parent.get();
-        entity.setCrimeSeverity(record.getCrimeSeverity());
         entity.setName(record.getName());
         entity.setUrl(record.getUrl());
         entity.setAbbreviation(record.getAbbreviation());
@@ -85,9 +85,13 @@ public class ArticleRestController {
     public List<ChangesRecord> getChanges(@PathVariable("record-id") Long id, HttpServletResponse response) throws IOException {
         List<ChangesEntity> changesEntities = changesRepository.getByRecordRecordIdOrderByDate(id);
 
-        return changesEntities == null ? new ArrayList<ChangesRecord>() : changesEntities
+        return changesEntities == null ? new ArrayList<>() : changesEntities
                 .stream()
-                .map(it -> it.toDTO(false)).collect(Collectors.toList());
+                .map(it -> {
+                    ChangesRecord record = it.toDTO(true);
+                    record.setRecord(null);
+                    return record;
+                }).collect(Collectors.toList());
     }
 
 
@@ -111,6 +115,7 @@ public class ArticleRestController {
         for (RecordEntity e : entities) {
             tree.add(toDTO(e));
         }
+        tree.sort(ArticleComparator.INSTANCE);
         return tree;
     }
 }

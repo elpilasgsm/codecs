@@ -1,4 +1,5 @@
 import {Article} from "./article";
+import {SanctionChange} from "./sanction-change";
 
 export class Changes {
   public id: number; //done
@@ -12,4 +13,6 @@ export class Changes {
   public date: Date; //date
   public url: string; //done
   public record: Article;
+  public primarySanctions: SanctionChange[];
+  public alternateSanctions: SanctionChange[];
 }

@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'method'
@@ -20,6 +20,9 @@ export class MethodPipe implements PipeTransform {
           break;
         case "NOT_CONSTITUTIONAL":
           label = "Признать неконституционной норму закона";
+          break;
+        case "NEW":
+          label = "Первоначальная редакция";
           break;
         default:
           label = " ";

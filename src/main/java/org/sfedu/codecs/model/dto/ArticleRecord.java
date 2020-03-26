@@ -15,19 +15,10 @@ public class ArticleRecord implements DTOObject<RecordEntity> {
     private String name;
     private CodecsRecordType recordType;
     private String url;
-    private CrimeSeverity crimeSeverity;
     private ArticleRecord parent;
     private List<ArticleRecord> children;
     private List<ChangesRecord> changes;
     private String abbreviation;
-
-    public CrimeSeverity getCrimeSeverity() {
-        return crimeSeverity;
-    }
-
-    public void setCrimeSeverity(CrimeSeverity crimeSeverity) {
-        this.crimeSeverity = crimeSeverity;
-    }
 
     public long getRecordId() {
         return recordId;
@@ -101,7 +92,6 @@ public class ArticleRecord implements DTOObject<RecordEntity> {
         entity.setRecordType(this.recordType);
         entity.setRecordId(this.recordId);
         entity.setName(this.name);
-        entity.setCrimeSeverity(this.crimeSeverity);
         entity.setAbbreviation(this.abbreviation);
         if (deepCopy) {
             if (this.parent != null) {

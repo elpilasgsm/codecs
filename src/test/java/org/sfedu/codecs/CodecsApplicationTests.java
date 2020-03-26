@@ -1,14 +1,11 @@
 package org.sfedu.codecs;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.assertj.core.util.Files;
 import org.junit.jupiter.api.Test;
 import org.sfedu.codecs.constants.*;
-import org.sfedu.codecs.model.db.ChangesEntity;
-import org.sfedu.codecs.model.db.RecordEntity;
-import org.sfedu.codecs.model.db.UserEntity;
-import org.sfedu.codecs.repository.db.ChangesRepository;
-import org.sfedu.codecs.repository.db.RecordRepository;
-import org.sfedu.codecs.repository.db.UserRepository;
+import org.sfedu.codecs.model.db.*;
+import org.sfedu.codecs.repository.db.*;
 import org.sfedu.codecs.service.UserService;
 import org.sfedu.codecs.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SpringBootTest
 @PropertySource("classpath:application.properties")
@@ -31,17 +35,60 @@ class CodecsApplicationTests {
     private RecordRepository recordRepository;
 
     @Autowired
-    private ChangesRepository changesRepository;
-
-
+    SanctionsRepository sanctionsRepository;
+    @Autowired
+    ChangesRepository changesRepository;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SanctionsChangeRepository sanctionsChangeRepository;
+
+    private SanctionEntity sanctionEntity;
 
     protected static String random(int l) {
         return RandomStringUtils.randomAlphanumeric(l);
     }
 
     private final static Random rnd = new Random(123L);
+
+    public void init() {
+        sanctionEntity = sanctionsRepository.getOne(1L);
+    }
+
+    @Test
+    void load() {
+        final List<String> list = Files.linesOf(new File("data/articles.csv"), StandardCharsets.UTF_8);
+        final String name = "Статья ([\\d.]*)\\.\\s(.*)";
+        final String line = "\"(.*)\",\"(.*)\"";
+
+        final Pattern linePattern = Pattern.compile(line, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        final Pattern namePattern = Pattern.compile(name, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        List<RecordEntity> articles = new ArrayList<>();
+        for (String l : list) {
+            final Matcher matcher = linePattern.matcher(l);
+            if (matcher.matches()) {
+                final RecordEntity entity = new RecordEntity();
+                String url = matcher.group(1);
+                entity.setUrl(url);
+                entity.setRecordType(CodecsRecordType.ARTICLE);
+                String nameStr = matcher.group(2);
+                final Matcher matchName = namePattern.matcher(nameStr);
+                if (matchName.matches()) {
+                    String abbr = matchName.group(1);
+                    String n = matchName.group(2);
+                    entity.setAbbreviation(abbr);
+                    entity.setName(n);
+                    articles.add(entity);
+                }
+
+
+            }
+        }
+
+        System.out.println(articles.size());
+        recordRepository.saveAll(articles);
+    }
 
     @Test
     void contextLoads() throws Exception {
@@ -68,6 +115,7 @@ class CodecsApplicationTests {
 
     @Test
     public void articteTest() {
+        init();
         int inter = rnd.nextInt(5) + 2;
         for (int bn = 0; bn < inter; bn++) {
             RecordEntity article = new RecordEntity();
@@ -75,7 +123,6 @@ class CodecsApplicationTests {
             article.setAbbreviation(random(3));
             article.setRecordType(CodecsRecordType.ARTICLE);
             article.setUrl(String.format("https://%s", random(10)));
-            article.setCrimeSeverity(random(CrimeSeverity.class));
             article.setChanges(getListOfChanges(rnd.nextInt(5) + 2, article));
             article = recordRepository.save(article);
 
@@ -84,13 +131,11 @@ class CodecsApplicationTests {
             part1.setRecordType(CodecsRecordType.PART);
             part1.setUrl(String.format("https://%s", random(10)));
             part1.setParent(article);
-            part1.setCrimeSeverity(random(CrimeSeverity.class));
             part1.setChanges(getListOfChanges(rnd.nextInt(5) + 2, part1));
             part1 = recordRepository.save(part1);
             int iter2 = rnd.nextInt(5) + 2;
             for (int i = 0; i < iter2; i++) {
                 RecordEntity point = new RecordEntity();
-                point.setCrimeSeverity(random(CrimeSeverity.class));
                 point.setRecordType(CodecsRecordType.POINT);
                 point.setUrl(String.format("https://%s", random(10)));
                 point.setParent(part1);
@@ -105,6 +150,12 @@ class CodecsApplicationTests {
                     Assert.isTrue(parts.getChildren().stream().allMatch(it -> CodecsRecordType.POINT == it.getRecordType()), "not all are points");
                 }
             }
+/*        List<ChangesEntity> changesEntities =   changesRepository.findAll();
+            changesEntities.forEach(changesEntity -> {
+                sanctionsChangeRepository.saveAll(getSanctions(changesEntity, true));
+                sanctionsChangeRepository.saveAll(getSanctions(changesEntity, false));
+            });*/
+
         }
     }
 
@@ -133,8 +184,26 @@ class CodecsApplicationTests {
             changesEntity.setActivationDate(changesEntity.getDate());
             changesEntity.getActivationDate().add(Calendar.MONTH, rnd.nextInt(4) + 1);
         }
-
+        changesEntity.setAlternateSanctions(getSanctions(changesEntity, false));
+        changesEntity.setPrimarySanctions(getSanctions(changesEntity, true));
         return changesEntity;
+    }
+
+    private List<SanctionChangesEntity> getSanctions(ChangesEntity change, boolean isPrimary) {
+        List<SanctionChangesEntity> result = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            SanctionChangesEntity entity = new SanctionChangesEntity();
+            entity.setSanctionEntity(sanctionEntity);
+            entity.setFrom(rnd.nextInt(200));
+            entity.setTo(rnd.nextInt(200) + 200);
+            if (isPrimary) {
+                entity.setChangesEntity(change);
+            } else {
+                entity.setAlternateChanges(change);
+            }
+            result.add(entity);
+        }
+        return result;
     }
 
     //@Test
