@@ -8,7 +8,7 @@ import {Sanction} from "../sanction";
   styleUrls: ['./sanctions-config.component.css']
 })
 export class SanctionsConfigComponent implements OnInit {
-  private sanctions: Sanction[];
+  public sanctions: Sanction[];
 
   constructor(private sanctionsService: SanctionsService) {
   }
