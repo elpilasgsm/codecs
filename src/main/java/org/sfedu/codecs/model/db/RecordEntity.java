@@ -1,8 +1,7 @@
 package org.sfedu.codecs.model.db;
 
 import org.sfedu.codecs.constants.CodecsRecordType;
-import org.sfedu.codecs.constants.CrimeSeverity;
-import org.sfedu.codecs.model.DBObject;
+import org.sfedu.codecs.model.IDBObject;
 import org.sfedu.codecs.model.dto.ArticleRecord;
 import org.springframework.data.annotation.Id;
 
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "RECORD")
-public class RecordEntity implements DBObject<ArticleRecord> {
+public class RecordEntity implements IDBObject<ArticleRecord> {
     private static final long serialVersionUID = 1222074571641809270L;
     @Id
     @javax.persistence.Id
@@ -33,10 +32,6 @@ public class RecordEntity implements DBObject<ArticleRecord> {
 
     @Column(name = "URL")
     private String url;
-
-    @Column(name = "SEVERITY_OF_CRIME")
-    @Enumerated(EnumType.STRING)
-    private CrimeSeverity crimeSeverity;
 
     @JoinColumn(name = "MEMBER_OF")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -81,14 +76,6 @@ public class RecordEntity implements DBObject<ArticleRecord> {
         this.url = url;
     }
 
-    public CrimeSeverity getCrimeSeverity() {
-        return crimeSeverity;
-    }
-
-    public void setCrimeSeverity(CrimeSeverity crimeSeverity) {
-        this.crimeSeverity = crimeSeverity;
-    }
-
     public RecordEntity getParent() {
         return parent;
     }
@@ -129,7 +116,6 @@ public class RecordEntity implements DBObject<ArticleRecord> {
         record.setRecordType(this.recordType);
         record.setName(this.name);
         record.setRecordId(this.recordId);
-        record.setCrimeSeverity(this.crimeSeverity);
         record.setAbbreviation(this.abbreviation);
         if (deepCopy) {
             if (this.parent != null) {

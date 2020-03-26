@@ -7,8 +7,11 @@ import org.sfedu.codecs.model.DTOObject;
 import org.sfedu.codecs.model.db.ChangesEntity;
 import org.sfedu.codecs.utils.CodecsDateDeSerializer;
 import org.sfedu.codecs.utils.CodecsDateSerializer;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChangesRecord implements DTOObject<ChangesEntity> {
 
@@ -29,6 +32,9 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
     private ArticleRecord record;
     private ChangesMethod method;
 
+    private List<SanctionChangesRecord> primarySanctions;
+    private List<SanctionChangesRecord> alternateSanctions;
+
     public CrimeSeverity getCrimeSeverity() {
         return crimeSeverity;
     }
@@ -44,6 +50,7 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
     public void setId(long id) {
         this.id = id;
     }
+
 
     public String getName() {
         return name;
@@ -117,6 +124,22 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
         this.method = method;
     }
 
+    public List<SanctionChangesRecord> getPrimarySanctions() {
+        return primarySanctions;
+    }
+
+    public void setPrimarySanctions(List<SanctionChangesRecord> primarySanctions) {
+        this.primarySanctions = primarySanctions;
+    }
+
+    public List<SanctionChangesRecord> getAlternateSanctions() {
+        return alternateSanctions;
+    }
+
+    public void setAlternateSanctions(List<SanctionChangesRecord> alternateSanctions) {
+        this.alternateSanctions = alternateSanctions;
+    }
+
     @Override
     public ChangesEntity toDB(boolean deepCopy) {
         ChangesEntity entity = new ChangesEntity();
@@ -134,6 +157,18 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
         if (deepCopy) {
             if (this.record != null) {
                 entity.setRecord(this.record.toDB(false));
+            }
+            if (!CollectionUtils.isEmpty(this.primarySanctions)){
+                entity.setPrimarySanctions(this.primarySanctions
+                        .stream()
+                        .map(it->it.toDB(false))
+                .collect(Collectors.toList()));
+            }
+            if (!CollectionUtils.isEmpty(this.alternateSanctions)){
+                entity.setAlternateSanctions(this.alternateSanctions
+                        .stream()
+                        .map(it->it.toDB(false))
+                        .collect(Collectors.toList()));
             }
         }
         return entity;

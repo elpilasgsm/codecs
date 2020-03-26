@@ -1,16 +1,20 @@
 package org.sfedu.codecs.model.db;
 
 import org.sfedu.codecs.constants.*;
-import org.sfedu.codecs.model.DBObject;
+import org.sfedu.codecs.model.IDBObject;
 import org.sfedu.codecs.model.dto.ChangesRecord;
 import org.springframework.data.annotation.Id;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "CHANGES")
-public class ChangesEntity implements DBObject<ChangesRecord> {
+public class ChangesEntity implements IDBObject<ChangesRecord> {
     private static final long serialVersionUID = 1222074571641809270L;
     @Id
     @javax.persistence.Id
@@ -55,6 +59,13 @@ public class ChangesEntity implements DBObject<ChangesRecord> {
     @JoinColumn(name = "MEMBER_OF")
     @ManyToOne(fetch = FetchType.LAZY)
     private RecordEntity record;
+
+
+    @OneToMany(mappedBy = "changesEntity", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<SanctionChangesEntity> primarySanctions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "alternateChanges", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<SanctionChangesEntity> alternateSanctions = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -144,6 +155,22 @@ public class ChangesEntity implements DBObject<ChangesRecord> {
         this.method = method;
     }
 
+    public List<SanctionChangesEntity> getPrimarySanctions() {
+        return primarySanctions;
+    }
+
+    public void setPrimarySanctions(List<SanctionChangesEntity> primarySanctions) {
+        this.primarySanctions = primarySanctions;
+    }
+
+    public List<SanctionChangesEntity> getAlternateSanctions() {
+        return alternateSanctions;
+    }
+
+    public void setAlternateSanctions(List<SanctionChangesEntity> alternateSanctions) {
+        this.alternateSanctions = alternateSanctions;
+    }
+
     @Override
     public ChangesRecord toDTO(boolean deepCopy) {
         ChangesRecord record = new ChangesRecord();
@@ -161,6 +188,18 @@ public class ChangesEntity implements DBObject<ChangesRecord> {
             if (this.record != null) {
                 record.setRecord(this.record.toDTO(
                         false));
+            }
+            if (!CollectionUtils.isEmpty(this.primarySanctions)) {
+                record.setPrimarySanctions(this.primarySanctions
+                        .stream()
+                        .map(it -> it.toDTO(false))
+                        .collect(Collectors.toList()));
+            }
+            if (!CollectionUtils.isEmpty(this.alternateSanctions)) {
+                record.setAlternateSanctions(this.alternateSanctions
+                        .stream()
+                        .map(it -> it.toDTO(false))
+                        .collect(Collectors.toList()));
             }
         }
         return record;

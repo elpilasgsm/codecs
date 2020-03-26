@@ -28,8 +28,8 @@
       </div>
       <div class="row" *ngIf="article.recordType=='ARTICLE'">
         <div class="input-field col s12">
-          <textarea id="name" type="text" class="materialize-textarea" [(ngModel)]="article.name"
-                    name="name"></textarea>
+          <input id="name" type="text" class="materialize-textarea" [(ngModel)]="article.name"
+                    name="name"/>
           <label for="name" [ngClass]="{'active': article.name}">Название</label>
         </div>
       </div>

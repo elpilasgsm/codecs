@@ -3,7 +3,7 @@ use codecs;
 CREATE TABLE RECORD
 (
     RECORD_ID          int(11)      NOT NULL AUTO_INCREMENT,
-    NAME               varchar(255) NOT NULL,
+    NAME               varchar(1024) NOT NULL,
     CODECS_RECORD_TYPE varchar(64)  NOT NULL,
     SEVERITY_OF_CRIME  varchar(64) DEFAULT NULL,
     URL                varchar(255) NOT NULL,

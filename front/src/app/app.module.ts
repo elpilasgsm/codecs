@@ -11,7 +11,15 @@ import {ArticleEditComponent} from './article-edit/article-edit.component';
 import {RecordTypePipe} from './record-type.pipe';
 import {CrimeSeverityPipe} from './crime-severity.pipe';
 import {CrimeSereritySelectorComponent} from './crime-sererity-selector/crime-sererity-selector.component';
-import {MzButtonModule, MzDatepickerModule, MzModalModule, MzSelectModule, MzToastModule} from "ngx-materialize";
+import {
+  MzButtonModule,
+  MzCheckboxModule,
+  MzDatepickerModule,
+  MzModalModule,
+  MzNavbarModule,
+  MzSelectModule,
+  MzToastModule
+} from "ngx-materialize";
 import {DeleteArticleModalComponent} from './delete-article-modal/delete-article-modal.component';
 import {RecordTypeShortPipe} from './record-type-short.pipe';
 import {MethodPipe} from './method.pipe';
@@ -26,6 +34,10 @@ import {DirectionChangesSelectorComponent} from './direction-changes-selector/di
 import {MethodChangesSelectorComponent} from './method-changes-selector/method-changes-selector.component';
 import {DefaultViewComponent} from './default-view/default-view.component';
 import {ChangeDeleteDialogComponent} from './change-delete-dialog/change-delete-dialog.component';
+import {HeaderComponent} from './header/header.component';
+import {SanctionsConfigComponent} from './sanctions-config/sanctions-config.component';
+import {SanctionChangesSelectorComponent} from './sanction-changes-selector/sanction-changes-selector.component';
+import {SanctionChangesEditDialogComponent} from './sanction-changes-edit-dialog/sanction-changes-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +61,11 @@ import {ChangeDeleteDialogComponent} from './change-delete-dialog/change-delete-
     DirectionChangesSelectorComponent,
     MethodChangesSelectorComponent,
     DefaultViewComponent,
-    ChangeDeleteDialogComponent
+    ChangeDeleteDialogComponent,
+    HeaderComponent,
+    SanctionsConfigComponent,
+    SanctionChangesSelectorComponent,
+    SanctionChangesEditDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -60,12 +76,17 @@ import {ChangeDeleteDialogComponent} from './change-delete-dialog/change-delete-
     MzDatepickerModule,
     MzModalModule,
     MzButtonModule,
-    MzToastModule
+    MzToastModule,
+    MzNavbarModule,
+    MzCheckboxModule
   ],
   exports: [RecordTypePipe],
   providers: [RecordTypePipe],
   bootstrap: [AppComponent],
-  entryComponents: [DeleteArticleModalComponent, ChangeEditDialogComponent, ChangeDeleteDialogComponent],
+  entryComponents: [DeleteArticleModalComponent,
+    ChangeEditDialogComponent,
+    ChangeDeleteDialogComponent,
+    SanctionChangesEditDialogComponent],
 
 })
 export class AppModule {

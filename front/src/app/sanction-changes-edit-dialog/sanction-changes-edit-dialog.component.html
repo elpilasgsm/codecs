@@ -1,0 +1,57 @@
+<mz-modal #saveDialog *ngIf="editableChange" [fixedFooter]="false">
+  <mz-modal-header>
+    <h5 *ngIf="editableChange.id">Редактирование cанкции для {{change.name }}</h5>
+    <h5 *ngIf="!editableChange.id">Новая санкция для {{change.name }}</h5>
+  </mz-modal-header>
+  <mz-modal-content>
+    <div class="row">
+      <div class="col l12 m12 s12 grey lighten-5 main-container">
+        <form *ngIf="editableChange" class="col l12">
+          <div class="row">
+            <div class="input-field col s12">
+              <mz-select-container (click)="$event.stopPropagation()">
+                <select [(ngModel)]="editableChange.sanction" [compareWith]="compareById" [label]="'Cанкция'"
+                        id="sanctionSelector"
+                        mz-select
+                        name="sanctionSelector">
+                  <option [ngValue]="null">Выбрать...</option>
+                  <option *ngFor="let o of getSanctions()" [ngValue]="o">{{o.name}}, {{o.metric}}</option>
+                </select>
+              </mz-select-container>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input [(ngModel)]="editableChange.from" id="from" type="number"
+                     name="from"/>
+              <label [ngClass]="{'active': editableChange.from}" for="from">Минимум</label>
+            </div>
+            <div class="input-field col s6">
+              <input [(ngModel)]="editableChange.to" id="to" type="number"
+                     name="to"/>
+              <label [ngClass]="{'active': editableChange.to}" for="to">Максимум</label>
+            </div>
+          </div>
+          <div class="row" *ngIf="!primary">
+            <div class="input-field col s12">
+              <mz-select-container (click)="$event.stopPropagation()">
+                <select [(ngModel)]="editableChange.optional" mz-select
+                        id="optional"
+                        name="optional"
+                        [label]="'Необязательно?'">
+                  <option [ngValue]="true">Да</option>
+                  <option [ngValue]="false">Нет</option>
+                </select>
+              </mz-select-container>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button mz-button mz-modal-close [flat]="true">Отмена</button>
+    <button (click)="save()" [flat]="true" mz-button>Да</button>
+  </mz-modal-footer>
+</mz-modal>

@@ -1,4 +1,4 @@
-<mz-modal [fixedFooter]="false" [fullscreen]="true" *ngIf="change">
+<mz-modal #changeEditDialog *ngIf="change" [fixedFooter]="false" [fullscreen]="true">
   <mz-modal-header>
     <h5 *ngIf="editableChange.name">Редактирование изменения {{editableChange.name }}</h5>
     <h5 *ngIf="!editableChange.name">Новое изменение</h5>
@@ -31,7 +31,8 @@
             </mz-datepicker-container>
           </div>
           <div class="row">
-            <app-crime-sererity-selector [change]="editableChange" [article]="null" id="severity"></app-crime-sererity-selector>
+            <app-crime-sererity-selector [change]="editableChange" [article]="null"
+                                         id="severity"></app-crime-sererity-selector>
           </div>
           <div class="row">
             <app-in-part-changes-selector [change]="editableChange"
@@ -65,6 +66,12 @@
 
           </div>
           <div class="row">
+            <app-sanction-changes-selector [change]="editableChange" [primary]="true"></app-sanction-changes-selector>
+          </div>
+          <div class="row">
+            <app-sanction-changes-selector [change]="editableChange" [primary]="false"></app-sanction-changes-selector>
+          </div>
+          <div class="row">
             <div class="input-field col s12">
               <a target="_blank" class="prefix material-icons" href="{{editableChange.url}}"><i class="material-icons">link</i></a>
               <input id="url" type="text" class="validate" [(ngModel)]="editableChange.url" name="url"
@@ -73,6 +80,7 @@
               <label for="name" [ngClass]="{'active': editableChange.url}">Ссылка</label>
             </div>
           </div>
+
 
         </form>
       </div>
