@@ -66,7 +66,7 @@ export class ChangeEditComponent implements OnInit {
       activationDate: null,
       direction: 'POSITIVE',
       method: 'APPEND',
-      date: new Date(),
+      date: new Date(1996, 0, 1),
       primarySanctions: [],
       alternateSanctions: [],
       url: null,

@@ -2,5 +2,6 @@ export const Method: string[] = [
   "APPEND",
   "CHANGE",
   "EXCLUDE",
-  "NOT_CONSTITUTIONAL"
+  "NOT_CONSTITUTIONAL",
+  "NEW"
 ];

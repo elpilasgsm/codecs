@@ -4,6 +4,7 @@ public enum ChangesMethod {
     APPEND,
     CHANGE,
     EXCLUDE,
-    NOT_CONSTITUTIONAL
+    NOT_CONSTITUTIONAL,
+    NEW
 
 }

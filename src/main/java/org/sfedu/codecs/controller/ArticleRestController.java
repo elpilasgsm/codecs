@@ -1,5 +1,6 @@
 package org.sfedu.codecs.controller;
 
+import org.sfedu.codecs.constants.ArticleComparator;
 import org.sfedu.codecs.model.db.ChangesEntity;
 import org.sfedu.codecs.model.db.RecordEntity;
 import org.sfedu.codecs.model.dto.ArticleRecord;
@@ -114,6 +115,7 @@ public class ArticleRestController {
         for (RecordEntity e : entities) {
             tree.add(toDTO(e));
         }
+        tree.sort(ArticleComparator.INSTANCE);
         return tree;
     }
 }

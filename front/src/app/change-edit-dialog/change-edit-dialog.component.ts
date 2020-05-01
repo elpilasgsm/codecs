@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {MzBaseModal} from "ngx-materialize";
 import {Changes} from "../changes";
 
@@ -15,12 +15,15 @@ export class ChangeEditDialogComponent extends MzBaseModal {
     clear: 'Очистить', // Clear button text
     close: 'Ok',    // Ok button text
     today: 'Сегодня', // Today button text
+    onRender: function (event) {
+      this.set(null);
+    },
     closeOnClear: true,
     closeOnSelect: false,
     format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
     formatSubmit: 'dd/mm/yyyy',   // Return value format (used to set/get value)
     selectMonths: true, // Creates a dropdown to control month
-    min: [1990, 1, 1],
+    min: [1995, 1, 1],
     max: [2030, 1, 1],
     selectYears: 50
   };
