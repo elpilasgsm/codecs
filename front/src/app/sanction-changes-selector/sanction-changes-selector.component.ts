@@ -13,7 +13,6 @@ import {SanctionChangesEditDialogComponent} from "../sanction-changes-edit-dialo
 })
 export class SanctionChangesSelectorComponent implements OnInit {
   @Input() change: Changes;
-  @Input() primary: boolean;
   private sanctionsList: Sanction[];
 
   constructor(private sanctionService: SanctionsService,
@@ -22,15 +21,11 @@ export class SanctionChangesSelectorComponent implements OnInit {
   }
 
   getTitle() {
-    return `${this.primary ? "Основное наказание" : "Дополнительное наказание"}`;
+    return "Основное наказание";
   }
 
   getSanctionsChanges(): SanctionChange[] {
-    if (this.primary) {
-      return this.change.primarySanctions;
-    } else {
-      return this.change.alternateSanctions;
-    }
+    return this.change.primarySanctions;
   }
 
   ngOnInit() {
@@ -45,13 +40,14 @@ export class SanctionChangesSelectorComponent implements OnInit {
       , from: null, to: null, sanction: {id: null, name: null, metric: null},
       change: null,
       optional: false,
-      alternate: !this.primary
-    };
+      alternateSanctions: [],
+      mainSanction: null
+    }
+      ;
   }
 
   delete(ch: SanctionChange) {
-    this.change.alternateSanctions= this.change.alternateSanctions.filter(item => item !== ch);
-    this.change.primarySanctions= this.change.primarySanctions.filter(item => item !== ch);
+    this.change.primarySanctions = this.change.primarySanctions.filter(item => item !== ch);
 
   }
 
@@ -60,7 +56,7 @@ export class SanctionChangesSelectorComponent implements OnInit {
       change: this.change,
       sanctionsList: this.sanctionsList,
       sanctionChange: ch,
-      primary: this.primary
+      primary: true
     });
   }
 
@@ -69,7 +65,7 @@ export class SanctionChangesSelectorComponent implements OnInit {
       change: this.change,
       sanctionsList: this.sanctionsList,
       sanctionChange: this.newInstance(),
-      primary: this.primary
+      primary: true
     });
 
     dialogRef.onDestroy(function () {

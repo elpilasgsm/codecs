@@ -64,8 +64,6 @@ public class ChangesEntity implements IDBObject<ChangesRecord> {
     @OneToMany(mappedBy = "changesEntity", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<SanctionChangesEntity> primarySanctions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "alternateChanges", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<SanctionChangesEntity> alternateSanctions = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -163,14 +161,6 @@ public class ChangesEntity implements IDBObject<ChangesRecord> {
         this.primarySanctions = primarySanctions;
     }
 
-    public List<SanctionChangesEntity> getAlternateSanctions() {
-        return alternateSanctions;
-    }
-
-    public void setAlternateSanctions(List<SanctionChangesEntity> alternateSanctions) {
-        this.alternateSanctions = alternateSanctions;
-    }
-
     @Override
     public ChangesRecord toDTO(boolean deepCopy) {
         ChangesRecord record = new ChangesRecord();
@@ -192,13 +182,7 @@ public class ChangesEntity implements IDBObject<ChangesRecord> {
             if (!CollectionUtils.isEmpty(this.primarySanctions)) {
                 record.setPrimarySanctions(this.primarySanctions
                         .stream()
-                        .map(it -> it.toDTO(false))
-                        .collect(Collectors.toList()));
-            }
-            if (!CollectionUtils.isEmpty(this.alternateSanctions)) {
-                record.setAlternateSanctions(this.alternateSanctions
-                        .stream()
-                        .map(it -> it.toDTO(false))
+                        .map(it -> it.toDTO(true))
                         .collect(Collectors.toList()));
             }
         }

@@ -184,23 +184,18 @@ class CodecsApplicationTests {
             changesEntity.setActivationDate(changesEntity.getDate());
             changesEntity.getActivationDate().add(Calendar.MONTH, rnd.nextInt(4) + 1);
         }
-        changesEntity.setAlternateSanctions(getSanctions(changesEntity, false));
-        changesEntity.setPrimarySanctions(getSanctions(changesEntity, true));
+        changesEntity.setPrimarySanctions(getSanctions(changesEntity));
         return changesEntity;
     }
 
-    private List<SanctionChangesEntity> getSanctions(ChangesEntity change, boolean isPrimary) {
+    private List<SanctionChangesEntity> getSanctions(ChangesEntity change) {
         List<SanctionChangesEntity> result = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             SanctionChangesEntity entity = new SanctionChangesEntity();
             entity.setSanctionEntity(sanctionEntity);
             entity.setFrom(rnd.nextInt(200));
             entity.setTo(rnd.nextInt(200) + 200);
-            if (isPrimary) {
-                entity.setChangesEntity(change);
-            } else {
-                entity.setAlternateChanges(change);
-            }
+            entity.setChangesEntity(change);
             result.add(entity);
         }
         return result;

@@ -33,7 +33,6 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
     private ChangesMethod method;
 
     private List<SanctionChangesRecord> primarySanctions;
-    private List<SanctionChangesRecord> alternateSanctions;
 
     public CrimeSeverity getCrimeSeverity() {
         return crimeSeverity;
@@ -132,13 +131,6 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
         this.primarySanctions = primarySanctions;
     }
 
-    public List<SanctionChangesRecord> getAlternateSanctions() {
-        return alternateSanctions;
-    }
-
-    public void setAlternateSanctions(List<SanctionChangesRecord> alternateSanctions) {
-        this.alternateSanctions = alternateSanctions;
-    }
 
     @Override
     public ChangesEntity toDB(boolean deepCopy) {
@@ -163,12 +155,6 @@ public class ChangesRecord implements DTOObject<ChangesEntity> {
                         .stream()
                         .map(it->it.toDB(false))
                 .collect(Collectors.toList()));
-            }
-            if (!CollectionUtils.isEmpty(this.alternateSanctions)){
-                entity.setAlternateSanctions(this.alternateSanctions
-                        .stream()
-                        .map(it->it.toDB(false))
-                        .collect(Collectors.toList()));
             }
         }
         return entity;

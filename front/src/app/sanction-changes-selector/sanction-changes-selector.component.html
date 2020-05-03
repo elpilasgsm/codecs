@@ -9,19 +9,30 @@
         <th class="view">Вид</th>
         <th>Минимум</th>
         <th>Максимум</th>
-        <th *ngIf="!primary">Или без него?</th>
         <th>Действия</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let s of getSanctionsChanges()">
-        <td>{{s.sanction.name}}, {{s.sanction.metric}}</td>
-        <td>{{s.from}}</td>
-        <td>{{s.to}}</td>
-        <td *ngIf="!primary">{{s.optional ? "Да" : "Нет"}}</td>
-        <td><a *ngIf="s.id" href="javascript:void(0);" (click)="edit(s)"><span class="material-icons">edit</span></a>
-          <a href="javascript:void(0);" (click)="delete(s)"><span class="material-icons">delete</span></a></td>
-      </tr>
+      <ng-container *ngFor="let s of getSanctionsChanges()">
+        <tr>
+          <td><b>O:</b> {{s.sanction.name}}, {{s.sanction.metric}}</td>
+          <td>{{s.from}}</td>
+          <td>{{s.to}}</td>
+          <td><a *ngIf="s.id" href="javascript:void(0);" (click)="edit(s)"><span class="material-icons">edit</span></a>
+            <a href="javascript:void(0);" (click)="delete(s)"><span class="material-icons">delete</span></a>
+            <a  *ngIf="s.id" href="javascript:void(0);" (click)="edit(s)"><span class="material-icons">add_circle</span></a>
+          </td>
+        </tr>
+        <ng-container *ngIf="s.alternateSanctions">
+          <tr class="darken-2" *ngFor="let sa of s.alternateSanctions; let last=last" [ngClass]="{ last: last }">
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>A:{{sa.optional | optional}}</b> {{s.sanction.name}}, {{s.sanction.metric}}</td>
+            <td>{{sa.from}}</td>
+            <td>{{sa.to}}</td>
+            <td><a *ngIf="sa.id" href="javascript:void(0);" (click)="edit(sa)"><span class="material-icons">edit</span></a>
+              <a href="javascript:void(0);" (click)="delete(sa)"><span class="material-icons">delete</span></a></td>
+          </tr>
+        </ng-container>
+      </ng-container>
       </tbody>
     </table>
   </div>

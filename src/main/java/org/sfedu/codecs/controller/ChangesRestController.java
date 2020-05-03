@@ -11,6 +11,7 @@ import org.sfedu.codecs.repository.db.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -43,22 +44,23 @@ public class ChangesRestController {
         }
         RecordEntity p = recordRepository.getOne(record.getRecord().getRecordId());
         entity.setRecord(p);
-        entity.setPrimarySanctions(toDB(record.getPrimarySanctions(), entity, true));
-        entity.setAlternateSanctions(toDB(record.getAlternateSanctions(), entity, false));
+        entity.setPrimarySanctions(toDB(record.getPrimarySanctions(), entity));
         return changesRepository.save(entity).toDTO(false);
     }
 
-    private List<SanctionChangesEntity> toDB(List<SanctionChangesRecord> records, ChangesEntity changesEntity, boolean primary) {
+    private List<SanctionChangesEntity> toDB(List<SanctionChangesRecord> records, ChangesEntity changesEntity) {
         List<SanctionChangesEntity> toDB = new ArrayList<>();
+        List<SanctionChangesEntity> fromDB = changesEntity.getPrimarySanctions();
         if (!CollectionUtils.isEmpty(records)) {
             toDB.addAll(records
                     .stream()
                     .map(it -> {
-                        SanctionChangesEntity entity = it.toDB();
-                        if (primary) {
-                            entity.setChangesEntity(changesEntity);
-                        } else {
-                            entity.setAlternateChanges(changesEntity);
+                        SanctionChangesEntity entity = it.toDB(true);
+                        entity.setChangesEntity(changesEntity);
+                        if (!StringUtils.isEmpty(it.getId())) {
+                            fromDB.stream()
+                                    .filter(a -> it.getId() == a.getId()).findFirst()
+                                    .ifPresent(fromDbEntity -> entity.setAlternateSactions(fromDbEntity.getAlternateSactions()));
                         }
                         return entity;
                     })
@@ -78,8 +80,7 @@ public class ChangesRestController {
         final ChangesEntity entity = parent.get();
         final ChangesEntity toSave = record.toDB(false);
         toSave.setRecord(entity.getRecord());
-        toSave.setPrimarySanctions(toDB(record.getPrimarySanctions(), entity, true));
-        toSave.setAlternateSanctions(toDB(record.getAlternateSanctions(), entity, false));
+        toSave.setPrimarySanctions(toDB(record.getPrimarySanctions(), entity));
         return changesRepository.save(toSave).toDTO(false);
     }
 

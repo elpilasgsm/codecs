@@ -68,7 +68,6 @@ export class ChangeEditComponent implements OnInit {
       method: 'APPEND',
       date: new Date(1996, 0, 1),
       primarySanctions: [],
-      alternateSanctions: [],
       url: null,
       record: this.article
     };

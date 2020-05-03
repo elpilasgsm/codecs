@@ -50,12 +50,7 @@ public class SanctionsRestController {
         SanctionChangesEntity entity = record.toDB(false);
         entity.setSanctionEntity(sanctionsRepository.getOne(record.getSanction().getId()));
         final ChangesEntity change = changesEntityOptional.get();
-
-        if (record.isAlternate()) {
-            entity.setAlternateChanges(change);
-        } else {
-            entity.setChangesEntity(change);
-        }
+        entity.setChangesEntity(change);
         sanctionsChangeRepository.save(entity);
         return entity.toDTO(true);
     }
@@ -73,6 +68,15 @@ public class SanctionsRestController {
         entity.setTo(record.getTo());
         entity.setSanctionEntity(sanctionsRepository.getOne(record.getSanction().getId()));
         entity.setChangesEntity(changesRepository.getOne(record.getChange().getId()));
+        if (CollectionUtils.isEmpty(record.getAlternateSanctions())) {
+            entity.getAlternateSactions().clear();
+        } else {
+            entity.setAlternateSactions(record.getAlternateSanctions().stream().map(it -> {
+                SanctionChangesEntity toSave = it.toDB(false);
+                toSave.setMainSanction(entity);
+                return toSave;
+            }).collect(Collectors.toList()));
+        }
         return sanctionsChangeRepository.save(entity).toDTO(false);
     }
 

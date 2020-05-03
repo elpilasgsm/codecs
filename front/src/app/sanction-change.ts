@@ -6,7 +6,8 @@ export class SanctionChange {
   public from: number;
   public to: number;
   public optional: boolean;
-  public alternate: boolean;
   public change: Changes;
   public sanction: Sanction;
+  public alternateSanctions: SanctionChange[];
+  public mainSanction: SanctionChange;
 }

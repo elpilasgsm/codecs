@@ -14,9 +14,9 @@ export class SanctionChangesEditDialogComponent extends MzBaseModal {
   @Input() change: Changes;
   @ViewChild('saveDialog') modal: MzModalComponent;
   @Input() public sanctionChange: SanctionChange;
+  @Input() public primary: boolean;
   public editableChange: SanctionChange;
   @Input() public sanctionsList: Sanction[];
-  @Input() public primary: boolean;
 
   constructor(private  sanctionsService: SanctionsService, private toastService: MzToastService) {
     super();
@@ -44,17 +44,10 @@ export class SanctionChangesEditDialogComponent extends MzBaseModal {
     this.sanctionChange.to = this.editableChange.to;
     this.sanctionChange.optional = this.editableChange.optional;
     if (!this.sanctionChange.id) {
-      if (this.primary) {
-        if (!this.change.primarySanctions) {
-          this.change.primarySanctions = [];
-        }
-        this.change.primarySanctions.push(this.sanctionChange);
-      } else {
-        if (!this.change.alternateSanctions) {
-          this.change.alternateSanctions = [];
-        }
-        this.change.alternateSanctions.push(this.sanctionChange);
+      if (!this.change.primarySanctions) {
+        this.change.primarySanctions = [];
       }
+      this.change.primarySanctions.push(this.sanctionChange);
     }
     this.modal.closeModal();
   }

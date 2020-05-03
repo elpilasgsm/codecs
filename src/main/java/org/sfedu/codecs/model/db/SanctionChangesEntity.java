@@ -1,11 +1,14 @@
 package org.sfedu.codecs.model.db;
 
 import org.hibernate.annotations.Type;
+import org.sfedu.codecs.model.DTOObject;
 import org.sfedu.codecs.model.IDBObject;
 import org.sfedu.codecs.model.dto.SanctionChangesRecord;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "SANCTIONS_CHANGES")
@@ -35,7 +38,12 @@ public class SanctionChangesEntity implements IDBObject<SanctionChangesRecord> {
 
     @JoinColumn(name = "ALT_CHANGE_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private ChangesEntity alternateChanges;
+    private SanctionChangesEntity mainSanction;
+
+
+    @OneToMany(mappedBy = "mainSanction", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<SanctionChangesEntity> alternateSactions;
+
 
     @JoinColumn(name = "SANCTION_ID")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -82,12 +90,12 @@ public class SanctionChangesEntity implements IDBObject<SanctionChangesRecord> {
         this.changesEntity = changesEntity;
     }
 
-    public ChangesEntity getAlternateChanges() {
-        return alternateChanges;
+    public SanctionChangesEntity getMainSanction() {
+        return mainSanction;
     }
 
-    public void setAlternateChanges(ChangesEntity alternateChanges) {
-        this.alternateChanges = alternateChanges;
+    public void setMainSanction(SanctionChangesEntity mainSanction) {
+        this.mainSanction = mainSanction;
     }
 
     public SanctionEntity getSanctionEntity() {
@@ -98,6 +106,14 @@ public class SanctionChangesEntity implements IDBObject<SanctionChangesRecord> {
         this.sanctionEntity = sanctionEntity;
     }
 
+    public List<SanctionChangesEntity> getAlternateSactions() {
+        return alternateSactions;
+    }
+
+    public void setAlternateSactions(List<SanctionChangesEntity> alternateSactions) {
+        this.alternateSactions = alternateSactions;
+    }
+
     @Override
     public SanctionChangesRecord toDTO(boolean deepCopy) {
         final SanctionChangesRecord record = new SanctionChangesRecord();
@@ -105,6 +121,12 @@ public class SanctionChangesEntity implements IDBObject<SanctionChangesRecord> {
         record.setFrom(this.from);
         record.setTo(this.to);
         record.setOptional(this.optional);
+        if (this.getAlternateSactions() != null && deepCopy) {
+            record.setAlternateSanctions(this.getAlternateSactions().stream().map(it -> it.toDTO(false)).collect(Collectors.toList()));
+        }
+        if (this.getMainSanction() != null) {
+            record.setMainSanction(this.getMainSanction().toDTO(false));
+        }
         if (this.sanctionEntity != null)
             record.setSanction(this.sanctionEntity.toDTO(false));
         return record;

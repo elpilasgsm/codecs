@@ -14,5 +14,4 @@ export class Changes {
   public url: string; //done
   public record: Article;
   public primarySanctions: SanctionChange[];
-  public alternateSanctions: SanctionChange[];
 }

@@ -38,6 +38,7 @@ import {HeaderComponent} from './header/header.component';
 import {SanctionsConfigComponent} from './sanctions-config/sanctions-config.component';
 import {SanctionChangesSelectorComponent} from './sanction-changes-selector/sanction-changes-selector.component';
 import {SanctionChangesEditDialogComponent} from './sanction-changes-edit-dialog/sanction-changes-edit-dialog.component';
+import { OptionalPipe } from './optional.pipe';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {SanctionChangesEditDialogComponent} from './sanction-changes-edit-dialog
     HeaderComponent,
     SanctionsConfigComponent,
     SanctionChangesSelectorComponent,
-    SanctionChangesEditDialogComponent
+    SanctionChangesEditDialogComponent,
+    OptionalPipe
   ],
   imports: [
     BrowserModule,
