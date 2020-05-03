@@ -14,8 +14,9 @@
           </div>
           <div class="row">
             <div class="input-field col s12">
-          <textarea id="name" type="text" class="materialize-textarea" [(ngModel)]="editableChange.name"
-                    name="name"></textarea>
+              <a href="javascript:void(0);" (click)="copyName()">Скопировать название статьи</a>
+              <textarea id="name" type="text" class="materialize-textarea" [(ngModel)]="editableChange.name"
+                        name="name"></textarea>
               <label for="name" [ngClass]="{'active': editableChange.name}">Название</label>
             </div>
           </div>
@@ -66,7 +67,7 @@
 
           </div>
           <div class="row">
-            <app-sanction-changes-selector [change]="editableChange" ></app-sanction-changes-selector>
+            <app-sanction-changes-selector [change]="editableChange"></app-sanction-changes-selector>
           </div>
           <div class="row">
             <div class="input-field col s12">

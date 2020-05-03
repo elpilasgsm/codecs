@@ -36,6 +36,10 @@ export class ChangeEditDialogComponent extends MzBaseModal {
     this.ngOnInit();
   }
 
+  copyName() {
+    this.editableChange.name = this.change.record.name;
+  }
+
   ngOnInit() {
     this.editableChange =
       Object.assign({}, this.change);

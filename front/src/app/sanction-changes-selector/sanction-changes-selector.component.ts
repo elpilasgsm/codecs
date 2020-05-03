@@ -56,7 +56,18 @@ export class SanctionChangesSelectorComponent implements OnInit {
       change: this.change,
       sanctionsList: this.sanctionsList,
       sanctionChange: ch,
-      primary: true
+      primary: ch.mainSanction == null
+    });
+  }
+
+  addAlt(ch: SanctionChange) {
+    let newOne = this.newInstance();
+    newOne.mainSanction = ch;
+    this.modalService.open(SanctionChangesEditDialogComponent, {
+      change: this.change,
+      sanctionsList: this.sanctionsList,
+      sanctionChange: newOne,
+      primary: false
     });
   }
 

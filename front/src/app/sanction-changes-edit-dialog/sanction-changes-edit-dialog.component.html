@@ -2,6 +2,8 @@
   <mz-modal-header>
     <h5 *ngIf="editableChange.id">Редактирование cанкции для {{change.name }}</h5>
     <h5 *ngIf="!editableChange.id">Новая санкция для {{change.name }}</h5>
+    <h5 *ngIf="editableChange.mainSanction">Основная санкция {{editableChange.mainSanction.sanction.name }}
+      ,  {{editableChange.mainSanction.sanction.metric }}</h5>
   </mz-modal-header>
   <mz-modal-content>
     <div class="row">
@@ -32,7 +34,7 @@
               <label [ngClass]="{'active': editableChange.to}" for="to">Максимум</label>
             </div>
           </div>
-         <div class="row" *ngIf="!primary">
+          <div class="row" *ngIf="!primary">
             <div class="input-field col s12">
               <mz-select-container (click)="$event.stopPropagation()">
                 <select [(ngModel)]="editableChange.optional" mz-select
