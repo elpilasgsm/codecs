@@ -28,7 +28,7 @@
             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>A:{{sa.optional | optional}}</b> {{s.sanction.name}}, {{s.sanction.metric}}</td>
             <td>{{sa.from}}</td>
             <td>{{sa.to}}</td>
-            <td><a *ngIf="sa.id" href="javascript:void(0);" (click)="edit(sa)"><span class="material-icons">edit</span></a>
+            <td><a *ngIf="sa.id" href="javascript:void(0);" (click)="editAlt(sa)"><span class="material-icons">edit</span></a>
               <a href="javascript:void(0);" (click)="delete(sa)"><span class="material-icons">delete</span></a></td>
           </tr>
         </ng-container>

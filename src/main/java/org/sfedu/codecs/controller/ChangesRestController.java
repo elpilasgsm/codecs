@@ -1,5 +1,6 @@
 package org.sfedu.codecs.controller;
 
+import org.sfedu.codecs.model.DTOObject;
 import org.sfedu.codecs.model.db.ChangesEntity;
 import org.sfedu.codecs.model.db.RecordEntity;
 import org.sfedu.codecs.model.db.SanctionChangesEntity;
@@ -57,11 +58,9 @@ public class ChangesRestController {
                     .map(it -> {
                         SanctionChangesEntity entity = it.toDB(true);
                         entity.setChangesEntity(changesEntity);
-                        if (!StringUtils.isEmpty(it.getId())) {
-                            fromDB.stream()
-                                    .filter(a -> it.getId() == a.getId()).findFirst()
-                                    .ifPresent(fromDbEntity -> entity.setAlternateSactions(fromDbEntity.getAlternateSactions()));
-                        }
+                        //TODO fix merge alternate properly
+                        entity.setAlternateSactions(it.getAlternateSanctions().stream().map(DTOObject::toDB).collect(Collectors.toList()));
+                        entity.getAlternateSactions().forEach(alt -> alt.setMainSanction(entity));
                         return entity;
                     })
                     .collect(Collectors.toList()));
